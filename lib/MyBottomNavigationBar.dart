@@ -32,7 +32,7 @@ class _HomeState extends State<MyBottomNavigationBar> {
           items: [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                title: Text('Home'),
+                title: Text('Home lalalala'),
                 backgroundColor: Colors.blueGrey),
             BottomNavigationBarItem(
                 icon: Icon(Icons.timeline),
