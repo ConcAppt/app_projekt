@@ -17,7 +17,7 @@ class _HomeState extends State<MyBottomNavigationBar> {
     ProfilePage(),
     SettingsPage(),
   ];
-
+//Test
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +32,7 @@ class _HomeState extends State<MyBottomNavigationBar> {
           items: [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                title: Text('Home lalalala'),
+                title: Text('Home'),
                 backgroundColor: Colors.blueGrey),
             BottomNavigationBarItem(
                 icon: Icon(Icons.timeline),
