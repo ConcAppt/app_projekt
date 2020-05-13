@@ -1,6 +1,6 @@
 import 'dart:html';
 
-import 'package:appprojekt/Questionnaire.dart';
+import 'package:appprojekt/Screens/Home/Questionnaire.dart';
 import 'package:flutter/material.dart';
 
 class QuestionsPage extends StatefulWidget {
