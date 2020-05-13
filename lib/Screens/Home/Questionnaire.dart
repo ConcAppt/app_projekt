@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Overview.dart';
+import '../../Overview.dart';
 
 class Questionnaire extends StatefulWidget {
   Questionnaire({Key key, this.questionnaireNumber}) : super(key: key);
@@ -9,29 +9,29 @@ class Questionnaire extends StatefulWidget {
     Overview(
         questionnaireName: 'MADSR',
         questionnaireDescription:
-            'Beschreibung: Ermittlung des Schweregrades einer Depression',
-        questionnaireUmfang: 'Umfang: 10 Fragen'),
+            'Evaluating the severity of depression.',
+        questionnaireUmfang: 'Length: 10 Questions'),
     Overview(
         questionnaireName: 'ERQ',
         questionnaireDescription:
-            'Beschreibung: Untersuchung von Emotionsregulationsprozessen',
-        questionnaireUmfang: 'Umfang: 10 Fragen'),
+            'Examination of emotion regulation processes',
+        questionnaireUmfang: 'Length: 10 Questions'),
     Overview(
         questionnaireName: 'Test1',
-        questionnaireDescription: 'Beschreibung: -',
-        questionnaireUmfang: 'Umfang: x Fragen'),
+        questionnaireDescription: '-',
+        questionnaireUmfang: 'Length: x Questions'),
     Overview(
         questionnaireName: 'Test2',
-        questionnaireDescription: 'Beschreibung: -',
-        questionnaireUmfang: 'Umfang: x Fragen'),
+        questionnaireDescription: '-',
+        questionnaireUmfang: 'Length: x Questions'),
     Overview(
         questionnaireName: 'Test3',
-        questionnaireDescription: 'Beschreibung: -',
-        questionnaireUmfang: 'Umfang: x Fragen'),
+        questionnaireDescription: '-',
+        questionnaireUmfang: 'Length: x Questions'),
     Overview(
         questionnaireName: 'Test4',
-        questionnaireDescription: 'Beschreibung: -',
-        questionnaireUmfang: 'Umfang: x Fragen'),
+        questionnaireDescription: '-',
+        questionnaireUmfang: 'Length: x Questions'),
   ];
   @override
   _QuestionnaireState createState() => _QuestionnaireState();
@@ -54,7 +54,7 @@ class _QuestionnaireState extends State<Questionnaire> {
                 topLeft: Radius.circular(5),
                 bottomLeft: Radius.circular(5),
                 bottomRight: Radius.circular(5)),
-            color: Colors.blueGrey[600].withOpacity(0.7),
+            color: Colors.lightGreen[600].withOpacity(0.7),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,25 +62,30 @@ class _QuestionnaireState extends State<Questionnaire> {
               Text(
                 widget.overviewBank[widget.questionnaireNumber].name,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black87,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'NotoSans',
+                  fontFamily: 'Montserrat',
+                  fontSize: 15
                 ),
               ),
               Spacer(flex: 8),
               Text(
                 widget.overviewBank[widget.questionnaireNumber].description,
                 style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'NotoSans',
+                  color: Colors.black87,
+                  fontFamily: 'Monterrat',
+                  letterSpacing: 1.5,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 15
                 ),
               ),
               Spacer(flex: 8),
               Text(
                 widget.overviewBank[widget.questionnaireNumber].umfang,
                 style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'NotoSans',
+                  color: Colors.black87,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w500
                 ),
               )
             ],

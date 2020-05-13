@@ -1,8 +1,8 @@
-import 'package:appprojekt/HomePage.dart';
+import 'package:appprojekt/Screens/Home/HomePage.dart';
 import 'package:flutter/material.dart';
-import 'EvaluationPage.dart';
-import 'ProfilePage.dart';
-import 'SettingsPage.dart';
+import '../Screens/Evaluation/EvaluationPage.dart';
+import '../Screens/Profile/ProfilePage.dart';
+import '../SettingsPage.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   @override
@@ -26,26 +26,26 @@ class _HomeState extends State<MyBottomNavigationBar> {
           currentIndex: _currentIndex,
           type: BottomNavigationBarType.shifting,
           iconSize: 35,
-          backgroundColor: Colors.blueGrey,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Color(0xFFF434A50),
+          backgroundColor: Colors.lightGreen[700],
+          selectedItemColor: Colors.grey[200],
+          unselectedItemColor: Colors.black87,
           items: [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 title: Text('Home'),
-                backgroundColor: Colors.blueGrey),
+                backgroundColor: Colors.lightGreen[700]),
             BottomNavigationBarItem(
                 icon: Icon(Icons.timeline),
-                title: Text('Auswertung'),
-                backgroundColor: Colors.blueGrey),
+                title: Text('Evaluation'),
+                backgroundColor: Colors.lightGreen[700]),
             BottomNavigationBarItem(
-                icon: Icon(Icons.folder_shared),
-                title: Text('Profil'),
-                backgroundColor: Colors.blueGrey),
+                icon: Icon(Icons.perm_identity),
+                title: Text('Profile'),
+                backgroundColor: Colors.lightGreen[700]),
             BottomNavigationBarItem(
                 icon: Icon(Icons.toc),
-                title: Text('Mehr'),
-                backgroundColor: Colors.blueGrey),
+                title: Text('More'),
+                backgroundColor: Colors.lightGreen[700]),
           ],
           onTap: (index) {
             setState(() {

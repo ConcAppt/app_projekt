@@ -25,6 +25,9 @@ flutter:
         - asset: fonts/NotoSans-Regular.ttf
         - asset: fonts/NotoSans-Italic.ttf
         - asset: fonts/NotoSans-Bold.ttf
+    - family: Montserrat
+      fonts:
+        - asset: fonts/Montserrat-Regular.ttf
 
   uses-material-design: true
 

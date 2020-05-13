@@ -1,10 +1,12 @@
-import 'package:appprojekt/MyBottomNavigationBar.dart';
+import 'package:appprojekt/Widgets/MyBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'Questionnaire.dart';
+import 'Screens/Home/Questionnaire.dart';
 import 'Overview.dart';
 import 'route_generator.dart';
+import 'package:appprojekt/Screens/CreateProfile/CaP.dart';
+import 'package:appprojekt/Screens/Start/Start.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(
-            brightness: Brightness.dark, primaryColor: Colors.blueGrey),
+            primaryColor: Colors.teal, backgroundColor: Colors.grey[200]),
         // Initially display FirstPage
         home: MyBottomNavigationBar());
   }

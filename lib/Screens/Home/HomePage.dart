@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Questionnaire.dart';
-import 'MyBottomNavigationBar.dart';
+import '../../Widgets/MyBottomNavigationBar.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,8 +18,14 @@ class _HomePageState extends State<HomePage> {
           Container(
             padding: EdgeInsets.all(10),
             child: Text(
-                'Hallo X! Wähle einen Fragebogen aus um ihn zu bearbeiten',
-                style: TextStyle(fontSize: 30)),
+                'Hello X!',
+                style: TextStyle(fontSize: 30, fontFamily: 'Montserrat', fontWeight: FontWeight.w600, color: Colors.lightGreen[700], letterSpacing: 2)),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+            child: Text(
+                'Please choose a questionaire to start.',
+                style: TextStyle(fontSize: 23, fontFamily: 'Montserrat', fontWeight: FontWeight.w600, color: Colors.black87, letterSpacing: 2)),
           ),
           Expanded(
             child: ListView.separated(
