@@ -8,7 +8,7 @@ class CaP extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightGreen[700],
-        title: Text(
+        /*title: Text(
           'Create a Profile',
           style: TextStyle(
               color: Colors.grey[100],
@@ -17,11 +17,11 @@ class CaP extends StatelessWidget {
               fontWeight: FontWeight.w500,
               letterSpacing: 4.0
           ),
-        ),
+        ),*/
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+          padding: EdgeInsets.all(10.0),
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             child: List()

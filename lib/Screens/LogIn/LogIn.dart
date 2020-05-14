@@ -1,24 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:appprojekt/Screens/LogIn/Log.dart';
 
-class LogIn extends StatelessWidget{
+class LogIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: Log In Class
-    return MaterialApp(
-      home: Scaffold(
-        body: Column(
-          children: <Widget>[
-            Text(
-              'Log In',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontFamily: 'Montserrat',
-                letterSpacing: 3.0,
-                color: Colors.black87,
-              ),
-            ),
-          ],
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.lightGreen[700],
+        /*title: Text(
+          'Log In',
+          style: TextStyle(
+              color: Colors.grey[100],
+              fontSize: 30.0,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w500,
+              letterSpacing: 4.0),
+        ),*/
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(50.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: LogList()
+                ),
+            ],
+          ),
+          ),
       ),
     );
   }
