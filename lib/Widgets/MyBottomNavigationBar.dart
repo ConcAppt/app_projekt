@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../Screens/Evaluation/EvaluationPage.dart';
 import '../Screens/Profile/ProfilePage.dart';
 import '../Screens/Settings/SettingsPage.dart';
+import '../Screens/Home/Questions.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   @override
@@ -15,9 +16,10 @@ class _HomeState extends State<MyBottomNavigationBar> {
     HomePage(),
     EvaluationPage(),
     ProfilePage(),
-    SettingsPage(),
+    CustomPageViewApp(),
+    //SettingsPage(),
   ];
-//Tes
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

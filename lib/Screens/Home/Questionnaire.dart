@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../Overview.dart';
+import 'Questions.dart';
+
+enum Department { treasury, state }
 
 class Questionnaire extends StatefulWidget {
   Questionnaire({Key key, this.questionnaireNumber}) : super(key: key);
@@ -8,13 +11,11 @@ class Questionnaire extends StatefulWidget {
   final List<Overview> overviewBank = [
     Overview(
         questionnaireName: 'MADSR',
-        questionnaireDescription:
-            'Evaluating the severity of depression.',
+        questionnaireDescription: 'Evaluating the severity of depression.',
         questionnaireUmfang: 'Length: 10 Questions'),
     Overview(
         questionnaireName: 'ERQ',
-        questionnaireDescription:
-            'Examination of emotion regulation processes',
+        questionnaireDescription: 'Examination of emotion regulation processes',
         questionnaireUmfang: 'Length: 10 Questions'),
     Overview(
         questionnaireName: 'Test1',
@@ -43,7 +44,60 @@ class _QuestionnaireState extends State<Questionnaire> {
     return Material(
       child: InkWell(
         onTap: () {
-          print('Container Pressed');
+          Future<void> openDialog() async {
+            switch (await showDialog<Department>(
+                context: context,
+                builder: (BuildContext context) {
+                  return SimpleDialog(
+                    title: const Text('Do you want to take the test now?'),
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.lightGreen[600].withOpacity(0.7),
+                            ),
+                            child: SimpleDialogOption(
+                              onPressed: () {
+                                Navigator.pop(context, Department.treasury);
+                              },
+                              child: const Text('Back'),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.lightGreen[600].withOpacity(0.7),
+                            ),
+                            child: SimpleDialogOption(
+                              onPressed: () {
+                                Navigator.pop(context, Department.state);
+                              },
+                              child: const Text('Start'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          style: BorderStyle.none,
+                        ),
+                        borderRadius: BorderRadius.circular(10)),
+                  );
+                })) {
+              case Department.treasury:
+                //....
+                break;
+              case Department.state:
+                CustomPageViewApp();
+                break;
+            }
+          }
+
+          openDialog();
         },
         child: Container(
           padding: EdgeInsets.all(10),
@@ -62,31 +116,26 @@ class _QuestionnaireState extends State<Questionnaire> {
               Text(
                 widget.overviewBank[widget.questionnaireNumber].name,
                 style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat',
-                  fontSize: 15
-                ),
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    fontSize: 15),
               ),
               Spacer(flex: 8),
               Text(
                 widget.overviewBank[widget.questionnaireNumber].description,
                 style: TextStyle(
-                  color: Colors.black87,
-                  fontFamily: 'Monterrat',
-                  letterSpacing: 1.5,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 15
-                ),
+                    color: Colors.black87,
+                    fontFamily: 'Monterrat',
+                    letterSpacing: 1.5,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15),
               ),
               Spacer(flex: 8),
               Text(
                 widget.overviewBank[widget.questionnaireNumber].umfang,
                 style: TextStyle(
-                  color: Colors.black87,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w500
-                ),
+                    color: Colors.black87, fontFamily: 'Montserrat', fontWeight: FontWeight.w500),
               )
             ],
           ),
