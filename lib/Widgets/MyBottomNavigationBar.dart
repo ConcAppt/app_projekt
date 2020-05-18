@@ -4,6 +4,7 @@ import '../Screens/Evaluation/EvaluationPage.dart';
 import '../Screens/Profile/ProfilePage.dart';
 import '../Screens/Settings/SettingsPage.dart';
 import '../Screens/Home/Questions.dart';
+import '../Screens/Start/Start.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   @override
@@ -15,7 +16,8 @@ class _HomeState extends State<MyBottomNavigationBar> {
   final List<Widget> _children = [
     HomePage(),
     EvaluationPage(),
-    ProfilePage(),
+    Start(),
+    //ProfilePage(),
     CustomPageViewApp(),
     //SettingsPage(),
   ];
