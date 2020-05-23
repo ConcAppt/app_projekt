@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../Screens/Evaluation/EvaluationPage.dart';
 import '../Screens/Profile/ProfilePage.dart';
 import '../Screens/Settings/SettingsPage.dart';
-import '../Screens/Home/Questions.dart';
+import '../Screens/Home/QuestionsWheel.dart';
 import '../Screens/Start/Start.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
@@ -18,7 +18,7 @@ class _HomeState extends State<MyBottomNavigationBar> {
     EvaluationPage(),
     Start(),
     //ProfilePage(),
-    CustomPageViewApp(),
+    QuestionWheel(),
     //SettingsPage(),
   ];
 

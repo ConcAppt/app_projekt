@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class CustomPageViewApp extends StatelessWidget {
+class QuestionWheel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -25,53 +25,80 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
     QuestionModel(
         'Apparent Sadness',
         'Representing despondency, gloom and despair, (more than just ordinary transient low spirits) reflected in speech, facial expression, and posture.',
-        'No sadness',
-        'Looks miserable all the time. Extremely despondent.'),
+        '0 No sadness',
+        '2 Looks dispirited but does brighten up without difficulty',
+        '4 Appears sad and unhappy most of the time.',
+        '6 Looks miserable all the time. Extremely despondent.'),
     QuestionModel(
         'Reported sadness',
         'Representing reports of depressed mood, regardless of whether it is reflected in appearance  or not. Includes low spirits, despondency or the feeling of being beyond help and without hope.',
-        'Occasional sadness in keeping with the circumstances.',
-        'Continuous or unvarying sadness, misery or despondency.'),
+        '0 Occasional sadness in keeping with the circumstances.',
+        '2 Sad or low but brightens up without difficulty.',
+        '4 Pervasive feelings of sadness or gloominess. The mood is still influenced by external circumstances.',
+        '6 Continuous or unvarying sadness, misery or despondency.'),
     QuestionModel(
         'Inner tension',
         'Representing feelings of ill-defined discomfort, edginess, inner turmoil, mental tension mounting to either panic, dread or anguish.',
-        'Placid. Only fleeting inner tension.',
-        'Unrelenting dread or anguish. Overwhelming panic'),
+        '0 Placid. Only fleeting inner tension.',
+        '2 Occasional feelings of edginess and ill defined discomfort',
+        '4 Continuous feelings of inner tension or intermittent panic which the patient can only '
+            'master with some difficulty.',
+        '6 Unrelenting dread or anguish. Overwhelming panic'),
     QuestionModel(
         'Reduced sleep',
         'Representing the experience of reduced duration or depth of sleep compared to the subject\'s own normal pattern when well.',
-        'Sleeps as usual.',
-        'Less than two or three hours sleep'),
+        '0 Sleeps as usual.',
+        '2 Slight difficulty dropping off to sleep or slightly reduced, light or fitful sleep.',
+        '4 Sleep reduced or broken by at least two hours.',
+        '6 Less than two or three hours sleep'),
     QuestionModel(
         'Reduced appetite',
         'Representing the feeling of a loss of appetite compared with when well.',
-        'Normal or increased appetite.',
-        'Needs persuasion to eat at all.'),
+        '0 Normal or increased appetite.',
+        '2 Slightly reduced appetite.',
+        '4 No appetite. Food is tasteless.',
+        '6 Needs persuasion to eat at all.'),
     QuestionModel(
         'Concentration Difficulties',
         'Representing difficulties in collecting one\'s thoughts mounting to incapacitating lack of concentration. Rate according to intensity, frequency, and degree of incapacity produced.',
-        'No difficulties in concentrating.',
-        'Unable to read or converse without great difficulty.'),
+        '0 No difficulties in concentrating.',
+        '2 Occasional difficulties in collecting one\'s thoughts.',
+        '4 Difficulties in concentrating and sustaining thought which reduces ability to read or '
+            'hold a conversation.',
+        '6 Unable to read or converse without great difficulty.'),
     QuestionModel(
         'Lassitude',
         'Representing a difficulty getting started or slowness initiating and performing everyday activities.',
-        'Hardly any difficulty in getting started. No sluggishness.',
-        'Complete lassitude. Unable to do anything without help.'),
+        '0 Hardly any difficulty in getting started. No sluggishness.',
+        '2 Difficulties in starting activities.',
+        '4 Difficulties in starting simple routine activities which are carried out with effort.',
+        '6 Complete lassitude. Unable to do anything without help.'),
     QuestionModel(
         'Inability to feel',
         'Representing the subjective experience of reduced interest in the surroundings, or activities that normally give pleasure. The ability to react with adequate emotion to circumstances or people is reduced.',
-        'Normal interest in the surroundings and in other people',
-        'The experience of being emotionally paralysed, inability to feel anger, grief or pleasure and a complete or even painful failure to feel for close relatives and friends.'),
+        '0 Normal interest in the surroundings and in other people',
+        '2 Reduced ability to enjoy usual interests.',
+        '4 Loss of interest in the surroundings. Loss of feelings or friends and acquaintances.',
+        '6 The experience of being emotionally paralysed, inability to feel anger, grief or '
+            'pleasure and a complete or even painful failure to feel for close relatives and friends.'),
     QuestionModel(
         'Pessimistic thoughts',
         'Representing thoughts of guilt, inferiority, self-reproach, sinfulness, remorse and ruin.',
-        'No pessimistic thoughts.',
-        'Delusions of ruin, remorse or unredeemable sin. Self-accusations which are absurd and unshakable.'),
+        '0 No pessimistic thoughts.',
+        '2 Fluctuating ideas of failure, self-reproach or self depreciation.',
+        '4 Persistent self-accusations, or definite but still rational ideas of guilt or sin. '
+            'Increasingly pessimistic about the future.',
+        '6 Delusions of ruin, remorse or unredeemable sin. Self-accusations which are absurd and '
+            'unshakable.'),
     QuestionModel(
         'Suicidal thoughts',
         'Representing the feeling that life is not worth living, that a natural death would be welcome, suicidal thoughts, and preparations for suicide.',
-        'Enjoys life or takes it as it comes.',
-        'Explicit plans for suicide when there is an opportunity. Active preparation for suicide.'),
+        '0 Enjoys life or takes it as it comes.',
+        '2 Weary of life. Only fleeting suicidal thoughts.',
+        '4 Probably better off dead. Suicidal thoughts are common, and suicide is considered as a'
+            ' possible solution, but without specific plans or intention.',
+        '6 Explicit plans for suicide when there is an opportunity. Active preparation for suicide'
+            '.'),
   ];
 
   @override
@@ -81,27 +108,26 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
           color: Colors.white,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              _buildTitle(),
-              _buildInterestsContent(),
-              //_buildSlider(),
-              //_buildCheckIcon(),
-              _buildNextButton()
-            ],
+            children: <Widget>[_buildTitle(), _buildInterestsContent(), _buildNextButton()],
           )),
     );
   }
 
-  Text _buildTitle() {
-    return Text(
-      "MADSR".toUpperCase(),
-      textAlign: TextAlign.center,
-      style: TextStyle(
-          fontSize: 23,
-          fontFamily: 'Montserrat',
-          fontWeight: FontWeight.w600,
-          color: Colors.lightGreen[700],
-          letterSpacing: 2),
+  AppBar _buildTitle() {
+    return AppBar(
+      backgroundColor: Colors.white,
+      title: Center(
+        child: Text(
+          "MADSR".toUpperCase(),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 25,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w600,
+              color: Colors.lightGreen[700],
+              letterSpacing: 2),
+        ),
+      ),
     );
   }
 
@@ -128,8 +154,10 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
               children: <Widget>[
                 Flexible(child: _buildDescriptionItem(questionsList[currentIdx])),
                 Flexible(
-                    child: _buildAnswerItem(
-                        questionsList[currentIdx], ratingList[currentIdx], currentIdx)),
+                    child: Padding(
+                  padding: const EdgeInsets.only(left: 20.0, right: 10.0),
+                  child: _buildListWheel(questionsList[currentIdx]),
+                )),
               ],
             ),
           );
@@ -137,6 +165,89 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
         controller: pageController,
       ),
     );
+  }
+
+  ListWheelScrollView _buildListWheel(QuestionModel data) {
+    return ListWheelScrollView(itemExtent: 50, squeeze: 0.7, clipToSize: false, children: [
+      Container(
+        child: Text(
+          data.zeroCase,
+          style: TextStyle(
+            color: Colors.green,
+            fontFamily: 'Montserrat',
+            fontSize: 20.0,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+      Container(
+        child: Text(
+          '1',
+          style: TextStyle(
+            color: Colors.lightGreen,
+            fontFamily: 'Montserrat',
+            fontSize: 20.0,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+      Container(
+        child: Text(
+          data.twoCase,
+          style: TextStyle(
+            color: Colors.lime,
+            fontFamily: 'Montserrat',
+            fontSize: 20.0,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+      Container(
+        child: Text(
+          '3',
+          style: TextStyle(
+            color: Colors.yellow,
+            fontFamily: 'Montserrat',
+            fontSize: 20.0,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+      Container(
+        child: Text(
+          data.fourCase,
+          //overflow: TextOverflow.visible,
+          style: TextStyle(
+            color: Colors.amber,
+            fontFamily: 'Montserrat',
+            fontSize: 20.0,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+      Container(
+        child: Text(
+          '5',
+          style: TextStyle(
+            color: Colors.orange,
+            fontFamily: 'Montserrat',
+            fontSize: 20.0,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+      Container(
+        child: Text(
+          data.sixCase,
+          style: TextStyle(
+            color: Colors.deepOrange,
+            fontFamily: 'Montserrat',
+            fontSize: 20.0,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+    ]);
   }
 
   Column _buildDescriptionItem(QuestionModel data) {
@@ -214,7 +325,7 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
     );
   }
 
-  double rating;
+  /*double rating;
   Column _buildAnswerItem(QuestionModel data, ratingL, currentIdx) {
     if (ratingList[currentIdx] == 0) {
       rating = 0;
@@ -273,7 +384,7 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
       ],
     );
   }
-
+*/
   /*Container _buildCheckIcon() {
     String buttonAsset = selectedInterests.isEmpty
         ? 'assets/ic_check_gray.png'
@@ -305,7 +416,7 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
     );
   }
 
-  /* //double rating = 0;
+/* //double rating = 0;
   Slider _buildSlider() {
     return Slider(
       value: rating,
@@ -340,10 +451,13 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
 class QuestionModel {
   String title;
   String description;
-  String bestCase;
-  String worstCase;
+  String zeroCase;
+  String twoCase;
+  String fourCase;
+  String sixCase;
 
-  QuestionModel(this.title, this.description, this.bestCase, this.worstCase);
+  QuestionModel(
+      this.title, this.description, this.zeroCase, this.twoCase, this.fourCase, this.sixCase);
 }
 /*class InterestsModel extends StatefulWidget {
   InterestsModel({Key key, this.title, this.imageAsset}) : super(key: key);
