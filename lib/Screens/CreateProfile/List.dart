@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 class List extends StatefulWidget {
   List({Key key}) : super(key: key);
@@ -8,6 +9,10 @@ class List extends StatefulWidget {
 }
 
 class _ListState extends State<List> {
+  String _name;
+  String _age;
+  String _email;
+  String _password;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -34,6 +39,11 @@ class _ListState extends State<List> {
               }
               return null;
             },
+            onChanged: (value){
+              setState(() {
+                _name = value;
+              });
+            },
           ),
           SizedBox(height: 10.0),
           Text('Age:',
@@ -51,6 +61,11 @@ class _ListState extends State<List> {
               }
               return null;
             },
+            onChanged: (value){
+              setState(() {
+                _age = value;
+              });
+            },
           ),
           SizedBox(
             height: 10.0,
@@ -61,6 +76,7 @@ class _ListState extends State<List> {
                   fontFamily: 'Montserrat',
                   fontSize: 25.0)),
           TextFormField(
+            keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
               icon: Icon(Icons.email),
               hintText: 'Enter your e-Mail',
@@ -72,6 +88,11 @@ class _ListState extends State<List> {
               }
               return null;
             },
+            onChanged: (value){
+              setState(() {
+                _email = value;
+              });
+            },
           ),
           SizedBox(
             height: 10.0,
@@ -82,6 +103,7 @@ class _ListState extends State<List> {
                   fontFamily: 'Montserrat',
                   fontSize: 25.0)),
           TextFormField(
+            obscureText: true,
             decoration: const InputDecoration(
               icon: Icon(Icons.lock),
               hintText: 'Enter your Password',
@@ -93,6 +115,11 @@ class _ListState extends State<List> {
               }
               return null;
             },
+            onChanged: (value){
+              setState(() {
+                _password = value;
+              });
+            },
           ),
           SizedBox(
             height: 10.0,
@@ -103,6 +130,7 @@ class _ListState extends State<List> {
                   fontFamily: 'Montserrat',
                   fontSize: 25.0)),
           TextFormField(
+            obscureText: true,
             decoration: const InputDecoration(
               icon: Icon(Icons.lock),
               hintText: 'Enter your Password',
@@ -129,6 +157,7 @@ class _ListState extends State<List> {
                   if (_formKey.currentState.validate()) {
                     // Process data.
                   }
+//                  _create();
                 },
                 child: Text(
                   '  Create Profile  ',
@@ -147,3 +176,12 @@ class _ListState extends State<List> {
     );
   }
 } // TODO Implement this library.
+/*
+_create() async {
+  final prefs = await SharedPreferences.getInstance();
+  final key = 'my_int_key';
+  final value = 42;
+  prefs.setString(key);
+  print('saved $value');
+}
+}*/

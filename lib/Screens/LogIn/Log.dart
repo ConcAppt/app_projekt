@@ -18,31 +18,13 @@ class _LogListState extends State<LogList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('Name:',
-              style: TextStyle(
-                  color: Colors.lightGreen[700],
-                  fontFamily: 'Montserrat',
-                  fontSize: 25.0)),
-          TextFormField(
-            decoration: const InputDecoration(
-              icon: Icon(Icons.person),
-              hintText: 'Enter your name',
-            ),
-            style: TextStyle(fontSize: 20.0),
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter your name';
-              }
-              return null;
-            },
-          ),
-          SizedBox(height: 10.0),
           Text('e-Mail:',
               style: TextStyle(
                   color: Colors.lightGreen[700],
                   fontFamily: 'Montserrat',
                   fontSize: 25.0)),
           TextFormField(
+            keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
               icon: Icon(Icons.email),
               hintText: 'Enter your e-Mail',
@@ -51,6 +33,28 @@ class _LogListState extends State<LogList> {
             validator: (value) {
               if (value.isEmpty) {
                 return 'Please enter your e-Mail';
+              }
+              return null;
+            },
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          Text('Password:',
+              style: TextStyle(
+                  color: Colors.lightGreen[700],
+                  fontFamily: 'Montserrat',
+                  fontSize: 25.0)),
+          TextFormField(
+            obscureText: true,
+            decoration: const InputDecoration(
+              icon: Icon(Icons.lock),
+              hintText: 'Enter your password',
+            ),
+            style: TextStyle(fontSize: 20.0),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter your password';
               }
               return null;
             },
