@@ -36,18 +36,18 @@ class _ListState extends State<List> {
             },
           ),
           SizedBox(height: 10.0),
-          Text('Age:',
+          Text('Year of Birth:',
               style: TextStyle(
                   color: Colors.lightGreen[700],
                   fontFamily: 'Montserrat',
                   fontSize: 25.0)),
           TextFormField(
             decoration: const InputDecoration(
-                icon: Icon(Icons.cake), hintText: 'Enter your age'),
+                icon: Icon(Icons.cake), hintText: 'Enter your birthyear'),
             style: TextStyle(fontSize: 20.0),
             validator: (value) {
               if (value.isEmpty) {
-                return 'Please enter your age';
+                return 'Please enter your birthyear';
               }
               return null;
             },
