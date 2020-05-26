@@ -130,6 +130,25 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
       ),
     );
   }
+/*int currentPage=0;
+  Stack _buildSlideDots() {
+    Stack(
+      alignment: AlignmentDirectional.topStart,
+      children: <Widget>[
+        Container(
+          margin: const EdgeInsets.only(bottom: 35),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              for (int i = 0; i < questionsList.length; i++)
+                if (i == currentPage) SlideDots(true) else SlideDots(false)
+            ],
+          ),
+        ),
+      ],
+    );
+  }*/
 
   Stack _buildInterestsContent() {
     return Stack(
@@ -140,7 +159,7 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
   }
 
   List ratingList = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  PageController pageController = PageController();
+  PageController pageController = PageController(initialPage: 0);
 
   Container _buildInterestsPageView() {
     return Container(
@@ -168,15 +187,17 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
   }
 
   ListWheelScrollView _buildListWheel(QuestionModel data) {
-    return ListWheelScrollView(itemExtent: 50, squeeze: 0.7, clipToSize: false, children: [
+    return ListWheelScrollView(itemExtent: 100, squeeze: 0.9, clipToSize: false, children: [
       Container(
-        child: Text(
-          data.zeroCase,
-          style: TextStyle(
-            color: Colors.green,
-            fontFamily: 'Montserrat',
-            fontSize: 20.0,
-            letterSpacing: 2,
+        child: Center(
+          child: Text(
+            data.zeroCase,
+            style: TextStyle(
+              color: Colors.green,
+              fontFamily: 'Montserrat',
+              fontSize: 20.0,
+              letterSpacing: 2,
+            ),
           ),
         ),
       ),
@@ -192,6 +213,7 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
         ),
       ),
       Container(
+        height: 20,
         child: Text(
           data.twoCase,
           style: TextStyle(
@@ -203,6 +225,7 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
         ),
       ),
       Container(
+        height: 20,
         child: Text(
           '3',
           style: TextStyle(
@@ -214,29 +237,37 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
         ),
       ),
       Container(
-        child: Text(
-          data.fourCase,
-          //overflow: TextOverflow.visible,
-          style: TextStyle(
-            color: Colors.amber,
-            fontFamily: 'Montserrat',
-            fontSize: 20.0,
-            letterSpacing: 2,
+        width: MediaQuery.of(context).size.width,
+        height: 20,
+        child: Center(
+          child: Text(
+            data.fourCase,
+            //overflow: TextOverflow.visible,
+            style: TextStyle(
+              color: Colors.amber,
+              fontFamily: 'Montserrat',
+              fontSize: 20.0,
+              letterSpacing: 2,
+            ),
           ),
         ),
       ),
       Container(
-        child: Text(
-          '5',
-          style: TextStyle(
-            color: Colors.orange,
-            fontFamily: 'Montserrat',
-            fontSize: 20.0,
-            letterSpacing: 2,
+        height: 20,
+        child: Center(
+          child: Text(
+            '5',
+            style: TextStyle(
+              color: Colors.orange,
+              fontFamily: 'Montserrat',
+              fontSize: 20.0,
+              letterSpacing: 2,
+            ),
           ),
         ),
       ),
       Container(
+        height: 20,
         child: Text(
           data.sixCase,
           style: TextStyle(
@@ -474,3 +505,23 @@ class _InterestsModelState extends State<InterestsModel> {
     return Container();
   }
 }*/
+
+class SlideDots extends StatelessWidget {
+  bool isActive;
+
+  SlideDots(this.isActive);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 150),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      height: isActive ? 12 : 8,
+      width: isActive ? 12 : 8,
+      decoration: BoxDecoration(
+        color: isActive ? Theme.of(context).primaryColor : Colors.grey,
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
+    );
+  }
+}
