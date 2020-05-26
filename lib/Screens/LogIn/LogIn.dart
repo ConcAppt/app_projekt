@@ -19,18 +19,15 @@ class LogIn extends StatelessWidget {
         ),*/
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(50.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  child: LogList()
-                ),
-            ],
-          ),
-          ),
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(50.0),
+            child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: LogList()
+              ),
+            ),
+        ),
       ),
     );
   }
