@@ -25,6 +25,7 @@ class LogIn extends StatelessWidget {
             child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
                 child: LogList()
+                //lul
               ),
             ),
         ),
