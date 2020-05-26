@@ -82,6 +82,7 @@ class _ListState extends State<List> {
                   fontFamily: 'Montserrat',
                   fontSize: 25.0)),
           TextFormField(
+            obscureText: true,
             decoration: const InputDecoration(
               icon: Icon(Icons.lock),
               hintText: 'Enter your Password',
@@ -103,6 +104,7 @@ class _ListState extends State<List> {
                   fontFamily: 'Montserrat',
                   fontSize: 25.0)),
           TextFormField(
+            obscureText: true,
             decoration: const InputDecoration(
               icon: Icon(Icons.lock),
               hintText: 'Enter your Password',
