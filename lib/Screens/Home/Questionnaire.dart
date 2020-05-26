@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../Overview.dart';
-import 'QuestionsWheel.dart';
+import 'PageViewUpdate.dart';
 
-enum Department { treasury, state }
+enum Department { back, start }
 
 class Questionnaire extends StatefulWidget {
   Questionnaire({Key key, this.questionnaireNumber}) : super(key: key);
@@ -61,7 +61,7 @@ class _QuestionnaireState extends State<Questionnaire> {
                             ),
                             child: SimpleDialogOption(
                               onPressed: () {
-                                Navigator.pop(context, Department.treasury);
+                                Navigator.pop(context, Department.back);
                               },
                               child: const Text('Back'),
                             ),
@@ -73,7 +73,7 @@ class _QuestionnaireState extends State<Questionnaire> {
                             ),
                             child: SimpleDialogOption(
                               onPressed: () {
-                                Navigator.pop(context, Department.state);
+                                Navigator.pop(context, Department.start);
                               },
                               child: const Text('Start'),
                             ),
@@ -88,11 +88,15 @@ class _QuestionnaireState extends State<Questionnaire> {
                         borderRadius: BorderRadius.circular(10)),
                   );
                 })) {
-              case Department.treasury:
+              case Department.back:
                 //....
                 break;
-              case Department.state:
-                QuestionWheel();
+              case Department.start:
+                print('start gedrückt');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => BuildMyQuestionnaire()),
+                );
                 break;
             }
           }
