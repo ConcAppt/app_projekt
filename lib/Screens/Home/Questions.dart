@@ -74,6 +74,8 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
         'Explicit plans for suicide when there is an opportunity. Active preparation for suicide.'),
   ];
 
+  //List erqQuestions = [QuestionModel('', description, 'strongly disagree', 'strongly agree')];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

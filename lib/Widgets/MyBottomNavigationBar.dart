@@ -5,7 +5,8 @@ import '../Screens/Profile/ProfilePage.dart';
 import '../Screens/Settings/SettingsPage.dart';
 import '../Screens/Home/QuestionsWheel.dart';
 import '../Screens/Start/Start.dart';
-import '../Screens/Home/PageViewUpdate.dart';
+//import '../Screens/Home/PageViewUpdate.dart';
+import '../Screens/Home/SwipingQuestions.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   @override
@@ -16,11 +17,10 @@ class _HomeState extends State<MyBottomNavigationBar> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     HomePage(),
-    BuildMyQuestionnaire(),
-    //EvaluationPage(),
+    EvaluationPage(),
     Start(),
     //ProfilePage(),
-    QuestionWheel(),
+    BuildMyQuestionnaire(),
     //SettingsPage(),
   ];
 

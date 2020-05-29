@@ -9,6 +9,10 @@ class BuildMyQuestionnaire extends StatefulWidget {
 class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
   int _currentPage = 0;
   final PageController _pageController = PageController(initialPage: 0);
+  static const _kDuration = const Duration(milliseconds: 300);
+  static const _kCurve = Curves.ease;
+  var myFeedbackText = 'neutral';
+  var sliderValue = 4.0;
   @override
   void dispose() {
     super.dispose();
@@ -21,103 +25,27 @@ class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
     });
   }
 
-  List questionsList = [
-    QuestionModel(
-        'Apparent Sadness',
-        'Representing despondency, gloom and despair, (more than just ordinary transient low spirits) reflected in speech, facial expression, and posture.',
-        '0 No sadness',
-        '2 Looks dispirited but does brighten up without difficulty',
-        '4 Appears sad and unhappy most of the time.',
-        '6 Looks miserable all the time. Extremely despondent.'),
-    QuestionModel(
-        'Reported sadness',
-        'Representing reports of depressed mood, regardless of whether it is reflected in appearance  or not. Includes low spirits, despondency or the feeling of being beyond help and without hope.',
-        '0 Occasional sadness in keeping with the circumstances.',
-        '2 Sad or low but brightens up without difficulty.',
-        '4 Pervasive feelings of sadness or gloominess. The mood is still influenced by external circumstances.',
-        '6 Continuous or unvarying sadness, misery or despondency.'),
-    QuestionModel(
-        'Inner tension',
-        'Representing feelings of ill-defined discomfort, edginess, inner turmoil, mental tension mounting to either panic, dread or anguish.',
-        '0 Placid. Only fleeting inner tension.',
-        '2 Occasional feelings of edginess and ill defined discomfort',
-        '4 Continuous feelings of inner tension or intermittent panic which the patient can only '
-            'master with some difficulty.',
-        '6 Unrelenting dread or anguish. Overwhelming panic'),
-    QuestionModel(
-        'Reduced sleep',
-        'Representing the experience of reduced duration or depth of sleep compared to the subject\'s own normal pattern when well.',
-        '0 Sleeps as usual.',
-        '2 Slight difficulty dropping off to sleep or slightly reduced, light or fitful sleep.',
-        '4 Sleep reduced or broken by at least two hours.',
-        '6 Less than two or three hours sleep'),
-    QuestionModel(
-        'Reduced appetite',
-        'Representing the feeling of a loss of appetite compared with when well.',
-        '0 Normal or increased appetite.',
-        '2 Slightly reduced appetite.',
-        '4 No appetite. Food is tasteless.',
-        '6 Needs persuasion to eat at all.'),
-    QuestionModel(
-        'Concentration Difficulties',
-        'Representing difficulties in collecting one\'s thoughts mounting to incapacitating lack of concentration. Rate according to intensity, frequency, and degree of incapacity produced.',
-        '0 No difficulties in concentrating.',
-        '2 Occasional difficulties in collecting one\'s thoughts.',
-        '4 Difficulties in concentrating and sustaining thought which reduces ability to read or '
-            'hold a conversation.',
-        '6 Unable to read or converse without great difficulty.'),
-    QuestionModel(
-        'Lassitude',
-        'Representing a difficulty getting started or slowness initiating and performing everyday activities.',
-        '0 Hardly any difficulty in getting started. No sluggishness.',
-        '2 Difficulties in starting activities.',
-        '4 Difficulties in starting simple routine activities which are carried out with effort.',
-        '6 Complete lassitude. Unable to do anything without help.'),
-    QuestionModel(
-        'Inability to feel',
-        'Representing the subjective experience of reduced interest in the surroundings, or activities that normally give pleasure. The ability to react with adequate emotion to circumstances or people is reduced.',
-        '0 Normal interest in the surroundings and in other people',
-        '2 Reduced ability to enjoy usual interests.',
-        '4 Loss of interest in the surroundings. Loss of feelings or friends and acquaintances.',
-        '6 The experience of being emotionally paralysed, inability to feel anger, grief or '
-            'pleasure and a complete or even painful failure to feel for close relatives and friends.'),
-    QuestionModel(
-        'Pessimistic thoughts',
-        'Representing thoughts of guilt, inferiority, self-reproach, sinfulness, remorse and ruin.',
-        '0 No pessimistic thoughts.',
-        '2 Fluctuating ideas of failure, self-reproach or self depreciation.',
-        '4 Persistent self-accusations, or definite but still rational ideas of guilt or sin. '
-            'Increasingly pessimistic about the future.',
-        '6 Delusions of ruin, remorse or unredeemable sin. Self-accusations which are absurd and '
-            'unshakable.'),
-    QuestionModel(
-        'Suicidal thoughts',
-        'Representing the feeling that life is not worth living, that a natural death would be welcome, suicidal thoughts, and preparations for suicide.',
-        '0 Enjoys life or takes it as it comes.',
-        '2 Weary of life. Only fleeting suicidal thoughts.',
-        '4 Probably better off dead. Suicidal thoughts are common, and suicide is considered as a'
-            ' possible solution, but without specific plans or intention.',
-        '6 Explicit plans for suicide when there is an opportunity. Active preparation for suicide'
-            '.'),
-  ];
-
   List erqQuestions = [
-    QuestionModel(
-        '',
-        'When I want to feel more positive emotion (such as joy or amusement), I change what I’m thinking about.',
-        'strongly diasagree',
-        '',
-        'neutral',
-        'strongly agree'),
-    QuestionModel('', ' I keep my emotions to myself.', 'strongly diasagree', '', 'neutral',
-        'strongly agree'),
-    QuestionModel(
-        '',
-        'When I want to feel more positive emotion (such as joy or amusement), I change what I’m thinking about.',
-        'strongly diasagree',
-        '',
-        'neutral',
-        'strongly agree')
+    QuestionModelScale(
+        'Question 1',
+        'When I want to feel more positive emotion (such as joy or amusement), I change what I’m '
+            'thinking about.'),
+    QuestionModelScale('Question 2', 'I keep my emotions to myself.'),
+    QuestionModelScale('Question 3',
+        'When I want to feel less negative emotion (such as sadness or anger), I change what I’m thinking about.'),
+    QuestionModelScale(
+        'Question 4', 'When I am feeling positive emotions, I am careful not to express them. '),
+    QuestionModelScale('Question 5',
+        'When I’m faced with a stressful situation, I make myself think about it  in a way that helps me stay calm.'),
+    QuestionModelScale('Question 6', 'I control my emotions by not expressing them.'),
+    QuestionModelScale('Question 7',
+        'When I want to feel more positive emotion, I change the way I’m thinking about the situation.'),
+    QuestionModelScale('Question 8',
+        'I control my emotions by changing the way I think about the situation I’m in.'),
+    QuestionModelScale(
+        'Question 9', 'When I am feeling negative emotions, I make sure not to express them.'),
+    QuestionModelScale('Question 10',
+        'When I want to feel less negative emotion, I change the way I’m thinking about the situation.'),
   ];
   @override
   Widget build(BuildContext context) {
@@ -153,28 +81,43 @@ class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            for (int i = 0; i < questionsList.length; i++)
+                            for (int i = 0; i < erqQuestions.length; i++)
                               if (i == _currentPage) SlideDots(true) else SlideDots(false)
                           ],
                         ),
                       )
                     ]),
                     PageView.builder(
+                        physics: new NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         controller: _pageController,
                         onPageChanged: _onPageChanged,
-                        itemCount: questionsList.length,
+                        itemCount: erqQuestions.length,
                         itemBuilder: (ctx, i) {
                           return Container(
                             margin: const EdgeInsets.only(top: 0.0),
                             child: Column(
                               children: <Widget>[
-                                Expanded(child: _buildDescriptionItem(questionsList[i])),
-                                Flexible(
-                                    child: Padding(
-                                  padding: const EdgeInsets.only(left: 20.0, right: 10.0),
-                                  child: _buildListWheel(questionsList[i]),
-                                )),
+                                Expanded(child: _buildDescriptionItem(erqQuestions[i])),
+                                Expanded(child: _buildSlider(erqQuestions[i])),
+                                Container(
+                                  child: FloatingActionButton.extended(
+                                      icon: Icon(Icons.navigate_next),
+                                      label: Text('Next'),
+                                      backgroundColor: Colors.lightGreen[700],
+                                      onPressed: () {
+                                        //TODO check Answer
+                                        if (i == erqQuestions.length - 1) {
+                                          _pageController.jumpToPage(0);
+                                        } else {
+                                          _pageController.nextPage(
+                                              duration: Duration(milliseconds: 300),
+                                              curve: Curves.easeIn);
+
+                                          sliderValue = 4;
+                                        }
+                                      }),
+                                )
                               ],
                             ),
                           );
@@ -187,7 +130,7 @@ class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
         )));
   }
 
-  ListWheelScrollView _buildListWheel(QuestionModel data) {
+  /*ListWheelScrollView _buildListWheel(QuestionModelScale data) {
     return ListWheelScrollView(
         itemExtent: 100,
         squeeze: 0.9,
@@ -285,9 +228,81 @@ class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
             ),
           ),
         ]);
+  }*/
+
+  Container _buildSlider(QuestionModelScale data) {
+    return Container(
+        child: Align(
+            child: Container(
+                width: 350.0,
+                height: 400.0,
+                child: Column(children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Container(
+                        child: Text(
+                      myFeedbackText,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Montserrat',
+                        fontSize: 25.0,
+                        // letterSpacing: 2,
+                      ),
+                    )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      child: Slider(
+                        min: 1.0,
+                        max: 7.0,
+                        divisions: 6,
+                        value: sliderValue,
+                        activeColor: Colors.lightGreen[700],
+                        inactiveColor: Colors.grey,
+                        onChanged: (newValue) {
+                          setState(() {
+                            sliderValue = newValue;
+                            if (sliderValue >= 1.0 && sliderValue < 2.0) {
+                              myFeedbackText = "strongly disagree";
+                            }
+                            if (sliderValue >= 2.0 && sliderValue < 3.0) {
+                              myFeedbackText = "disagree";
+                            }
+                            if (sliderValue >= 3.0 && sliderValue <= 4.0) {
+                              myFeedbackText = "neutral";
+                            }
+                            if (sliderValue >= 4.1 && sliderValue <= 5.0) {
+                              myFeedbackText = "neutral";
+                            }
+                            if (sliderValue >= 5.1 && sliderValue <= 6.0) {
+                              myFeedbackText = "agree";
+                            }
+                            if (sliderValue >= 6.1 && sliderValue <= 7.0) {
+                              myFeedbackText = "strongly agree";
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Container(
+                        child: Text(
+                      "Your Rating: $sliderValue",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Montserrat',
+                          fontSize: 25.0,
+                          letterSpacing: 2,
+                          fontWeight: FontWeight.bold),
+                    )),
+                  ),
+                ]))));
   }
 
-  Container _buildDescriptionItem(QuestionModel data) {
+  Container _buildDescriptionItem(QuestionModelScale data) {
     return Container(
       height: 10,
       padding: EdgeInsets.all(20.0),
@@ -317,16 +332,11 @@ class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
   }
 }
 
-class QuestionModel {
+class QuestionModelScale {
   String title;
   String description;
-  String zeroCase;
-  String twoCase;
-  String fourCase;
-  String sixCase;
 
-  QuestionModel(
-      this.title, this.description, this.zeroCase, this.twoCase, this.fourCase, this.sixCase);
+  QuestionModelScale(this.title, this.description);
 }
 
 class SlideDots extends StatelessWidget {
