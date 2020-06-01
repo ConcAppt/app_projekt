@@ -8,8 +8,8 @@ class ProfilePage extends StatefulWidget {
 class _EvaluationPageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
+    return Scaffold(
+      body: Center(
         child: Text('ProfilePage'),
       ),
     );

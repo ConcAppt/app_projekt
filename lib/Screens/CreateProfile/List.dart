@@ -1,5 +1,7 @@
+import 'package:appprojekt/Screens/Profile/ProfilePage.dart';
+import 'package:appprojekt/utils/Database.dart';
 import 'package:flutter/material.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
+import 'package:appprojekt/models/user.dart';
 
 class List extends StatefulWidget {
   List({Key key}) : super(key: key);
@@ -46,18 +48,19 @@ class _ListState extends State<List> {
             },
           ),
           SizedBox(height: 10.0),
-          Text('Year of Birth:',
+          Text('Age:',
               style: TextStyle(
                   color: Colors.lightGreen[700],
                   fontFamily: 'Montserrat',
                   fontSize: 25.0)),
           TextFormField(
+            keyboardType: TextInputType.number,
             decoration: const InputDecoration(
-                icon: Icon(Icons.cake), hintText: 'Enter your birthyear'),
+                icon: Icon(Icons.cake), hintText: 'Enter your age'),
             style: TextStyle(fontSize: 20.0),
             validator: (value) {
               if (value.isEmpty) {
-                return 'Please enter your birthyear';
+                return 'Please enter your age';
               }
               return null;
             },
@@ -155,8 +158,14 @@ class _ListState extends State<List> {
                   // Validate will return true if the form is valid, or false if
                   // the form is invalid.
                   if (_formKey.currentState.validate()) {
-                    // Process data.
+                    // Process data
                   }
+                  var newDBUser = User(name: _name, age: _age, email: _email, password: _password);
+                  DBProvider.db.newUser(newDBUser);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  );
 //                  _create();
                 },
                 child: Text(
