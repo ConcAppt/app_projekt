@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "975853780402",
+    "firebase_url": "https://appprojektovgu.firebaseio.com",
+    "project_id": "appprojektovgu",
+    "storage_bucket": "appprojektovgu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:975853780402:android:a2d2346d7e9d8a616338ab",
+        "android_client_info": {
+          "package_name": "com.example.appprojekt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "975853780402-jbve362fke88m4ob1j4au6v6codm1jdm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAQUfGBtHOljOiVqfS-1Z8iQFivUjAv3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "975853780402-jbve362fke88m4ob1j4au6v6codm1jdm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
