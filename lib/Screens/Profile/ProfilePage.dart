@@ -20,7 +20,7 @@ class _EvaluationPageState extends State<ProfilePage> {
     final _userData = await DBProvider.db.getUser();
     return _userData;
   }
-//
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
