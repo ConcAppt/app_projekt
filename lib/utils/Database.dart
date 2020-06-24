@@ -44,7 +44,7 @@ class DBProvider {
 
   Future<dynamic> getUser() async {
     final db = await database;
-    var res = await db.query("user");
+    var res = await db.query("users");
     if(res.length == 0) {
       return null;
     }else{

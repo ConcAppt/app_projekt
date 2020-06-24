@@ -16,7 +16,7 @@ enum Department{ back }
 
 class _ListState extends State<List> {
   String _name;
-  String _age;
+  int _age;
   String _email;
   String _password;
   String _confirmpassword;
@@ -105,7 +105,7 @@ class _ListState extends State<List> {
               },
               onChanged: (value){
                 setState(() {
-                  _age = value;
+                  _age = int.tryParse(value);
                 });
               },
             ),
@@ -212,7 +212,6 @@ class _ListState extends State<List> {
                           context,
                           MaterialPageRoute(builder: (context) => ProfilePage()),
                         );
-                        print(newDBUser);
                       }
                       if (true && (_password != _confirmpassword)){
                         openDialog();
