@@ -6,7 +6,7 @@ String userToJson(User data) => json.encode(data.toJson());
 
 class User {
   String name;
-  String age;
+  int age;
   String email;
   String password;
 
