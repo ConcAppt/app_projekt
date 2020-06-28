@@ -1,9 +1,9 @@
 import 'package:appprojekt/Screens/Profile/ProfilePage.dart';
-import 'package:appprojekt/utils/Database.dart';
+import 'file:///C:/Users/olivi/StudioProjects/app_projekt/lib/data/Database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:appprojekt/models/user.dart';
-import 'package:appprojekt/Screens/CreateProfile/Error.dart';
+//import 'package:appprojekt/Screens/CreateProfile/Error.dart';
 
 class List extends StatefulWidget {
   List({Key key}) : super(key: key);
@@ -50,7 +50,6 @@ class _ListState extends State<List> {
           );
         })) {
       case Department.back:
-        print("klappt");
       //....
         break;
     }
@@ -210,7 +209,7 @@ class _ListState extends State<List> {
                         DBProvider.db.newUser(newDBUser);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ProfilePage()),
+                          MaterialPageRoute(builder: (context) => ProfilePage(user: newDBUser)),
                         );
                       }
                       if (true && (_password != _confirmpassword)){

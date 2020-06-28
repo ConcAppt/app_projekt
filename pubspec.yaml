@@ -12,7 +12,9 @@ dependencies:
     sdk: flutter
   email_validator: '^1.0.0'
   sqflite:
-  shared_preferences: ^0.4.3
+  path_provider: ^1.6.5
+  shared_preferences: ^0.5.6+3
+  http: any
 
   cupertino_icons: ^0.1.2
 
