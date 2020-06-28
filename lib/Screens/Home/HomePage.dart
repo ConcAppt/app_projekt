@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Questionnaire.dart';
+import '../Questions/Questionnaire.dart';
 import '../../Widgets/MyBottomNavigationBar.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,15 +17,23 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(10),
-            child: Text(
-                'Hello X!',
-                style: TextStyle(fontSize: 30, fontFamily: 'Montserrat', fontWeight: FontWeight.w600, color: Colors.lightGreen[700], letterSpacing: 2)),
+            child: Text('Hello X!',
+                style: TextStyle(
+                    fontSize: 30,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.lightGreen[700],
+                    letterSpacing: 2)),
           ),
           Container(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-            child: Text(
-                'Please choose a questionaire to start.',
-                style: TextStyle(fontSize: 23, fontFamily: 'Montserrat', fontWeight: FontWeight.w600, color: Colors.black87, letterSpacing: 2)),
+            child: Text('Please choose a questionnaire to start.',
+                style: TextStyle(
+                    fontSize: 23,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                    letterSpacing: 2)),
           ),
           Expanded(
             child: ListView.separated(
@@ -34,8 +42,7 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (BuildContext context, int index) {
                 return Questionnaire(questionnaireNumber: index);
               },
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
+              separatorBuilder: (BuildContext context, int index) => const Divider(),
             ),
           ),
         ],

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../Screens/Evaluation/EvaluationPage.dart';
 import '../Screens/Profile/ProfilePage.dart';
 import '../Screens/Settings/SettingsPage.dart';
-import '../Screens/Home/QuestionsWheel.dart';
+import '../Screens/Questions/QuestionsWheel.dart';
 import '../Screens/Start/Start.dart';
 //import '../Screens/Home/PageViewUpdate.dart';
-import '../Screens/Home/SwipingQuestions.dart';
+import '../Screens/Questions/SwipingQuestionsFirebase.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   @override
