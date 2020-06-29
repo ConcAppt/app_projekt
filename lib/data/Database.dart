@@ -2,10 +2,13 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:path/path.dart';
 import 'package:appprojekt/models/user.dart';
+import 'dart:async';
+import 'dart:io' as io;
 
 class DBProvider {
   DBProvider._();
   static final DBProvider db = DBProvider._();
+  factory DBProvider() => db;
   static Database _database;
 
   Future<Database> get database async {
@@ -22,11 +25,11 @@ class DBProvider {
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE users (
-            name TEXT, age VALUE, email TEXT PRIMARY KEY, password TEXT
+            name TEXT, age INTEGER, email TEXT PRIMARY KEY, password TEXT
           )
         ''');
       },
-      version: 1
+      version: 2
     );
   }
 
@@ -42,14 +45,34 @@ class DBProvider {
     return res;
   }
 
-  Future<dynamic> getUser() async {
+  /*Future<dynamic> getUser() async {
     final db = await database;
-    var res = await db.query("users");
-    if(res.length == 0) {
-      return null;
-    }else{
-      var resMap = res[0];
-      return resMap.isNotEmpty ? resMap : Null;
-    }
+    String sqfl = "SELECT TOP 1 * FROM user";
+    var res = await db.rawQuery(sqfl);
+    if(res.length == 0) return null;
+
+    return User.fromJson(res.first);
+  }*/
+
+  Future<User> loginUser(String email, String password) async{
+    var db = await database;
+    String sql = "SELECT * FROM user WHERE email = $email AND password = $password";
+    var result = await db.rawQuery(sql);
+    if (result.length == 0) return null;
+    
+    return User.fromJson(result.first);
+
   }
+
+  Future<int> deleteUsers() async {
+    var db = await database;
+    int res = await db.delete("users");
+    return res;
+  }
+
+/*  Future<bool> isLoggedIn() async {
+    var dbClient = await database;
+    var res = await dbClient.query("users");
+    return res.length > 0? true: false;
+  }       gleich wie getUser()*/
 }
