@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class BuildMyQuestionnaire extends StatefulWidget {
+class BuildSwipingQuestionnaire extends StatefulWidget {
+  BuildSwipingQuestionnaire({Key key, this.name}) : super(key: key);
+  final name;
   @override
-  _BuildMyQuestionnaireState createState() => _BuildMyQuestionnaireState();
+  _BuildSwipingQuestionnaireState createState() => _BuildSwipingQuestionnaireState();
 }
 
-class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
+class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
   int _currentPage = 0;
+
   final PageController _pageController = PageController(initialPage: 0);
-  static const _kDuration = const Duration(milliseconds: 300);
-  static const _kCurve = Curves.ease;
   var myFeedbackText = 'neutral';
   var sliderValue = 4.0;
   @override
@@ -26,51 +27,30 @@ class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
     });
   }
 
-  /*List erqQuestions = [
-    QuestionModelScale(
-        'Question 1',
-        'When I want to feel more positive emotion (such as joy or amusement), I change what I’m '
-            'thinking about.'),
-    QuestionModelScale('Question 2', 'I keep my emotions to myself.'),
-    QuestionModelScale('Question 3',
-        'When I want to feel less negative emotion (such as sadness or anger), I change what I’m thinking about.'),
-    QuestionModelScale(
-        'Question 4', 'When I am feeling positive emotions, I am careful not to express them. '),
-    QuestionModelScale('Question 5',
-        'When I’m faced with a stressful situation, I make myself think about it  in a way that helps me stay calm.'),
-    QuestionModelScale('Question 6', 'I control my emotions by not expressing them.'),
-    QuestionModelScale('Question 7',
-        'When I want to feel more positive emotion, I change the way I’m thinking about the situation.'),
-    QuestionModelScale('Question 8',
-        'I control my emotions by changing the way I think about the situation I’m in.'),
-    QuestionModelScale(
-        'Question 9', 'When I am feeling negative emotions, I make sure not to express them.'),
-    QuestionModelScale('Question 10',
-        'When I want to feel less negative emotion, I change the way I’m thinking about the situation.'),
-  ];*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Colors.lightGreen, //change your color here
+          ),
           backgroundColor: Colors.white,
-          title: Center(
-            child: Text(
-              "MADSR".toUpperCase(),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 25,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w600,
-                  color: Colors.lightGreen[700],
-                  letterSpacing: 2),
-            ),
+          centerTitle: true,
+          title: Text(
+            widget.name.toUpperCase(),
+            // textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 25,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w600,
+                color: Colors.lightGreen[700],
+                letterSpacing: 2),
           ),
         ),
         body: StreamBuilder(
             stream: Firestore.instance
                 .collection('SwipingQuestions')
-                .document('ERQ')
+                .document(widget.name)
                 .collection("Questions")
                 .snapshots(),
             builder: (context, snapshot) {

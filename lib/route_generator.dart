@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/olivi/StudioProjects/app_projekt/lib/utils/main.dart';
+//import 'file:///C:/Users/olivi/StudioProjects/app_projekt/lib/utils/main.dart';
 /*
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

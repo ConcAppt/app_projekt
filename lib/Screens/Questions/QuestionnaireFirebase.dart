@@ -5,41 +5,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum Department { back, start }
 
-class Questionnaire extends StatefulWidget {
-  Questionnaire({Key key, this.questionnaireNumber}) : super(key: key);
-
-  final questionnaireNumber;
-  final List<Overview> overviewBank = [
-    Overview(
-        questionnaireName: 'MADSR',
-        questionnaireDescription: 'Evaluating the severity of depression.',
-        questionnaireUmfang: 'Length: 10 Questions'),
-    Overview(
-        questionnaireName: 'ERQ',
-        questionnaireDescription: 'Examination of emotion regulation processes',
-        questionnaireUmfang: 'Length: 10 Questions'),
-    Overview(
-        questionnaireName: 'Test1',
-        questionnaireDescription: '-',
-        questionnaireUmfang: 'Length: x Questions'),
-    Overview(
-        questionnaireName: 'Test2',
-        questionnaireDescription: '-',
-        questionnaireUmfang: 'Length: x Questions'),
-    Overview(
-        questionnaireName: 'Test3',
-        questionnaireDescription: '-',
-        questionnaireUmfang: 'Length: x Questions'),
-    Overview(
-        questionnaireName: 'Test4',
-        questionnaireDescription: '-',
-        questionnaireUmfang: 'Length: x Questions'),
-  ];
+class BuildOverview extends StatefulWidget {
+  BuildOverview({Key key, this.index, this.document}) : super(key: key);
+  final document;
+  final index;
   @override
-  _QuestionnaireState createState() => _QuestionnaireState();
+  _BuildOverviewState createState() => _BuildOverviewState();
 }
 
-class _QuestionnaireState extends State<Questionnaire> {
+class _BuildOverviewState extends State<BuildOverview> {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -119,7 +93,7 @@ class _QuestionnaireState extends State<Questionnaire> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                widget.overviewBank[widget.questionnaireNumber].name,
+                widget.document['questionnaireName'],
                 style: TextStyle(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
@@ -128,17 +102,17 @@ class _QuestionnaireState extends State<Questionnaire> {
               ),
               Spacer(flex: 8),
               Text(
-                widget.overviewBank[widget.questionnaireNumber].description,
+                widget.document['questionnaireDescription'],
                 style: TextStyle(
                     color: Colors.black87,
-                    fontFamily: 'Monterrat',
+                    fontFamily: 'Montserrat',
                     letterSpacing: 1.5,
                     fontWeight: FontWeight.w400,
                     fontSize: 15),
               ),
               Spacer(flex: 8),
               Text(
-                widget.overviewBank[widget.questionnaireNumber].umfang,
+                widget.document['questionnaireScope'],
                 style: TextStyle(
                     color: Colors.black87, fontFamily: 'Montserrat', fontWeight: FontWeight.w500),
               )

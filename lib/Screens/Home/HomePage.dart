@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../Questions/Questionnaire.dart';
+import '../Questions/QuestionnaireFirebase.dart';
 import '../../Widgets/MyBottomNavigationBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -36,39 +38,22 @@ class _HomePageState extends State<HomePage> {
                     letterSpacing: 2)),
           ),
           Expanded(
-            child: ListView.separated(
-              padding: const EdgeInsets.all(8),
-              itemCount: Questionnaire().overviewBank.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Questionnaire(questionnaireNumber: index);
-              },
-              separatorBuilder: (BuildContext context, int index) => const Divider(),
-            ),
+            child: StreamBuilder(
+                stream: Firestore.instance.collection('overviewBank').snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return const CircularProgressIndicator();
+                  return ListView.separated(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: snapshot.data.documents.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Questionnaire(questionnaireNumber: index);
+                    },
+                    separatorBuilder: (BuildContext context, int index) => const Divider(),
+                  );
+                }),
           ),
         ],
       )),
     );
   }
 }
-
-/*
-
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: ListView.separated(
-          padding: const EdgeInsets.all(8),
-          itemCount: Questionnaire().overviewBank.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Questionnaire(questionnaireNumber: index);
-          },
-          separatorBuilder: (BuildContext context, int index) =>
-          const Divider(),
-        ),
-      ),
-    );
-  }
-}*/

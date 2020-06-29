@@ -1,5 +1,5 @@
 import 'package:appprojekt/Screens/Profile/ProfilePage.dart';
-import 'package:appprojekt/utils/Database.dart';
+import 'package:appprojekt/data/Database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:appprojekt/models/user.dart';

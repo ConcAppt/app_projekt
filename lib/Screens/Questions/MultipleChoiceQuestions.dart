@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,8 +9,6 @@ class BuildMyQuestionnaire extends StatefulWidget {
 class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
   int _currentPage = 0;
   final PageController _pageController = PageController(initialPage: 0);
-  static const _kDuration = const Duration(milliseconds: 300);
-  static const _kCurve = Curves.ease;
   var myFeedbackText = 'neutral';
   var sliderValue = 4.0;
   bool _isSelected = false;
@@ -116,7 +112,7 @@ class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
                             child: Column(
                               children: <Widget>[
                                 Expanded(child: _buildDescriptionItem(emQueQuestions[i])),
-                                Expanded(child: _buildSlider(emQueQuestions[i])),
+                                Expanded(child: _buildCheckBoxList(emQueQuestions[i])),
                                 Container(
                                   child: FloatingActionButton.extended(
                                       icon: Icon(Icons.navigate_next),
