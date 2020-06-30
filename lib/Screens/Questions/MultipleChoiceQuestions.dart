@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+enum answerAlternatives { No, sometimes, often }
+
 class BuildMyQuestionnaire extends StatefulWidget {
   @override
   _BuildMyQuestionnaireState createState() => _BuildMyQuestionnaireState();
@@ -12,6 +14,7 @@ class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
   var myFeedbackText = 'neutral';
   var sliderValue = 4.0;
   bool _isSelected = false;
+  answerAlternatives _alternatives;
   @override
   void dispose() {
     super.dispose();
@@ -127,7 +130,7 @@ class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
                                               duration: Duration(milliseconds: 300),
                                               curve: Curves.easeIn);
 
-                                          sliderValue = 4;
+                                          _alternatives = null;
                                         }
                                       }),
                                 )
@@ -143,194 +146,64 @@ class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
         )));
   }
 
-  /*ListWheelScrollView _buildListWheel(QuestionModelScale data) {
-    return ListWheelScrollView(
-        itemExtent: 100,
-        squeeze: 0.9,
-        //useMagnifier: true,
-        diameterRatio: 6,
-        children: [
-          Container(
-            child: Center(
-              child: Text(
-                data.zeroCase,
-                style: TextStyle(
-                  color: Colors.green,
-                  fontFamily: 'Montserrat',
-                  fontSize: 20.0,
-                  letterSpacing: 2,
-                ),
-              ),
-            ),
-          ),
-          Container(
-            child: Text(
-              '1',
-              style: TextStyle(
-                color: Colors.lightGreen,
-                fontFamily: 'Montserrat',
-                fontSize: 20.0,
-                letterSpacing: 2,
-              ),
-            ),
-          ),
-          Container(
-            height: 20,
-            child: Text(
-              data.twoCase,
-              style: TextStyle(
-                color: Colors.lime,
-                fontFamily: 'Montserrat',
-                fontSize: 20.0,
-                letterSpacing: 2,
-              ),
-            ),
-          ),
-          Container(
-            height: 20,
-            child: Text(
-              '3',
-              style: TextStyle(
-                color: Colors.yellow,
-                fontFamily: 'Montserrat',
-                fontSize: 20.0,
-                letterSpacing: 2,
-              ),
-            ),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: 20,
-            child: Center(
-              child: Text(
-                data.fourCase,
-                //overflow: TextOverflow.visible,
-                style: TextStyle(
-                  color: Colors.amber,
-                  fontFamily: 'Montserrat',
-                  fontSize: 20.0,
-                  letterSpacing: 2,
-                ),
-              ),
-            ),
-          ),
-          Container(
-            height: 20,
-            child: Center(
-              child: Text(
-                '5',
-                style: TextStyle(
-                  color: Colors.orange,
-                  fontFamily: 'Montserrat',
-                  fontSize: 20.0,
-                  letterSpacing: 2,
-                ),
-              ),
-            ),
-          ),
-          Container(
-            height: 20,
-            child: Text(
-              data.sixCase,
-              style: TextStyle(
-                color: Colors.deepOrange,
-                fontFamily: 'Montserrat',
-                fontSize: 20.0,
-                letterSpacing: 2,
-              ),
-            ),
-          ),
-        ]);
-  }*/
-
   Container _buildCheckBoxList(QuestionModelChoice data) {
     return Container(
       child: Column(
         children: <Widget>[
-          CheckboxListTile(
-            title: Text(data.no),
-            value: _isSelected,
-            onChanged: (bool newValue) {
+          RadioListTile<answerAlternatives>(
+            activeColor: Colors.lightGreen[700],
+            title: const Text('Not at all applicable',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Montserrat',
+                  fontSize: 15.0,
+                  letterSpacing: 2,
+                )),
+            value: answerAlternatives.No,
+            groupValue: _alternatives,
+            onChanged: (answerAlternatives value) {
               setState(() {
-                _isSelected = newValue;
+                _alternatives = value;
               });
             },
-          )
+          ),
+          RadioListTile<answerAlternatives>(
+            activeColor: Colors.lightGreen[700],
+            title: const Text('A little or sometimes applicable',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Montserrat',
+                  fontSize: 15.0,
+                  letterSpacing: 2,
+                )),
+            value: answerAlternatives.sometimes,
+            groupValue: _alternatives,
+            onChanged: (answerAlternatives value) {
+              setState(() {
+                _alternatives = value;
+              });
+            },
+          ),
+          RadioListTile<answerAlternatives>(
+            activeColor: Colors.lightGreen[700],
+            title: const Text('Clearly or often applicable',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Montserrat',
+                  fontSize: 15.0,
+                  letterSpacing: 2,
+                )),
+            value: answerAlternatives.often,
+            groupValue: _alternatives,
+            onChanged: (answerAlternatives value) {
+              setState(() {
+                _alternatives = value;
+              });
+            },
+          ),
         ],
       ),
     );
-  }
-
-  Container _buildSlider(QuestionModelChoice data) {
-    return Container(
-        child: Align(
-            child: Container(
-                width: 350.0,
-                height: 400.0,
-                child: Column(children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Container(
-                        child: Text(
-                      myFeedbackText,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Montserrat',
-                        fontSize: 25.0,
-                        // letterSpacing: 2,
-                      ),
-                    )),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      child: Slider(
-                        min: 1.0,
-                        max: 7.0,
-                        divisions: 6,
-                        value: sliderValue,
-                        activeColor: Colors.lightGreen[700],
-                        inactiveColor: Colors.grey,
-                        onChanged: (newValue) {
-                          setState(() {
-                            sliderValue = newValue;
-                            if (sliderValue >= 1.0 && sliderValue <= 2.0) {
-                              myFeedbackText = "strongly disagree";
-                            }
-                            if (sliderValue >= 2.1 && sliderValue <= 3.0) {
-                              myFeedbackText = "disagree";
-                            }
-                            if (sliderValue >= 3.1 && sliderValue <= 4.0) {
-                              myFeedbackText = "neutral";
-                            }
-                            if (sliderValue >= 4.1 && sliderValue <= 5.0) {
-                              myFeedbackText = "neutral";
-                            }
-                            if (sliderValue >= 5.1 && sliderValue <= 6.0) {
-                              myFeedbackText = "agree";
-                            }
-                            if (sliderValue >= 6.1 && sliderValue <= 7.0) {
-                              myFeedbackText = "strongly agree";
-                            }
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Container(
-                        child: Text(
-                      "Your Rating: $sliderValue",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Montserrat',
-                          fontSize: 25.0,
-                          letterSpacing: 2,
-                          fontWeight: FontWeight.bold),
-                    )),
-                  ),
-                ]))));
   }
 
   Container _buildDescriptionItem(QuestionModelChoice data) {

@@ -1,4 +1,5 @@
 import 'package:appprojekt/Screens/Questions/SwipingQuestionsFirebase.dart';
+import 'package:appprojekt/Screens/Questions/MultipleChoiceQuestionsFirebase.dart';
 import 'package:flutter/material.dart';
 import '../Questions/PageViewUpdate.dart';
 import '../Questions/Questionnaire.dart';
@@ -127,7 +128,11 @@ Widget _buildOverview(BuildContext context, DocumentSnapshot document) {
                     context, MaterialPageRoute(builder: (context) => BuildMyQuestionnaire()));
               } else if (document['type'] == 'MultipleChoiceQuestion') {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => BuildMyQuestionnaire()));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BuildMultipleChoiceQuestionnaire(
+                              name: document['questionnaireName'],
+                            )));
               }
               break;
           }
