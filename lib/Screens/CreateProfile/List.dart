@@ -199,7 +199,7 @@ class _ListState extends State<List> {
                       DBProvider.db.newUser(newDBUser);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ProfilePage()),
+                        MaterialPageRoute(builder: (context) => ProfilePage(user: newDBUser)),
                       );
                     }
                     if (true && (_password != _confirmpassword)) {

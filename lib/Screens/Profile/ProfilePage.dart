@@ -1,3 +1,4 @@
+import 'package:appprojekt/Widgets/MyBottomNavigationBar.dart';
 import 'package:appprojekt/data/Database.dart';
 import 'package:appprojekt/models/user.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,15 @@ class ProfilePage extends StatelessWidget {
       body: Column(children: <Widget>[
         Text(user.name),
         Text(user.age.toString()),
-        Text(user.email)
+        Text(user.email),
+        RaisedButton(
+          onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyBottomNavigationBar()),
+            );
+          },
+        )
       ],
       ),
     );
