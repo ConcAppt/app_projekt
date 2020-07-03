@@ -45,19 +45,11 @@ class DBProvider {
     return res;
   }
 
-  /*Future<dynamic> getUser() async {
-    final db = await database;
-    String sqfl = "SELECT TOP 1 * FROM user";
-    var res = await db.rawQuery(sqfl);
-    if(res.length == 0) return null;
-
-    return User.fromJson(res.first);
-  }*/
-
   Future<User> loginUser(String email, String password) async{
     var db = await database;
-    String sql = "SELECT * FROM user WHERE email = $email AND password = $password";
-    var result = await db.rawQuery(sql);
+    var result = await db.rawQuery('''
+    SELECT * FROM users WHERE email = ? AND password = ?''',
+        [email, password]);
     if (result.length == 0) return null;
     
     return User.fromJson(result.first);
@@ -70,9 +62,4 @@ class DBProvider {
     return res;
   }
 
-/*  Future<bool> isLoggedIn() async {
-    var dbClient = await database;
-    var res = await dbClient.query("users");
-    return res.length > 0? true: false;
-  }       gleich wie getUser()*/
 }
