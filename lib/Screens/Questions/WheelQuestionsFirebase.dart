@@ -1,14 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class BuildWheelQuestionnaire extends StatefulWidget {
+  BuildWheelQuestionnaire({Key key, this.quename}) : super(key: key);
+  final quename;
   @override
   _BuildWheelQuestionnaireState createState() => new _BuildWheelQuestionnaireState();
 }
 
 class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
-  List questionsList = [
+  int _currentPage = 0;
+
+  final PageController _pageController = PageController(initialPage: 0);
+  var myFeedbackText = 'neutral';
+  var sliderValue = 4.0;
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
+  _onPageChanged(int index) {
+    setState(() {
+      _currentPage = index;
+    });
+  }
+
+  /*List questionsList = [
     QuestionModel(
         'Apparent Sadness',
         'Representing despondency, gloom and despair, (more than just ordinary transient low spirits) reflected in speech, facial expression, and posture.',
@@ -87,98 +107,105 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
         '6 Explicit plans for suicide when there is an opportunity. Active preparation for suicide'
             '.'),
   ];
-
+*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[_buildTitle(), _buildInterestsContent(), _buildNextButton()],
-          )),
-    );
-  }
-
-  AppBar _buildTitle() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      title: Center(
-        child: Text(
-          "MADSR".toUpperCase(),
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 25,
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w600,
-              color: Colors.lightGreen[700],
-              letterSpacing: 2),
-        ),
-      ),
-    );
-  }
-/*int currentPage=0;
-  Stack _buildSlideDots() {
-    Stack(
-      alignment: AlignmentDirectional.topStart,
-      children: <Widget>[
-        Container(
-          margin: const EdgeInsets.only(bottom: 35),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              for (int i = 0; i < questionsList.length; i++)
-                if (i == currentPage) SlideDots(true) else SlideDots(false)
-            ],
+        appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Colors.lightGreen, //change your color here
+          ),
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          title: Text(
+            widget.quename.toUpperCase(),
+            // textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 25,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w600,
+                color: Colors.lightGreen[700],
+                letterSpacing: 2),
           ),
         ),
-      ],
-    );
-  }*/
-
-  Stack _buildInterestsContent() {
-    return Stack(
-      children: <Widget>[
-        _buildInterestsPageView(),
-      ],
-    );
+        body: StreamBuilder(
+            stream: Firestore.instance
+                .collection("WheelQuestionnaires")
+                .document(widget.quename)
+                .collection("Questions")
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.data == null) return CircularProgressIndicator();
+              return Container(
+                  child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                        child: Stack(
+                      alignment: AlignmentDirectional.topCenter,
+                      children: <Widget>[
+                        Stack(alignment: AlignmentDirectional.topCenter, children: <Widget>[
+                          SmoothPageIndicator(
+                            controller: _pageController,
+                            count: snapshot.data.documents.length,
+                            effect: ScrollingDotsEffect(
+                                activeDotColor: Colors.lightGreen[700],
+                                dotColor: Colors.grey,
+                                dotHeight: 10,
+                                dotWidth: 10,
+                                maxVisibleDots: 11,
+                                spacing: 15.0),
+                          )
+                        ]),
+                        PageView.builder(
+                            physics: new NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            controller: _pageController,
+                            onPageChanged: _onPageChanged,
+                            itemCount: snapshot.data.documents.length,
+                            itemBuilder: (ctx, i) {
+                              return Container(
+                                margin: const EdgeInsets.only(top: 0.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Expanded(
+                                        child: _buildDescriptionItem(snapshot.data.documents[i])),
+                                    Expanded(child: _buildListWheel(snapshot.data.documents[i])),
+                                    Container(
+                                      child: FloatingActionButton.extended(
+                                          icon: Icon(Icons.navigate_next),
+                                          label: Text('Next'),
+                                          backgroundColor: Colors.lightGreen[700],
+                                          onPressed: () {
+                                            //TODO check Answer
+                                            if (i == snapshot.data.documents.length - 1) {
+                                              _pageController.jumpToPage(0);
+                                            } else {
+                                              _pageController.nextPage(
+                                                  duration: Duration(milliseconds: 300),
+                                                  curve: Curves.easeIn);
+                                            }
+                                          }),
+                                    )
+                                  ],
+                                ),
+                              );
+                            }),
+                      ],
+                    ))
+                  ],
+                ),
+              ));
+            }));
   }
 
-  List ratingList = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  PageController pageController = PageController(initialPage: 0);
-
-  Container _buildInterestsPageView() {
-    return Container(
-      height: 400,
-      child: PageView.builder(
-        itemCount: questionsList.length,
-        itemBuilder: (context, int currentIdx) {
-          return Container(
-            margin: const EdgeInsets.only(top: 0.0),
-            child: Column(
-              children: <Widget>[
-                Flexible(child: _buildDescriptionItem(questionsList[currentIdx])),
-                Flexible(
-                    child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 10.0),
-                  child: _buildListWheel(questionsList[currentIdx]),
-                )),
-              ],
-            ),
-          );
-        },
-        controller: pageController,
-      ),
-    );
-  }
-
-  ListWheelScrollView _buildListWheel(QuestionModel data) {
+  ListWheelScrollView _buildListWheel(DocumentSnapshot document) {
     return ListWheelScrollView(itemExtent: 100, squeeze: 0.9, clipToSize: false, children: [
       Container(
         child: Center(
           child: Text(
-            data.zeroCase,
+            document['zeroCase'],
             style: TextStyle(
               color: Colors.green,
               fontFamily: 'Montserrat',
@@ -202,7 +229,7 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
       Container(
         height: 20,
         child: Text(
-          data.twoCase,
+          document['twoCase'],
           style: TextStyle(
             color: Colors.lime,
             fontFamily: 'Montserrat',
@@ -224,11 +251,10 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
         ),
       ),
       Container(
-        width: MediaQuery.of(context).size.width,
         height: 20,
         child: Center(
           child: Text(
-            data.fourCase,
+            document['fourCase'],
             //overflow: TextOverflow.visible,
             style: TextStyle(
               color: Colors.amber,
@@ -256,7 +282,7 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
       Container(
         height: 20,
         child: Text(
-          data.sixCase,
+          document['sixCase'],
           style: TextStyle(
             color: Colors.deepOrange,
             fontFamily: 'Montserrat',
@@ -268,231 +294,31 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
     ]);
   }
 
-  Column _buildDescriptionItem(QuestionModel data) {
-    return Column(
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.all(20.0),
-          margin: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(data.title.toUpperCase(),
-                  style: TextStyle(
-                    color: Colors.lightGreen[700],
-                    fontFamily: 'Montserrat',
-                    fontSize: 11.0,
-                    letterSpacing: 2,
-                  )),
-              SizedBox(height: 7),
-              Text(data.description,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Montserrat',
-                    fontSize: 11.0,
-                    letterSpacing: 2,
-                  )),
-            ],
-          ),
-        ),
-        /* Expanded(
-          child: Row(
-            children: <Widget>[
-              RotatedBox(
-                quarterTurns: 1,
-                child: Slider(
-                  value: rating,
-                  onChanged: (newRating) {
-                    setState(() => rating = newRating);
-                  },
-                  activeColor: Colors.lightGreen[700],
-                  inactiveColor: Colors.lightGreen[200],
-                  min: 0,
-                  max: 5,
-                  divisions: 5,
-                  label: "$rating",
-                ),
-              ),
-              SizedBox(width: 30),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(data.bestCase,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Montserrat',
-                          fontSize: 11.0,
-                          letterSpacing: 2,
-                        )),
-                    Text(data.worstCase,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Montserrat',
-                          fontSize: 11.0,
-                          letterSpacing: 2,
-                        )),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),*/
-      ],
-    );
-  }
-
-  /*double rating;
-  Column _buildAnswerItem(QuestionModel data, ratingL, currentIdx) {
-    if (ratingList[currentIdx] == 0) {
-      rating = 0;
-    } else {
-      rating = ratingList[currentIdx];
-    }
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: Row(
-            children: <Widget>[
-              RotatedBox(
-                quarterTurns: 1,
-                child: Slider(
-                  value: rating,
-                  onChanged: (newRating) {
-                    setState(() {
-                      rating = newRating;
-                      ratingList[currentIdx] = newRating;
-                    });
-                  },
-                  activeColor: Colors.lightGreen[700],
-                  inactiveColor: Colors.lightGreen[200],
-                  min: 0,
-                  max: 6,
-                  divisions: 6,
-                  label: "$rating",
-                ),
-              ),
-              SizedBox(width: 30),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(data.bestCase,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Montserrat',
-                          fontSize: 11.0,
-                          letterSpacing: 2,
-                        )),
-                    Text(data.worstCase,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Montserrat',
-                          fontSize: 11.0,
-                          letterSpacing: 2,
-                        )),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-*/
-  /*Container _buildCheckIcon() {
-    String buttonAsset = selectedInterests.isEmpty
-        ? 'assets/ic_check_gray.png'
-        : 'assets/ic_check_yellow_rounded.png';
+  Container _buildDescriptionItem(DocumentSnapshot document) {
     return Container(
-      child: Image.asset(buttonAsset),
-    );
-  }*/
-
-  Container _buildNextButton() {
-    return Container(
-      alignment: Alignment.center,
-      margin: const EdgeInsets.only(left: 71, right: 71, top: 21),
-      child: SizedBox(
-        width: double.infinity,
-        height: 45,
-        child: Center(
-          child: Text(
-            "Question".toUpperCase(),
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'Montserrat',
-              fontSize: 19,
-              letterSpacing: 2,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-/* //double rating = 0;
-  Slider _buildSlider() {
-    return Slider(
-      value: rating,
-      onChanged: (final newRating) {
-        setState(() => rating = newRating);
-      },
-      activeColor: Colors.lightGreen[700],
-      inactiveColor: Colors.lightGreen[200],
-      min: 0,
-      max: 5,
-      divisions: 5,
-      label: "$rating.toInt()",
-    );
-  }*/
-}
-
-/*Slider _buildSlider() {
-  return Slider(
-    value: rating,
-    onChanged: (newRating) {
-      setState(() => rating = newRating);
-    },
-    activeColor: Colors.lightGreen[700],
-    inactiveColor: Colors.lightGreen[200],
-    min: 0,
-    max: 5,
-    divisions: 5,
-    label: "$rating",
-  );
-}*/
-
-class QuestionModel {
-  String title;
-  String description;
-  String zeroCase;
-  String twoCase;
-  String fourCase;
-  String sixCase;
-
-  QuestionModel(
-      this.title, this.description, this.zeroCase, this.twoCase, this.fourCase, this.sixCase);
-}
-
-class SlideDots extends StatelessWidget {
-  bool isActive;
-
-  SlideDots(this.isActive);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 150),
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      height: isActive ? 12 : 8,
-      width: isActive ? 12 : 8,
-      decoration: BoxDecoration(
-        color: isActive ? Theme.of(context).primaryColor : Colors.grey,
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+      height: 10,
+      padding: EdgeInsets.all(20.0),
+      margin: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(document['title'],
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.lightGreen[700],
+                fontFamily: 'Montserrat',
+                fontSize: 15.0,
+                letterSpacing: 2,
+              )),
+          SizedBox(height: 7),
+          Text(document['description'],
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Montserrat',
+                fontSize: 14.0,
+                letterSpacing: 2,
+              )),
+        ],
       ),
     );
   }

@@ -7,13 +7,14 @@ import '../Questions/Questionnaire.dart';
 import '../Questions/QuestionnaireFirebase.dart';
 import '../../Widgets/MyBottomNavigationBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'Charts.dart';
 
-class HomePage extends StatefulWidget {
+class EvaluationPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _EvaluationPageState createState() => _EvaluationPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _EvaluationPageState extends State<EvaluationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,18 +23,9 @@ class _HomePageState extends State<HomePage> {
           child: Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(10),
-            child: Text('Hello X!',
-                style: TextStyle(
-                    fontSize: 30,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.lightGreen[700],
-                    letterSpacing: 2)),
-          ),
-          Container(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-            child: Text('Please choose a questionnaire to start.',
+            child: Text(
+                'Have a look at the results and the graphical evaluation of the questionnaires',
                 style: TextStyle(
                     fontSize: 23,
                     fontFamily: 'Montserrat',
@@ -121,22 +113,22 @@ Widget _buildOverview(BuildContext context, DocumentSnapshot document) {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => BuildSwipingQuestionnaire(
-                              quename: document['questionnaireName'],
+                        builder: (context) => BuildChart(
+                            // quename: document['questionnaireName'],
                             )));
               } else if (document['type'] == 'WheelQuestion') {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => BuildWheelQuestionnaire(
-                              quename: document['questionnaireName'],
+                        builder: (context) => BuildChart(
+                            // quename: document['questionnaireName'],
                             )));
               } else if (document['type'] == 'MultipleChoiceQuestion') {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => BuildMultipleChoiceQuestionnaire(
-                              quename: document['questionnaireName'],
+                        builder: (context) => BuildChart(
+                            // quename: document['questionnaireName'],
                             )));
               }
               break;
@@ -179,7 +171,7 @@ Widget _buildOverview(BuildContext context, DocumentSnapshot document) {
             ),
             Spacer(flex: 8),
             Text(
-              document['questionnaireScope'],
+              "Records: ",
               style: TextStyle(
                   color: Colors.black87,
                   fontFamily: 'Montserrat',

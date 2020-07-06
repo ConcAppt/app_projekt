@@ -1,6 +1,6 @@
 import 'package:appprojekt/Screens/Home/HomePageFirebase.dart';
 import 'package:flutter/material.dart';
-import '../Screens/Evaluation/EvaluationPage.dart';
+import '../Screens/Evaluation/EvaluationPageFirebase.dart';
 import '../Screens/Profile/ProfilePage.dart';
 import '../Screens/Settings/SettingsPage.dart';
 import '../Screens/Questions/MultipleChoiceQuestions.dart';
@@ -19,8 +19,8 @@ class _HomeState extends State<MyBottomNavigationBar> {
     HomePage(),
     EvaluationPage(),
     Start(),
-    //ProfilePage(),
-    BuildMyQuestionnaire(),
+    ProfilePage(),
+    //BuildMyQuestionnaire(),
     //SettingsPage(),
   ];
 
