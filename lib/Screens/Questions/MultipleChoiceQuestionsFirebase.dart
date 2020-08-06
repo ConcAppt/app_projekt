@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../Home/HomePageFirebase.dart';
 
 enum answerAlternatives { No, sometimes, often }
 
@@ -18,6 +19,7 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
   var myFeedbackText = 'neutral';
   var sliderValue = 4.0;
   bool _isSelected = false;
+  int selectedItem;
   answerAlternatives _alternatives;
   @override
   void dispose() {
@@ -40,17 +42,15 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
           ),
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: Center(
-            child: Text(
-              widget.quename.toUpperCase(),
-              //textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 25,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w600,
-                  color: Colors.lightGreen[700],
-                  letterSpacing: 2),
-            ),
+          title: Text(
+            widget.quename.toUpperCase(),
+            //textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 25,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w600,
+                color: Colors.lightGreen[700],
+                letterSpacing: 2),
           ),
         ),
         body: StreamBuilder(
@@ -105,14 +105,99 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
                                             backgroundColor: Colors.lightGreen[700],
                                             onPressed: () {
                                               //TODO check Answer
-                                              if (i == snapshot.data.documents.length - 1) {
-                                                _pageController.jumpToPage(0);
-                                              } else {
-                                                _pageController.nextPage(
-                                                    duration: Duration(milliseconds: 300),
-                                                    curve: Curves.easeIn);
+                                              Future<void> _showMyDialog() async {
+                                                return showDialog<void>(
+                                                  context: context,
+                                                  barrierDismissible:
+                                                      false, // user must tap button!
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog(
+                                                      shape: RoundedRectangleBorder(),
+                                                      title: Text('Attention'),
+                                                      content: SingleChildScrollView(
+                                                        child: ListBody(
+                                                          children: <Widget>[
+                                                            Text('Please select an answer option'),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      actions: <Widget>[
+                                                        FlatButton(
+                                                          child: Text(
+                                                            'Okay',
+                                                            style: TextStyle(
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.lightGreen,
+                                                              fontFamily: 'Montserrat',
+                                                              fontSize: 20.0,
+                                                              letterSpacing: 2,
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.of(context).pop();
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              }
 
-                                                _alternatives = null;
+                                              if (_alternatives == null) {
+                                                _showMyDialog();
+                                              } else {
+                                                if (i == snapshot.data.documents.length - 1) {
+                                                  Future<void> _showEndDialog() async {
+                                                    return showDialog<void>(
+                                                      context: context,
+                                                      barrierDismissible:
+                                                          false, // user must tap button!
+                                                      builder: (BuildContext context) {
+                                                        return AlertDialog(
+                                                          shape: RoundedRectangleBorder(),
+                                                          title: Text('Attention'),
+                                                          content: SingleChildScrollView(
+                                                            child: ListBody(
+                                                              children: <Widget>[
+                                                                Text(
+                                                                    'Questionnaire has been completely processed '),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          actions: <Widget>[
+                                                            FlatButton(
+                                                              child: Text(
+                                                                'Okay',
+                                                                style: TextStyle(
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: Colors.lightGreen,
+                                                                  fontFamily: 'Montserrat',
+                                                                  fontSize: 20.0,
+                                                                  letterSpacing: 2,
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) =>
+                                                                          HomePage()),
+                                                                );
+                                                              },
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  }
+
+                                                  _showEndDialog();
+                                                } else {
+                                                  _pageController.nextPage(
+                                                      duration: Duration(milliseconds: 300),
+                                                      curve: Curves.easeIn);
+                                                  _alternatives = null;
+                                                }
                                               }
                                             }),
                                       )

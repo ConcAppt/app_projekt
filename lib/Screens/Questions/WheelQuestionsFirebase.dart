@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../Home/HomePageFirebase.dart';
 
 class BuildWheelQuestionnaire extends StatefulWidget {
   BuildWheelQuestionnaire({Key key, this.quename}) : super(key: key);
@@ -16,6 +17,7 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
   final PageController _pageController = PageController(initialPage: 0);
   var myFeedbackText = 'neutral';
   var sliderValue = 4.0;
+  int selectedCard;
   @override
   void dispose() {
     super.dispose();
@@ -28,86 +30,6 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
     });
   }
 
-  /*List questionsList = [
-    QuestionModel(
-        'Apparent Sadness',
-        'Representing despondency, gloom and despair, (more than just ordinary transient low spirits) reflected in speech, facial expression, and posture.',
-        '0 No sadness',
-        '2 Looks dispirited but does brighten up without difficulty',
-        '4 Appears sad and unhappy most of the time.',
-        '6 Looks miserable all the time. Extremely despondent.'),
-    QuestionModel(
-        'Reported sadness',
-        'Representing reports of depressed mood, regardless of whether it is reflected in appearance  or not. Includes low spirits, despondency or the feeling of being beyond help and without hope.',
-        '0 Occasional sadness in keeping with the circumstances.',
-        '2 Sad or low but brightens up without difficulty.',
-        '4 Pervasive feelings of sadness or gloominess. The mood is still influenced by external circumstances.',
-        '6 Continuous or unvarying sadness, misery or despondency.'),
-    QuestionModel(
-        'Inner tension',
-        'Representing feelings of ill-defined discomfort, edginess, inner turmoil, mental tension mounting to either panic, dread or anguish.',
-        '0 Placid. Only fleeting inner tension.',
-        '2 Occasional feelings of edginess and ill defined discomfort',
-        '4 Continuous feelings of inner tension or intermittent panic which the patient can only '
-            'master with some difficulty.',
-        '6 Unrelenting dread or anguish. Overwhelming panic'),
-    QuestionModel(
-        'Reduced sleep',
-        'Representing the experience of reduced duration or depth of sleep compared to the subject\'s own normal pattern when well.',
-        '0 Sleeps as usual.',
-        '2 Slight difficulty dropping off to sleep or slightly reduced, light or fitful sleep.',
-        '4 Sleep reduced or broken by at least two hours.',
-        '6 Less than two or three hours sleep'),
-    QuestionModel(
-        'Reduced appetite',
-        'Representing the feeling of a loss of appetite compared with when well.',
-        '0 Normal or increased appetite.',
-        '2 Slightly reduced appetite.',
-        '4 No appetite. Food is tasteless.',
-        '6 Needs persuasion to eat at all.'),
-    QuestionModel(
-        'Concentration Difficulties',
-        'Representing difficulties in collecting one\'s thoughts mounting to incapacitating lack of concentration. Rate according to intensity, frequency, and degree of incapacity produced.',
-        '0 No difficulties in concentrating.',
-        '2 Occasional difficulties in collecting one\'s thoughts.',
-        '4 Difficulties in concentrating and sustaining thought which reduces ability to read or '
-            'hold a conversation.',
-        '6 Unable to read or converse without great difficulty.'),
-    QuestionModel(
-        'Lassitude',
-        'Representing a difficulty getting started or slowness initiating and performing everyday activities.',
-        '0 Hardly any difficulty in getting started. No sluggishness.',
-        '2 Difficulties in starting activities.',
-        '4 Difficulties in starting simple routine activities which are carried out with effort.',
-        '6 Complete lassitude. Unable to do anything without help.'),
-    QuestionModel(
-        'Inability to feel',
-        'Representing the subjective experience of reduced interest in the surroundings, or activities that normally give pleasure. The ability to react with adequate emotion to circumstances or people is reduced.',
-        '0 Normal interest in the surroundings and in other people',
-        '2 Reduced ability to enjoy usual interests.',
-        '4 Loss of interest in the surroundings. Loss of feelings or friends and acquaintances.',
-        '6 The experience of being emotionally paralysed, inability to feel anger, grief or '
-            'pleasure and a complete or even painful failure to feel for close relatives and friends.'),
-    QuestionModel(
-        'Pessimistic thoughts',
-        'Representing thoughts of guilt, inferiority, self-reproach, sinfulness, remorse and ruin.',
-        '0 No pessimistic thoughts.',
-        '2 Fluctuating ideas of failure, self-reproach or self depreciation.',
-        '4 Persistent self-accusations, or definite but still rational ideas of guilt or sin. '
-            'Increasingly pessimistic about the future.',
-        '6 Delusions of ruin, remorse or unredeemable sin. Self-accusations which are absurd and '
-            'unshakable.'),
-    QuestionModel(
-        'Suicidal thoughts',
-        'Representing the feeling that life is not worth living, that a natural death would be welcome, suicidal thoughts, and preparations for suicide.',
-        '0 Enjoys life or takes it as it comes.',
-        '2 Weary of life. Only fleeting suicidal thoughts.',
-        '4 Probably better off dead. Suicidal thoughts are common, and suicide is considered as a'
-            ' possible solution, but without specific plans or intention.',
-        '6 Explicit plans for suicide when there is an opportunity. Active preparation for suicide'
-            '.'),
-  ];
-*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,12 +101,98 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
                                           backgroundColor: Colors.lightGreen[700],
                                           onPressed: () {
                                             //TODO check Answer
-                                            if (i == snapshot.data.documents.length - 1) {
-                                              _pageController.jumpToPage(0);
+                                            Future<void> _showMyDialog() async {
+                                              return showDialog<void>(
+                                                context: context,
+                                                barrierDismissible: false, // user must tap button!
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    shape: RoundedRectangleBorder(),
+                                                    title: Text('Attention'),
+                                                    content: SingleChildScrollView(
+                                                      child: ListBody(
+                                                        children: <Widget>[
+                                                          Text('Please select an answer option'),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    actions: <Widget>[
+                                                      FlatButton(
+                                                        child: Text(
+                                                          'Okay',
+                                                          style: TextStyle(
+                                                            fontWeight: FontWeight.bold,
+                                                            color: Colors.lightGreen,
+                                                            fontFamily: 'Montserrat',
+                                                            fontSize: 20.0,
+                                                            letterSpacing: 2,
+                                                          ),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop();
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
+
+                                            if (selectedCard == null) {
+                                              _showMyDialog();
                                             } else {
-                                              _pageController.nextPage(
-                                                  duration: Duration(milliseconds: 300),
-                                                  curve: Curves.easeIn);
+                                              if (i == snapshot.data.documents.length - 1) {
+                                                Future<void> _showEndDialog() async {
+                                                  return showDialog<void>(
+                                                    context: context,
+                                                    barrierDismissible:
+                                                        false, // user must tap button!
+                                                    builder: (BuildContext context) {
+                                                      return AlertDialog(
+                                                        shape: RoundedRectangleBorder(),
+                                                        title: Text('Attention'),
+                                                        content: SingleChildScrollView(
+                                                          child: ListBody(
+                                                            children: <Widget>[
+                                                              Text(
+                                                                  'Questionnaire has been completely processed '),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        actions: <Widget>[
+                                                          FlatButton(
+                                                            child: Text(
+                                                              'Okay',
+                                                              style: TextStyle(
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.lightGreen,
+                                                                fontFamily: 'Montserrat',
+                                                                fontSize: 20.0,
+                                                                letterSpacing: 2,
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) =>
+                                                                        HomePage()),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                }
+
+                                                _showEndDialog();
+                                              } else {
+                                                _pageController.nextPage(
+                                                    duration: Duration(milliseconds: 300),
+                                                    curve: Curves.easeIn);
+                                                selectedCard = null;
+                                              }
                                             }
                                           }),
                                     )
@@ -339,8 +347,12 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
       itemBuilder: (context, i) {
         List answers = document['answers'];
         double interpolation = 1 / (answers.length);
-        Color color = Color.lerp(Colors.green, Colors.red, i * interpolation);
+
+        Color color = Color.lerp(Colors.green, Colors.yellow, i * interpolation);
+        Color color2 = Color.lerp(Colors.yellow, Colors.red, i * interpolation);
+
         return Card(
+          color: (selectedCard == i) ? Colors.grey[300] : null,
           child: ListTile(
             title: Center(
               child: Text(
@@ -355,6 +367,13 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
               ),
             ),
             onTap: () {
+              setState(() {
+                if (selectedCard == i) {
+                  selectedCard = null;
+                } else {
+                  selectedCard = i;
+                }
+              });
               print('Card tapped $i');
             },
           ),
