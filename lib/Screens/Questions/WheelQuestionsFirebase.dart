@@ -171,7 +171,7 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
                                   children: <Widget>[
                                     Expanded(
                                         child: _buildDescriptionItem(snapshot.data.documents[i])),
-                                    Expanded(child: _buildListWheel(snapshot.data.documents[i])),
+                                    Expanded(child: _listViewListTile(snapshot.data.documents[i])),
                                     Container(
                                       child: FloatingActionButton.extended(
                                           icon: Icon(Icons.navigate_next),
@@ -205,7 +205,7 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
       Container(
         child: Center(
           child: Text(
-            document['zeroCase'],
+            document['Answers[i]{text}'],
             style: TextStyle(
               color: Colors.green,
               fontFamily: 'Montserrat',
@@ -292,6 +292,116 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
         ),
       ),
     ]);
+  }
+
+  ListView _listView(DocumentSnapshot document) {
+    return ListView.separated(
+      padding: const EdgeInsets.all(8),
+      itemCount: document['answers'].length,
+      itemBuilder: (context, i) {
+        List answers = document['answers'];
+        double interpolation = 1 / (answers.length);
+        Color color = Color.lerp(Colors.green, Colors.red, i * interpolation);
+        return Card(
+          child: InkWell(
+            splashColor: Colors.lightGreen,
+            onTap: () {
+              print('Card tapped $i');
+            },
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  answers[i],
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    fontSize: 20.0,
+                    letterSpacing: 2,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+      separatorBuilder: (context, i) => const SizedBox(
+        height: 10,
+      ),
+    );
+  }
+
+  ListView _listViewListTile(DocumentSnapshot document) {
+    return ListView.separated(
+      padding: const EdgeInsets.all(8),
+      itemCount: document['answers'].length,
+      itemBuilder: (context, i) {
+        List answers = document['answers'];
+        double interpolation = 1 / (answers.length);
+        Color color = Color.lerp(Colors.green, Colors.red, i * interpolation);
+        return Card(
+          child: ListTile(
+            title: Center(
+              child: Text(
+                answers[i],
+                style: TextStyle(
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
+                  fontSize: 20.0,
+                  letterSpacing: 2,
+                ),
+              ),
+            ),
+            onTap: () {
+              print('Card tapped $i');
+            },
+          ),
+        );
+      },
+      separatorBuilder: (context, i) => const SizedBox(
+        height: 10,
+      ),
+    );
+  }
+
+  ListView _CheckboxList(DocumentSnapshot document) {
+    return ListView.separated(
+      padding: const EdgeInsets.all(8),
+      itemCount: document['answers'].length,
+      itemBuilder: (context, i) {
+        List answers = document['answers'];
+        double interpolation = 1 / (answers.length);
+        Color color = Color.lerp(Colors.green, Colors.red, i * interpolation);
+        return Card(
+          child: InkWell(
+            splashColor: Colors.lightGreen,
+            onTap: () {
+              print('Card tapped $i');
+            },
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  answers[i],
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    fontSize: 20.0,
+                    letterSpacing: 2,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+      separatorBuilder: (context, i) => const SizedBox(
+        height: 10,
+      ),
+    );
   }
 
   Container _buildDescriptionItem(DocumentSnapshot document) {

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>975853780402-l1vo9d6f7mvlhh5c6soq1n7r21he81di.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.975853780402-l1vo9d6f7mvlhh5c6soq1n7r21he81di</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBkSS5yCKAlEWbOVg-EFv3IIkTvDO_ChMA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>975853780402</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.appprojekt</string>
+	<key>PROJECT_ID</key>
+	<string>appprojektovgu</string>
+	<key>STORAGE_BUCKET</key>
+	<string>appprojektovgu.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:975853780402:ios:f0946b2dc3403d876338ab</string>
+	<key>DATABASE_URL</key>
+	<string>https://appprojektovgu.firebaseio.com</string>
+</dict>
+</plist>

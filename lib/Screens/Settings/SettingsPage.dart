@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -8,10 +9,6 @@ class SettingsPage extends StatefulWidget {
 class _EvaluationPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text('SettingsPage'),
-      ),
-    );
+    return Container();
   }
 }
