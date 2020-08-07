@@ -131,7 +131,7 @@ Widget _buildOverview(BuildContext context, DocumentSnapshot document) {
                     context,
                     MaterialPageRoute(
                         builder: (context) => BuildMultipleChoiceQuestionnaire(
-                              name: document['questionnaireName'],
+                              quename: document['questionnaireName'],
                             )));
               }
               break;

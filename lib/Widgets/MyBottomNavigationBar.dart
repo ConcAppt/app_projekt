@@ -24,8 +24,8 @@ class _HomeState extends State<MyBottomNavigationBar> {
     EvaluationPage(),
     //Start(),
     ProfilePage(),
-    BuildMyQuestionnaire(),
-    //SettingsPage(),
+    //BuildMyQuestionnaire(),
+    SettingsPage(),
   ];
 
 

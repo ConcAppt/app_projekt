@@ -1,184 +1,219 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../Home/HomePageFirebase.dart';
 
 class BuildWheelQuestionnaire extends StatefulWidget {
+  BuildWheelQuestionnaire({Key key, this.quename}) : super(key: key);
+  final quename;
   @override
   _BuildWheelQuestionnaireState createState() => new _BuildWheelQuestionnaireState();
 }
 
 class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
-  List questionsList = [
-    QuestionModel(
-        'Apparent Sadness',
-        'Representing despondency, gloom and despair, (more than just ordinary transient low spirits) reflected in speech, facial expression, and posture.',
-        '0 No sadness',
-        '2 Looks dispirited but does brighten up without difficulty',
-        '4 Appears sad and unhappy most of the time.',
-        '6 Looks miserable all the time. Extremely despondent.'),
-    QuestionModel(
-        'Reported sadness',
-        'Representing reports of depressed mood, regardless of whether it is reflected in appearance  or not. Includes low spirits, despondency or the feeling of being beyond help and without hope.',
-        '0 Occasional sadness in keeping with the circumstances.',
-        '2 Sad or low but brightens up without difficulty.',
-        '4 Pervasive feelings of sadness or gloominess. The mood is still influenced by external circumstances.',
-        '6 Continuous or unvarying sadness, misery or despondency.'),
-    QuestionModel(
-        'Inner tension',
-        'Representing feelings of ill-defined discomfort, edginess, inner turmoil, mental tension mounting to either panic, dread or anguish.',
-        '0 Placid. Only fleeting inner tension.',
-        '2 Occasional feelings of edginess and ill defined discomfort',
-        '4 Continuous feelings of inner tension or intermittent panic which the patient can only '
-            'master with some difficulty.',
-        '6 Unrelenting dread or anguish. Overwhelming panic'),
-    QuestionModel(
-        'Reduced sleep',
-        'Representing the experience of reduced duration or depth of sleep compared to the subject\'s own normal pattern when well.',
-        '0 Sleeps as usual.',
-        '2 Slight difficulty dropping off to sleep or slightly reduced, light or fitful sleep.',
-        '4 Sleep reduced or broken by at least two hours.',
-        '6 Less than two or three hours sleep'),
-    QuestionModel(
-        'Reduced appetite',
-        'Representing the feeling of a loss of appetite compared with when well.',
-        '0 Normal or increased appetite.',
-        '2 Slightly reduced appetite.',
-        '4 No appetite. Food is tasteless.',
-        '6 Needs persuasion to eat at all.'),
-    QuestionModel(
-        'Concentration Difficulties',
-        'Representing difficulties in collecting one\'s thoughts mounting to incapacitating lack of concentration. Rate according to intensity, frequency, and degree of incapacity produced.',
-        '0 No difficulties in concentrating.',
-        '2 Occasional difficulties in collecting one\'s thoughts.',
-        '4 Difficulties in concentrating and sustaining thought which reduces ability to read or '
-            'hold a conversation.',
-        '6 Unable to read or converse without great difficulty.'),
-    QuestionModel(
-        'Lassitude',
-        'Representing a difficulty getting started or slowness initiating and performing everyday activities.',
-        '0 Hardly any difficulty in getting started. No sluggishness.',
-        '2 Difficulties in starting activities.',
-        '4 Difficulties in starting simple routine activities which are carried out with effort.',
-        '6 Complete lassitude. Unable to do anything without help.'),
-    QuestionModel(
-        'Inability to feel',
-        'Representing the subjective experience of reduced interest in the surroundings, or activities that normally give pleasure. The ability to react with adequate emotion to circumstances or people is reduced.',
-        '0 Normal interest in the surroundings and in other people',
-        '2 Reduced ability to enjoy usual interests.',
-        '4 Loss of interest in the surroundings. Loss of feelings or friends and acquaintances.',
-        '6 The experience of being emotionally paralysed, inability to feel anger, grief or '
-            'pleasure and a complete or even painful failure to feel for close relatives and friends.'),
-    QuestionModel(
-        'Pessimistic thoughts',
-        'Representing thoughts of guilt, inferiority, self-reproach, sinfulness, remorse and ruin.',
-        '0 No pessimistic thoughts.',
-        '2 Fluctuating ideas of failure, self-reproach or self depreciation.',
-        '4 Persistent self-accusations, or definite but still rational ideas of guilt or sin. '
-            'Increasingly pessimistic about the future.',
-        '6 Delusions of ruin, remorse or unredeemable sin. Self-accusations which are absurd and '
-            'unshakable.'),
-    QuestionModel(
-        'Suicidal thoughts',
-        'Representing the feeling that life is not worth living, that a natural death would be welcome, suicidal thoughts, and preparations for suicide.',
-        '0 Enjoys life or takes it as it comes.',
-        '2 Weary of life. Only fleeting suicidal thoughts.',
-        '4 Probably better off dead. Suicidal thoughts are common, and suicide is considered as a'
-            ' possible solution, but without specific plans or intention.',
-        '6 Explicit plans for suicide when there is an opportunity. Active preparation for suicide'
-            '.'),
-  ];
+  int _currentPage = 0;
+
+  final PageController _pageController = PageController(initialPage: 0);
+  var myFeedbackText = 'neutral';
+  var sliderValue = 4.0;
+  int selectedCard;
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
+  _onPageChanged(int index) {
+    setState(() {
+      _currentPage = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[_buildTitle(), _buildInterestsContent(), _buildNextButton()],
-          )),
-    );
-  }
-
-  AppBar _buildTitle() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      title: Center(
-        child: Text(
-          "MADSR".toUpperCase(),
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 25,
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w600,
-              color: Colors.lightGreen[700],
-              letterSpacing: 2),
-        ),
-      ),
-    );
-  }
-/*int currentPage=0;
-  Stack _buildSlideDots() {
-    Stack(
-      alignment: AlignmentDirectional.topStart,
-      children: <Widget>[
-        Container(
-          margin: const EdgeInsets.only(bottom: 35),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              for (int i = 0; i < questionsList.length; i++)
-                if (i == currentPage) SlideDots(true) else SlideDots(false)
-            ],
+        appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Colors.lightGreen, //change your color here
+          ),
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          title: Text(
+            widget.quename.toUpperCase(),
+            // textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 25,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w600,
+                color: Colors.lightGreen[700],
+                letterSpacing: 2),
           ),
         ),
-      ],
-    );
-  }*/
+        body: StreamBuilder(
+            stream: Firestore.instance
+                .collection("WheelQuestionnaires")
+                .document(widget.quename)
+                .collection("Questions")
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.data == null) return CircularProgressIndicator();
+              return Container(
+                  child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                        child: Stack(
+                      alignment: AlignmentDirectional.topCenter,
+                      children: <Widget>[
+                        Stack(alignment: AlignmentDirectional.topCenter, children: <Widget>[
+                          SmoothPageIndicator(
+                            controller: _pageController,
+                            count: snapshot.data.documents.length,
+                            effect: ScrollingDotsEffect(
+                                activeDotColor: Colors.lightGreen[700],
+                                dotColor: Colors.grey,
+                                dotHeight: 10,
+                                dotWidth: 10,
+                                maxVisibleDots: 11,
+                                spacing: 15.0),
+                          )
+                        ]),
+                        PageView.builder(
+                            physics: new NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            controller: _pageController,
+                            onPageChanged: _onPageChanged,
+                            itemCount: snapshot.data.documents.length,
+                            itemBuilder: (ctx, i) {
+                              return Container(
+                                margin: const EdgeInsets.only(top: 0.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Expanded(
+                                        child: _buildDescriptionItem(snapshot.data.documents[i])),
+                                    Expanded(child: _listViewListTile(snapshot.data.documents[i])),
+                                    Container(
+                                      child: FloatingActionButton.extended(
+                                          icon: Icon(Icons.navigate_next),
+                                          label: Text('Next'),
+                                          backgroundColor: Colors.lightGreen[700],
+                                          onPressed: () {
+                                            //TODO check Answer
+                                            Future<void> _showMyDialog() async {
+                                              return showDialog<void>(
+                                                context: context,
+                                                barrierDismissible: false, // user must tap button!
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    shape: RoundedRectangleBorder(),
+                                                    title: Text('Attention'),
+                                                    content: SingleChildScrollView(
+                                                      child: ListBody(
+                                                        children: <Widget>[
+                                                          Text('Please select an answer option'),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    actions: <Widget>[
+                                                      FlatButton(
+                                                        child: Text(
+                                                          'Okay',
+                                                          style: TextStyle(
+                                                            fontWeight: FontWeight.bold,
+                                                            color: Colors.lightGreen,
+                                                            fontFamily: 'Montserrat',
+                                                            fontSize: 20.0,
+                                                            letterSpacing: 2,
+                                                          ),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop();
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
 
-  Stack _buildInterestsContent() {
-    return Stack(
-      children: <Widget>[
-        _buildInterestsPageView(),
-      ],
-    );
+                                            if (selectedCard == null) {
+                                              _showMyDialog();
+                                            } else {
+                                              if (i == snapshot.data.documents.length - 1) {
+                                                Future<void> _showEndDialog() async {
+                                                  return showDialog<void>(
+                                                    context: context,
+                                                    barrierDismissible:
+                                                        false, // user must tap button!
+                                                    builder: (BuildContext context) {
+                                                      return AlertDialog(
+                                                        shape: RoundedRectangleBorder(),
+                                                        title: Text('Attention'),
+                                                        content: SingleChildScrollView(
+                                                          child: ListBody(
+                                                            children: <Widget>[
+                                                              Text(
+                                                                  'Questionnaire has been completely processed '),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        actions: <Widget>[
+                                                          FlatButton(
+                                                            child: Text(
+                                                              'Okay',
+                                                              style: TextStyle(
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.lightGreen,
+                                                                fontFamily: 'Montserrat',
+                                                                fontSize: 20.0,
+                                                                letterSpacing: 2,
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) =>
+                                                                        HomePage()),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                }
+
+                                                _showEndDialog();
+                                              } else {
+                                                _pageController.nextPage(
+                                                    duration: Duration(milliseconds: 300),
+                                                    curve: Curves.easeIn);
+                                                selectedCard = null;
+                                              }
+                                            }
+                                          }),
+                                    )
+                                  ],
+                                ),
+                              );
+                            }),
+                      ],
+                    ))
+                  ],
+                ),
+              ));
+            }));
   }
 
-  List ratingList = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  PageController pageController = PageController(initialPage: 0);
-
-  Container _buildInterestsPageView() {
-    return Container(
-      height: 400,
-      child: PageView.builder(
-        itemCount: questionsList.length,
-        itemBuilder: (context, int currentIdx) {
-          return Container(
-            margin: const EdgeInsets.only(top: 0.0),
-            child: Column(
-              children: <Widget>[
-                Flexible(child: _buildDescriptionItem(questionsList[currentIdx])),
-                Flexible(
-                    child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 10.0),
-                  child: _buildListWheel(questionsList[currentIdx]),
-                )),
-              ],
-            ),
-          );
-        },
-        controller: pageController,
-      ),
-    );
-  }
-
-  ListWheelScrollView _buildListWheel(QuestionModel data) {
+  ListWheelScrollView _buildListWheel(DocumentSnapshot document) {
     return ListWheelScrollView(itemExtent: 100, squeeze: 0.9, clipToSize: false, children: [
       Container(
         child: Center(
           child: Text(
-            data.zeroCase,
+            document['Answers[i]{text}'],
             style: TextStyle(
               color: Colors.green,
               fontFamily: 'Montserrat',
@@ -202,7 +237,7 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
       Container(
         height: 20,
         child: Text(
-          data.twoCase,
+          document['twoCase'],
           style: TextStyle(
             color: Colors.lime,
             fontFamily: 'Montserrat',
@@ -224,11 +259,10 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
         ),
       ),
       Container(
-        width: MediaQuery.of(context).size.width,
         height: 20,
         child: Center(
           child: Text(
-            data.fourCase,
+            document['fourCase'],
             //overflow: TextOverflow.visible,
             style: TextStyle(
               color: Colors.amber,
@@ -256,7 +290,7 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
       Container(
         height: 20,
         child: Text(
-          data.sixCase,
+          document['sixCase'],
           style: TextStyle(
             color: Colors.deepOrange,
             fontFamily: 'Montserrat',
@@ -268,231 +302,152 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
     ]);
   }
 
-  Column _buildDescriptionItem(QuestionModel data) {
-    return Column(
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.all(20.0),
-          margin: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(data.title.toUpperCase(),
+  ListView _listView(DocumentSnapshot document) {
+    return ListView.separated(
+      padding: const EdgeInsets.all(8),
+      itemCount: document['answers'].length,
+      itemBuilder: (context, i) {
+        List answers = document['answers'];
+        double interpolation = 1 / (answers.length);
+        Color color = Color.lerp(Colors.green, Colors.red, i * interpolation);
+        return Card(
+          child: InkWell(
+            splashColor: Colors.lightGreen,
+            onTap: () {
+              print('Card tapped $i');
+            },
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  answers[i],
                   style: TextStyle(
-                    color: Colors.lightGreen[700],
+                    color: color,
+                    fontWeight: FontWeight.bold,
                     fontFamily: 'Montserrat',
-                    fontSize: 11.0,
+                    fontSize: 20.0,
                     letterSpacing: 2,
-                  )),
-              SizedBox(height: 7),
-              Text(data.description,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Montserrat',
-                    fontSize: 11.0,
-                    letterSpacing: 2,
-                  )),
-            ],
-          ),
-        ),
-        /* Expanded(
-          child: Row(
-            children: <Widget>[
-              RotatedBox(
-                quarterTurns: 1,
-                child: Slider(
-                  value: rating,
-                  onChanged: (newRating) {
-                    setState(() => rating = newRating);
-                  },
-                  activeColor: Colors.lightGreen[700],
-                  inactiveColor: Colors.lightGreen[200],
-                  min: 0,
-                  max: 5,
-                  divisions: 5,
-                  label: "$rating",
+                  ),
                 ),
               ),
-              SizedBox(width: 30),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(data.bestCase,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Montserrat',
-                          fontSize: 11.0,
-                          letterSpacing: 2,
-                        )),
-                    Text(data.worstCase,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Montserrat',
-                          fontSize: 11.0,
-                          letterSpacing: 2,
-                        )),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),*/
-      ],
-    );
-  }
-
-  /*double rating;
-  Column _buildAnswerItem(QuestionModel data, ratingL, currentIdx) {
-    if (ratingList[currentIdx] == 0) {
-      rating = 0;
-    } else {
-      rating = ratingList[currentIdx];
-    }
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: Row(
-            children: <Widget>[
-              RotatedBox(
-                quarterTurns: 1,
-                child: Slider(
-                  value: rating,
-                  onChanged: (newRating) {
-                    setState(() {
-                      rating = newRating;
-                      ratingList[currentIdx] = newRating;
-                    });
-                  },
-                  activeColor: Colors.lightGreen[700],
-                  inactiveColor: Colors.lightGreen[200],
-                  min: 0,
-                  max: 6,
-                  divisions: 6,
-                  label: "$rating",
-                ),
-              ),
-              SizedBox(width: 30),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(data.bestCase,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Montserrat',
-                          fontSize: 11.0,
-                          letterSpacing: 2,
-                        )),
-                    Text(data.worstCase,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Montserrat',
-                          fontSize: 11.0,
-                          letterSpacing: 2,
-                        )),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-*/
-  /*Container _buildCheckIcon() {
-    String buttonAsset = selectedInterests.isEmpty
-        ? 'assets/ic_check_gray.png'
-        : 'assets/ic_check_yellow_rounded.png';
-    return Container(
-      child: Image.asset(buttonAsset),
-    );
-  }*/
-
-  Container _buildNextButton() {
-    return Container(
-      alignment: Alignment.center,
-      margin: const EdgeInsets.only(left: 71, right: 71, top: 21),
-      child: SizedBox(
-        width: double.infinity,
-        height: 45,
-        child: Center(
-          child: Text(
-            "Question".toUpperCase(),
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'Montserrat',
-              fontSize: 19,
-              letterSpacing: 2,
             ),
           ),
-        ),
+        );
+      },
+      separatorBuilder: (context, i) => const SizedBox(
+        height: 10,
       ),
     );
   }
 
-/* //double rating = 0;
-  Slider _buildSlider() {
-    return Slider(
-      value: rating,
-      onChanged: (final newRating) {
-        setState(() => rating = newRating);
+  ListView _listViewListTile(DocumentSnapshot document) {
+    return ListView.separated(
+      padding: const EdgeInsets.all(8),
+      itemCount: document['answers'].length,
+      itemBuilder: (context, i) {
+        List answers = document['answers'];
+        double interpolation = 1 / (answers.length);
+
+        Color color = Color.lerp(Colors.green, Colors.yellow, i * interpolation);
+        Color color2 = Color.lerp(Colors.yellow, Colors.red, i * interpolation);
+
+        return Card(
+          color: (selectedCard == i) ? Colors.grey[300] : null,
+          child: ListTile(
+            title: Center(
+              child: Text(
+                answers[i],
+                style: TextStyle(
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
+                  fontSize: 20.0,
+                  letterSpacing: 2,
+                ),
+              ),
+            ),
+            onTap: () {
+              setState(() {
+                if (selectedCard == i) {
+                  selectedCard = null;
+                } else {
+                  selectedCard = i;
+                }
+              });
+              print('Card tapped $i');
+            },
+          ),
+        );
       },
-      activeColor: Colors.lightGreen[700],
-      inactiveColor: Colors.lightGreen[200],
-      min: 0,
-      max: 5,
-      divisions: 5,
-      label: "$rating.toInt()",
+      separatorBuilder: (context, i) => const SizedBox(
+        height: 10,
+      ),
     );
-  }*/
-}
+  }
 
-/*Slider _buildSlider() {
-  return Slider(
-    value: rating,
-    onChanged: (newRating) {
-      setState(() => rating = newRating);
-    },
-    activeColor: Colors.lightGreen[700],
-    inactiveColor: Colors.lightGreen[200],
-    min: 0,
-    max: 5,
-    divisions: 5,
-    label: "$rating",
-  );
-}*/
+  ListView _CheckboxList(DocumentSnapshot document) {
+    return ListView.separated(
+      padding: const EdgeInsets.all(8),
+      itemCount: document['answers'].length,
+      itemBuilder: (context, i) {
+        List answers = document['answers'];
+        double interpolation = 1 / (answers.length);
+        Color color = Color.lerp(Colors.green, Colors.red, i * interpolation);
+        return Card(
+          child: InkWell(
+            splashColor: Colors.lightGreen,
+            onTap: () {
+              print('Card tapped $i');
+            },
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  answers[i],
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    fontSize: 20.0,
+                    letterSpacing: 2,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+      separatorBuilder: (context, i) => const SizedBox(
+        height: 10,
+      ),
+    );
+  }
 
-class QuestionModel {
-  String title;
-  String description;
-  String zeroCase;
-  String twoCase;
-  String fourCase;
-  String sixCase;
-
-  QuestionModel(
-      this.title, this.description, this.zeroCase, this.twoCase, this.fourCase, this.sixCase);
-}
-
-class SlideDots extends StatelessWidget {
-  bool isActive;
-
-  SlideDots(this.isActive);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 150),
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      height: isActive ? 12 : 8,
-      width: isActive ? 12 : 8,
-      decoration: BoxDecoration(
-        color: isActive ? Theme.of(context).primaryColor : Colors.grey,
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+  Container _buildDescriptionItem(DocumentSnapshot document) {
+    return Container(
+      height: 10,
+      padding: EdgeInsets.all(20.0),
+      margin: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(document['title'],
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.lightGreen[700],
+                fontFamily: 'Montserrat',
+                fontSize: 15.0,
+                letterSpacing: 2,
+              )),
+          SizedBox(height: 7),
+          Text(document['description'],
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Montserrat',
+                fontSize: 14.0,
+                letterSpacing: 2,
+              )),
+        ],
       ),
     );
   }

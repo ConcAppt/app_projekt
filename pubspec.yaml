@@ -16,6 +16,7 @@ dependencies:
   path_provider: ^1.6.5
   shared_preferences: ^0.5.6+3
   http: any
+  smooth_page_indicator: ^0.2.0
 
   cloud_firestore: ^0.13.0+1
 

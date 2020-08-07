@@ -69,7 +69,7 @@ class DBProvider {
         onCreate: (db, version) async {
           await db.execute('''
           CREATE TABLE data (
-            email TEXT PRIMARY KEY, date INTEGER, value INTEGER
+            email TEXT PRIMARY KEY, questionnaire TEXT, date INTEGER, value INTEGER
           )
         ''');
         },
@@ -82,18 +82,18 @@ class DBProvider {
 
     var res = await db.rawInsert('''
       INSERT INTO data(
-        email, date, value
+        email, questionnaire, date, value
       ) VALUES (?, ?, ?)
-    ''', [newValueQ.email, newValueQ.date, newValueQ.value]);
+    ''', [newValueQ.email, newValueQ.questionnaire, newValueQ.date, newValueQ.value]);
 
     return res;
   }
 
-  Future<Data> getData(String email) async{
+  Future<Data> getData(String email, String questionnaire) async{
     var db = await database;
     var result = await db.rawQuery('''
-    SELECT * FROM users WHERE email = ?''',
-        [email]);
+    SELECT * FROM users WHERE email = ? AND questionnaire = ?''',
+        [email, questionnaire]);
     if (result.length == 0) return null;
 
     return Data.fromJson(result.first);//get latest data --> add week, month or year
