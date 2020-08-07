@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../Overview.dart';
-import 'PageViewUpdate.dart';
+import '../../Ablage/Overview.dart';
+import '../Questions/PageViewUpdate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum Department { back, start }
@@ -24,7 +24,7 @@ class _BuildOverviewState extends State<BuildOverview> {
                 context: context,
                 builder: (BuildContext context) {
                   return SimpleDialog(
-                    title: const Text('Do you want to take the test now?'),
+                    title: const Text('Show me the Results'),
                     children: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -50,7 +50,7 @@ class _BuildOverviewState extends State<BuildOverview> {
                               onPressed: () {
                                 Navigator.pop(context, Department.start);
                               },
-                              child: const Text('Start'),
+                              child: const Text('Go'),
                             ),
                           ),
                         ],

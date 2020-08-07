@@ -1,10 +1,10 @@
 import 'package:appprojekt/Screens/Home/HomePageFirebase.dart';
-import 'package:appprojekt/Screens/Questions/QuestionsWheel.dart';
+import 'file:///C:/Users/paulb/Desktop/app_projekt/AndroidDoc/app_projektTG/lib/Ablage/QuestionsWheel.dart';
 import 'package:flutter/material.dart';
 import '../Screens/Evaluation/EvaluationPageFirebase.dart';
 import '../Screens/Profile/ProfilePage.dart';
 import '../Screens/Settings/SettingsPage.dart';
-import '../Screens/Questions/MultipleChoiceQuestions.dart';
+import '../Ablage/MultipleChoiceQuestions.dart';
 import '../Screens/Start/Start.dart';
 //import '../Screens/Home/PageViewUpdate.dart';
 import '../Screens/Questions/SwipingQuestionsFirebase.dart';

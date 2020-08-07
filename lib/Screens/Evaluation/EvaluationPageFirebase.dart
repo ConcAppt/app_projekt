@@ -3,11 +3,14 @@ import 'package:appprojekt/Screens/Questions/MultipleChoiceQuestionsFirebase.dar
 import 'package:appprojekt/Screens/Questions/WheelQuestionsFirebase.dart';
 import 'package:flutter/material.dart';
 import '../Questions/PageViewUpdate.dart';
-import '../Questions/Questionnaire.dart';
+import '../../Ablage/Questionnaire.dart';
 import '../Questions/QuestionnaireFirebase.dart';
 import '../../Widgets/MyBottomNavigationBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'Charts.dart';
+import 'SwipingQuestionsEvaluation.dart';
+import 'WheelQuestionsEvaluation.dart';
+import 'MultipleChoiceEvaluation.dart';
 
 class EvaluationPage extends StatefulWidget {
   @override
@@ -22,6 +25,16 @@ class _EvaluationPageState extends State<EvaluationPage> {
       body: SafeArea(
           child: Column(
         children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Text('Hello X!',
+                style: TextStyle(
+                    fontSize: 30,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.lightGreen[700],
+                    letterSpacing: 2)),
+          ),
           Container(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
             child: Text(
@@ -40,9 +53,10 @@ class _EvaluationPageState extends State<EvaluationPage> {
                   if (!snapshot.hasData) return const CircularProgressIndicator();
                   return ListView.separated(
                     padding: const EdgeInsets.all(8),
+                    shrinkWrap: true,
                     itemCount: snapshot.data.documents.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return _buildOverview(context, snapshot.data.documents[index]);
+                      return _buildListTile(context, snapshot.data.documents[index]);
                     },
                     separatorBuilder: (BuildContext context, int index) => const Divider(),
                   );
@@ -56,9 +70,31 @@ class _EvaluationPageState extends State<EvaluationPage> {
 
 enum Department { back, start }
 
-Widget _buildOverview(BuildContext context, DocumentSnapshot document) {
-  return Material(
-    child: InkWell(
+Widget _buildListTile(BuildContext context, DocumentSnapshot document) {
+  return Card(
+    color: Colors.lightGreen[600].withOpacity(0.7),
+    child: ListTile(
+      title: Text(
+        (document['questionnaireName'] + "\t"),
+        style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Montserrat',
+            fontSize: 15),
+      ),
+      subtitle: Center(
+        child: Text(
+          (document['questionnaireDescription'] + "\n\n" + 'Records:'),
+          style: TextStyle(
+              color: Colors.black87,
+              fontFamily: 'Montserrat',
+              letterSpacing: 1.5,
+              fontWeight: FontWeight.w400,
+              fontSize: 13),
+        ),
+      ),
+      dense: true,
+      isThreeLine: true,
       onTap: () {
         Future<void> openDialog() async {
           switch (await showDialog<Department>(
@@ -113,22 +149,22 @@ Widget _buildOverview(BuildContext context, DocumentSnapshot document) {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => BuildChart(
-                            // quename: document['questionnaireName'],
+                        builder: (context) => BuildSwipingEval(
+                              quename: document['questionnaireName'],
                             )));
               } else if (document['type'] == 'WheelQuestion') {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => BuildChart(
-                            // quename: document['questionnaireName'],
+                        builder: (context) => BuildWheelEval(
+                              quename: document['questionnaireName'],
                             )));
               } else if (document['type'] == 'MultipleChoiceQuestion') {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => BuildChart(
-                            // quename: document['questionnaireName'],
+                        builder: (context) => BuildMCEval(
+                              quename: document['questionnaireName'],
                             )));
               }
               break;
@@ -137,50 +173,6 @@ Widget _buildOverview(BuildContext context, DocumentSnapshot document) {
 
         openDialog();
       },
-      child: Container(
-        padding: EdgeInsets.all(10),
-        height: 100,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(15),
-              topLeft: Radius.circular(5),
-              bottomLeft: Radius.circular(5),
-              bottomRight: Radius.circular(5)),
-          color: Colors.lightGreen[600].withOpacity(0.7),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              document['questionnaireName'],
-              style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat',
-                  fontSize: 15),
-            ),
-            Spacer(flex: 8),
-            Text(
-              document['questionnaireDescription'],
-              style: TextStyle(
-                  color: Colors.black87,
-                  fontFamily: 'Montserrat',
-                  letterSpacing: 1.5,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 13),
-            ),
-            Spacer(flex: 8),
-            Text(
-              "Records: ",
-              style: TextStyle(
-                  color: Colors.black87,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 13),
-            )
-          ],
-        ),
-      ),
     ),
   );
 }

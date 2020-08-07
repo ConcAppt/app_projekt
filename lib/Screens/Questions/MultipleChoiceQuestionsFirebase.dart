@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../Home/HomePageFirebase.dart';
+import '../../Widgets/MyBottomNavigationBar.dart';
 
 enum answerAlternatives { No, sometimes, often }
 
@@ -18,7 +17,6 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
   final PageController _pageController = PageController(initialPage: 0);
   var myFeedbackText = 'neutral';
   var sliderValue = 4.0;
-  bool _isSelected = false;
   int selectedItem;
   answerAlternatives _alternatives;
   @override
@@ -181,7 +179,7 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
                                                                   context,
                                                                   MaterialPageRoute(
                                                                       builder: (context) =>
-                                                                          HomePage()),
+                                                                          MyBottomNavigationBar()),
                                                                 );
                                                               },
                                                             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../../Widgets/MyBottomNavigationBar.dart';
 
 class BuildSwipingQuestionnaire extends StatefulWidget {
   BuildSwipingQuestionnaire({Key key, this.quename}) : super(key: key);
@@ -100,12 +100,55 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                           onPressed: () {
                                             //TODO check Answer
                                             if (i == snapshot.data.documents.length - 1) {
-                                              _pageController.jumpToPage(0);
+                                              Future<void> _showEndDialog() async {
+                                                return showDialog<void>(
+                                                  context: context,
+                                                  barrierDismissible:
+                                                      false, // user must tap button!
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog(
+                                                      shape: RoundedRectangleBorder(),
+                                                      title: Text('Attention'),
+                                                      content: SingleChildScrollView(
+                                                        child: ListBody(
+                                                          children: <Widget>[
+                                                            Text(
+                                                                'Questionnaire has been completely processed '),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      actions: <Widget>[
+                                                        FlatButton(
+                                                          child: Text(
+                                                            'Okay',
+                                                            style: TextStyle(
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.lightGreen,
+                                                              fontFamily: 'Montserrat',
+                                                              fontSize: 20.0,
+                                                              letterSpacing: 2,
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      MyBottomNavigationBar()),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              }
+
+                                              _showEndDialog();
                                             } else {
                                               _pageController.nextPage(
                                                   duration: Duration(milliseconds: 300),
                                                   curve: Curves.easeIn);
-
                                               sliderValue = 4;
                                             }
                                           }),
