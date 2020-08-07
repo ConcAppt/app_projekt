@@ -1,4 +1,7 @@
 import 'package:appprojekt/Widgets/MyBottomNavigationBar.dart';
+import 'package:appprojekt/data/Database.dart';
+import 'package:appprojekt/models/user.dart';
+import 'file:///C:/Users/thoma/AndroidStudioProjects/app_projekt/lib/Widgets/UserProvider_InWi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -15,9 +18,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(primaryColor: Colors.teal[700], backgroundColor: Colors.grey[200]),
-        // Initially display FirstPage
-        home: MyBottomNavigationBar());
+          theme: ThemeData(primaryColor: Colors.teal[700], backgroundColor: Colors.grey[200]),
+          // Initially display FirstPage
+          home: Start(),
+    );
   }
 }
 

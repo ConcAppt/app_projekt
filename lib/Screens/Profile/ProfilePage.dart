@@ -2,36 +2,20 @@ import 'package:appprojekt/Widgets/MyBottomNavigationBar.dart';
 import 'package:appprojekt/data/Database.dart';
 import 'package:appprojekt/models/user.dart';
 import 'package:flutter/material.dart';
+import 'file:///C:/Users/thoma/AndroidStudioProjects/app_projekt/lib/Widgets/UserProvider_InWi.dart';
 
 class ProfilePage extends StatelessWidget {
-  ProfilePage({@required this.user});
-  final User user;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightGreen[700],
-        title: Text(
-            'Your Profile',
-            style: TextStyle(
-                color: Colors.grey[200],
-                fontFamily: 'Montserrat',
-                fontSize: 25.0)
+    return SafeArea(
+      child: Scaffold(
+        body: Column(children: <Widget>[
+          Text(UserProvider.of(context).user.name),
+          Text(UserProvider.of(context).user.age.toString()),
+          Text(UserProvider.of(context).user.email),
+        ],
         ),
-      ),
-      body: Column(children: <Widget>[
-        Text(user.name),
-        Text(user.age.toString()),
-        Text(user.email),
-        RaisedButton(
-          onPressed: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MyBottomNavigationBar()),
-            );
-          },
-        )
-      ],
       ),
     );
   }

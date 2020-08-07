@@ -11,6 +11,7 @@ class BuildSwipingQuestionnaire extends StatefulWidget {
 
 class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
   int _currentPage = 0;
+  double _sumValue = 0;
 
   final PageController _pageController = PageController(initialPage: 0);
   var myFeedbackText = 'neutral';
@@ -105,6 +106,10 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                   duration: Duration(milliseconds: 300),
                                                   curve: Curves.easeIn);
 
+                                              _sumValue = _sumValue + sliderValue;
+                                              print(_sumValue);
+                                              //DateTime now = DateTime.now();
+                                              //String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(now);
                                               sliderValue = 4;
                                             }
                                           }),
@@ -173,6 +178,8 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                               myFeedbackText = "strongly agree";
                             }
                           });
+                          /*_sumValue = _sumValue + sliderValue;
+                          print(_sumValue);*/
                         },
                       ),
                     ),

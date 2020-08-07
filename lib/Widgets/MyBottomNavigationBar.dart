@@ -7,22 +7,27 @@ import '../Screens/Questions/MultipleChoiceQuestions.dart';
 import '../Screens/Start/Start.dart';
 //import '../Screens/Home/PageViewUpdate.dart';
 import '../Screens/Questions/SwipingQuestionsFirebase.dart';
+import 'package:appprojekt/models/user.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
+  MyBottomNavigationBar();
+
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<MyBottomNavigationBar> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
+
   final List<Widget> _children = [
     HomePage(),
     EvaluationPage(),
-    Start(),
-    //ProfilePage(),
+    //Start(),
+    ProfilePage(),
     BuildMyQuestionnaire(),
     //SettingsPage(),
   ];
+
 
   @override
   Widget build(BuildContext context) {

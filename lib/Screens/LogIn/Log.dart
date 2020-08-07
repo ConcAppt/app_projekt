@@ -1,4 +1,6 @@
 import 'package:appprojekt/Screens/Profile/ProfilePage.dart';
+import 'package:appprojekt/Widgets/MyBottomNavigationBar.dart';
+import 'file:///C:/Users/thoma/AndroidStudioProjects/app_projekt/lib/Widgets/UserProvider_InWi.dart';
 import 'package:flutter/material.dart';
 //import 'package:email_validator/email_validator.dart';
 import 'package:appprojekt/models/user.dart';
@@ -143,11 +145,10 @@ class _LogListState extends State<LogList> {
                       if (true) {
                         User user = await DBProvider.db.loginUser(
                             _email, _password);
-
                         if (user != null) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ProfilePage(user: user)),
+                            MaterialPageRoute(builder: (context) => UserProvider(user: user,child: MyBottomNavigationBar())),
                           );
                         } else {
                           openDialog();
