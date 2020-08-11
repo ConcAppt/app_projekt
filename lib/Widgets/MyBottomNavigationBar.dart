@@ -30,6 +30,7 @@ class _HomeState extends State<MyBottomNavigationBar> {
     SettingsPage(),
   ];
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
