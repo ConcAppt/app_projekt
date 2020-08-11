@@ -1,5 +1,8 @@
+import 'package:appprojekt/Screens/LogIn/LogIn.dart';
 import 'package:appprojekt/Screens/Profile/ProfilePage.dart';
+import 'package:appprojekt/Widgets/MyBottomNavigationBar.dart';
 import 'package:appprojekt/data/Database.dart';
+import 'file:///C:/Users/thoma/AndroidStudioProjects/app_projekt/lib/Widgets/UserProvider_InWi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:appprojekt/models/user.dart';
@@ -11,7 +14,7 @@ class List extends StatefulWidget {
   _ListState createState() => _ListState();
 }
 
-enum Department { back }
+enum Department { back, LogIn }
 
 class _ListState extends State<List> {
   String _name;
@@ -28,17 +31,22 @@ class _ListState extends State<List> {
           return SimpleDialog(
             title: const Text("Passwords don't match"),
             children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.lightGreen[600].withOpacity(0.7),
-                ),
-                child: SimpleDialogOption(
-                  onPressed: () {
-                    Navigator.pop(context, Department.back);
-                  },
-                  child: const Text('Back'),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.lightGreen[600].withOpacity(0.7),
+                    ),
+                    child: SimpleDialogOption(
+                      onPressed: () {
+                        Navigator.pop(context, Department.back);
+                      },
+                      child: const Text('Back'),
+                    ),
+                  ),
+                ],
               ),
             ],
             shape: RoundedRectangleBorder(
@@ -49,11 +57,67 @@ class _ListState extends State<List> {
           );
         })) {
       case Department.back:
-        print("klappt");
+        //....
+        break;
+      case Department.LogIn:
         //....
         break;
     }
   }
+
+  Future<void> userExists() async {
+    switch (await showDialog<Department>(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: const Text("This user already exists."),
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.lightGreen[600].withOpacity(0.7),
+                    ),
+                    child: SimpleDialogOption(
+                      onPressed: () {
+                        Navigator.pop(context, Department.back);
+                      },
+                      child: const Text('Back'),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.lightGreen[600].withOpacity(0.7),
+                    ),
+                    child: SimpleDialogOption(
+                      onPressed: () {
+                        Navigator.pop(context, Department.LogIn);
+                      },
+                      child: const Text('Log In'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+            shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  style: BorderStyle.none,
+                ),
+                borderRadius: BorderRadius.circular(10)),
+          );
+        })) {
+      case Department.back:
+      //....
+        break;
+      case Department.LogIn:
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn()));
+        break;
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -189,18 +253,25 @@ class _ListState extends State<List> {
                 color: Colors.lightGreen[700],
                 highlightElevation: 2,
                 elevation: 8,
-                onPressed: () {
+                onPressed: () async {
                   // Validate will return true if the form is valid, or false if
                   // the form is invalid.
                   if (_formKey.currentState.validate()) {
                     if (true && (_password == _confirmpassword)) {
                       var newDBUser =
                           User(name: _name, age: _age, email: _email, password: _password);
-                      DBProvider.db.newUser(newDBUser);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ProfilePage(user: newDBUser)),
-                      );
+                      User user = await DBProvider.db.loginUser(newDBUser.email, newDBUser.password);
+                      if (user == null) {
+                        DBProvider.db.newUser(newDBUser);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>
+                              UserProvider(user: newDBUser,
+                                  child: MyBottomNavigationBar())),
+                        );
+                      } else {
+                        userExists();
+                      }
                     }
                     if (true && (_password != _confirmpassword)) {
                       openDialog();

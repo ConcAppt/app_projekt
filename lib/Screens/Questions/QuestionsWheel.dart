@@ -186,145 +186,99 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
     );
   }
 
-  int _selectedItemIndex = 0;
   ListWheelScrollView _buildListWheel(QuestionModel data) {
-    return ListWheelScrollView(
-        itemExtent: 100,
-        squeeze: 0.9,
-        clipToSize: false,
-        onSelectedItemChanged: (index) => {
-              setState(() {
-                _selectedItemIndex = index;
-                print(_selectedItemIndex);
-              })
-            },
-        children: [
-          Card(
-            color: Colors.grey.withOpacity(0.1),
-            child: Center(
-              child: Text(
-                data.zeroCase,
-                style: TextStyle(
-                  color: Colors.green,
-                  fontFamily: 'Montserrat',
-                  fontSize: 20.0,
-                  letterSpacing: 2,
-                ),
-              ),
-            ),
-          ),
-          Card(
-            child: InkWell(
-              splashColor: Colors.lightGreen,
-              onTap: () {
-                print('Card tapped');
-              },
-              child: Center(
-                child: Text(
-                  '1',
-                  style: TextStyle(
-                    color: Colors.lightGreen,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat',
-                    fontSize: 20.0,
-                    letterSpacing: 2,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Card(
-            child: Center(
-              child: Text(
-                data.twoCase,
-                style: TextStyle(
-                  color: Colors.lime,
-                  fontFamily: 'Montserrat',
-                  fontSize: 20.0,
-                  letterSpacing: 2,
-                ),
-              ),
-            ),
-          ),
-          Card(
-            child: Center(
-              child: Text(
-                '3',
-                style: TextStyle(
-                  color: Colors.yellow,
-                  fontFamily: 'Montserrat',
-                  fontSize: 20.0,
-                  letterSpacing: 2,
-                ),
-              ),
-            ),
-          ),
-          Card(
-            child: Center(
-              child: Text(
-                data.fourCase,
-                //overflow: TextOverflow.visible,
-                style: TextStyle(
-                  color: Colors.amber,
-                  fontFamily: 'Montserrat',
-                  fontSize: 20.0,
-                  letterSpacing: 2,
-                ),
-              ),
-            ),
-          ),
-          Card(
-            child: Center(
-              child: Text(
-                '5',
-                style: TextStyle(
-                  color: Colors.orange,
-                  fontFamily: 'Montserrat',
-                  fontSize: 20.0,
-                  letterSpacing: 2,
-                ),
-              ),
-            ),
-          ),
-          Card(
-            child: Center(
-              child: Text(
-                data.sixCase,
-                style: TextStyle(
-                  color: Colors.deepOrange,
-                  fontFamily: 'Montserrat',
-                  fontSize: 20.0,
-                  letterSpacing: 2,
-                ),
-              ),
-            ),
-          ),
-        ]);
-  }
-
-  ListView _listView(QuestionModel data) {
-    return ListView.builder(itemBuilder: (context, i) {
-      return Card(
-        child: InkWell(
-          splashColor: Colors.lightGreen,
-          onTap: () {
-            print('Card tapped');
-          },
-          child: Center(
-            child: Text(
-              'bla',
-              style: TextStyle(
-                color: Colors.lightGreen,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Montserrat',
-                fontSize: 20.0,
-                letterSpacing: 2,
-              ),
+    return ListWheelScrollView(itemExtent: 100, squeeze: 0.9, clipToSize: false, children: [
+      Container(
+        child: Center(
+          child: Text(
+            data.zeroCase,
+            style: TextStyle(
+              color: Colors.green,
+              fontFamily: 'Montserrat',
+              fontSize: 20.0,
+              letterSpacing: 2,
             ),
           ),
         ),
-      );
-    });
+      ),
+      Container(
+        child: Text(
+          '1',
+          style: TextStyle(
+            color: Colors.lightGreen,
+            fontFamily: 'Montserrat',
+            fontSize: 20.0,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+      Container(
+        height: 20,
+        child: Text(
+          data.twoCase,
+          style: TextStyle(
+            color: Colors.lime,
+            fontFamily: 'Montserrat',
+            fontSize: 20.0,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+      Container(
+        height: 20,
+        child: Text(
+          '3',
+          style: TextStyle(
+            color: Colors.yellow,
+            fontFamily: 'Montserrat',
+            fontSize: 20.0,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+      Container(
+        width: MediaQuery.of(context).size.width,
+        height: 20,
+        child: Center(
+          child: Text(
+            data.fourCase,
+            //overflow: TextOverflow.visible,
+            style: TextStyle(
+              color: Colors.amber,
+              fontFamily: 'Montserrat',
+              fontSize: 20.0,
+              letterSpacing: 2,
+            ),
+          ),
+        ),
+      ),
+      Container(
+        height: 20,
+        child: Center(
+          child: Text(
+            '5',
+            style: TextStyle(
+              color: Colors.orange,
+              fontFamily: 'Montserrat',
+              fontSize: 20.0,
+              letterSpacing: 2,
+            ),
+          ),
+        ),
+      ),
+      Container(
+        height: 20,
+        child: Text(
+          data.sixCase,
+          style: TextStyle(
+            color: Colors.deepOrange,
+            fontFamily: 'Montserrat',
+            fontSize: 20.0,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+    ]);
   }
 
   Column _buildDescriptionItem(QuestionModel data) {
@@ -354,9 +308,122 @@ class _CustomPageViewScreenState extends State<CustomPageViewScreen> {
             ],
           ),
         ),
+        /* Expanded(
+          child: Row(
+            children: <Widget>[
+              RotatedBox(
+                quarterTurns: 1,
+                child: Slider(
+                  value: rating,
+                  onChanged: (newRating) {
+                    setState(() => rating = newRating);
+                  },
+                  activeColor: Colors.lightGreen[700],
+                  inactiveColor: Colors.lightGreen[200],
+                  min: 0,
+                  max: 5,
+                  divisions: 5,
+                  label: "$rating",
+                ),
+              ),
+              SizedBox(width: 30),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(data.bestCase,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Montserrat',
+                          fontSize: 11.0,
+                          letterSpacing: 2,
+                        )),
+                    Text(data.worstCase,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Montserrat',
+                          fontSize: 11.0,
+                          letterSpacing: 2,
+                        )),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),*/
       ],
     );
   }
+
+  /*double rating;
+  Column _buildAnswerItem(QuestionModel data, ratingL, currentIdx) {
+    if (ratingList[currentIdx] == 0) {
+      rating = 0;
+    } else {
+      rating = ratingList[currentIdx];
+    }
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: Row(
+            children: <Widget>[
+              RotatedBox(
+                quarterTurns: 1,
+                child: Slider(
+                  value: rating,
+                  onChanged: (newRating) {
+                    setState(() {
+                      rating = newRating;
+                      ratingList[currentIdx] = newRating;
+                    });
+                  },
+                  activeColor: Colors.lightGreen[700],
+                  inactiveColor: Colors.lightGreen[200],
+                  min: 0,
+                  max: 6,
+                  divisions: 6,
+                  label: "$rating",
+                ),
+              ),
+              SizedBox(width: 30),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(data.bestCase,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Montserrat',
+                          fontSize: 11.0,
+                          letterSpacing: 2,
+                        )),
+                    Text(data.worstCase,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Montserrat',
+                          fontSize: 11.0,
+                          letterSpacing: 2,
+                        )),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+*/
+  /*Container _buildCheckIcon() {
+    String buttonAsset = selectedInterests.isEmpty
+        ? 'assets/ic_check_gray.png'
+        : 'assets/ic_check_yellow_rounded.png';
+    return Container(
+      child: Image.asset(buttonAsset),
+    );
+  }*/
 
   Container _buildNextButton() {
     return Container(

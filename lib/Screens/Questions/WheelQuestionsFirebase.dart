@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../Home/HomePageFirebase.dart';
-import '../../Widgets/MyBottomNavigationBar.dart';
 
 class BuildWheelQuestionnaire extends StatefulWidget {
   BuildWheelQuestionnaire({Key key, this.quename}) : super(key: key);
@@ -177,7 +176,7 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
                                                                 context,
                                                                 MaterialPageRoute(
                                                                     builder: (context) =>
-                                                                        MyBottomNavigationBar()),
+                                                                        HomePage()),
                                                               );
                                                             },
                                                           ),
