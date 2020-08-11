@@ -2,9 +2,6 @@ import 'package:appprojekt/Widgets/MyBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import '../Ablage/Questionnaire.dart';
-import '../Ablage/Overview.dart';
-import '../Ablage/route_generator.dart';
 import 'package:appprojekt/Screens/CreateProfile/CaP.dart';
 import 'package:appprojekt/Screens/Start/Start.dart';
 import 'package:email_validator/email_validator.dart';
@@ -20,26 +17,3 @@ class MyApp extends StatelessWidget {
         home: MyBottomNavigationBar());
   }
 }
-
-/*void main() {
-  return runApp(
-    MaterialApp(
-        home: Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: ListView.separated(
-          padding: const EdgeInsets.all(8),
-          itemCount: Questionnaire().overviewBank.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Questionnaire(questionnaireNumber: index);
-          },
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
-        ),
-        // child: ListView(
-        // children: <Widget>[Questionnaire(), Questionnaire()],
-      ),
-      bottomNavigationBar: Home(),
-    )),
-  );
-}*/

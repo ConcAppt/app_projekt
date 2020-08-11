@@ -120,6 +120,26 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                       actions: <Widget>[
                                                         FlatButton(
                                                           child: Text(
+                                                            'Activate Reminder',
+                                                            style: TextStyle(
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.lightGreen,
+                                                              fontFamily: 'Montserrat',
+                                                              fontSize: 20.0,
+                                                              letterSpacing: 2,
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      MyBottomNavigationBar()),
+                                                            );
+                                                          },
+                                                        ),
+                                                        FlatButton(
+                                                          child: Text(
                                                             'Okay',
                                                             style: TextStyle(
                                                               fontWeight: FontWeight.bold,
