@@ -4,7 +4,6 @@ import 'package:path/path.dart';
 import 'package:appprojekt/models/user.dart';
 import 'dart:async';
 import 'dart:io' as io;
-import 'package:appprojekt/models/data.dart';
 
 class DBProvider {
   DBProvider._();
@@ -61,43 +60,6 @@ class DBProvider {
     var db = await database;
     int res = await db.delete("users");
     return res;
-  }
-
-  initDaB() async {
-    return await openDatabase(
-        join(await getDatabasesPath(), 'app_projekt.db'),
-        onCreate: (db, version) async {
-          await db.execute('''
-          CREATE TABLE data (
-            email TEXT PRIMARY KEY, questionnaire TEXT, date INTEGER, value INTEGER
-          )
-        ''');
-        },
-        version: 2
-    );
-  }
-
-  newValueQ(Data newValueQ) async {
-    final db = await database;
-
-    var res = await db.rawInsert('''
-      INSERT INTO data(
-        email, questionnaire, date, value
-      ) VALUES (?, ?, ?)
-    ''', [newValueQ.email, newValueQ.questionnaire, newValueQ.date, newValueQ.value]);
-
-    return res;
-  }
-
-  Future<Data> getData(String email, String questionnaire) async{
-    var db = await database;
-    var result = await db.rawQuery('''
-    SELECT * FROM users WHERE email = ? AND questionnaire = ?''',
-        [email, questionnaire]);
-    if (result.length == 0) return null;
-
-    return Data.fromJson(result.first);//get latest data --> add week, month or year
-
   }
 
 }

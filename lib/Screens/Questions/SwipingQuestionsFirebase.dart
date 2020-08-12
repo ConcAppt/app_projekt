@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../../Widgets/MyBottomNavigationBar.dart';
 
 class BuildSwipingQuestionnaire extends StatefulWidget {
-  BuildSwipingQuestionnaire({Key key, this.name}) : super(key: key);
-  final name;
+  BuildSwipingQuestionnaire({Key key, this.quename}) : super(key: key);
+  final quename;
   @override
   _BuildSwipingQuestionnaireState createState() => _BuildSwipingQuestionnaireState();
 }
 
 class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
   int _currentPage = 0;
-  double _sumValue = 0;
 
   final PageController _pageController = PageController(initialPage: 0);
   var myFeedbackText = 'neutral';
@@ -38,7 +38,7 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
           backgroundColor: Colors.white,
           centerTitle: true,
           title: Text(
-            widget.name.toUpperCase(),
+            widget.quename.toUpperCase(),
             // textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 25,
@@ -51,7 +51,7 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
         body: StreamBuilder(
             stream: Firestore.instance
                 .collection('SwipingQuestions')
-                .document(widget.name)
+                .document(widget.quename)
                 .collection("Questions")
                 .snapshots(),
             builder: (context, snapshot) {
@@ -66,16 +66,16 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                       alignment: AlignmentDirectional.topCenter,
                       children: <Widget>[
                         Stack(alignment: AlignmentDirectional.topCenter, children: <Widget>[
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 35),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                for (int i = 0; i < snapshot.data.documents.length; i++)
-                                  if (i == _currentPage) SlideDots(true) else SlideDots(false)
-                              ],
-                            ),
+                          SmoothPageIndicator(
+                            controller: _pageController,
+                            count: snapshot.data.documents.length,
+                            effect: ScrollingDotsEffect(
+                                activeDotColor: Colors.lightGreen[700],
+                                dotColor: Colors.grey,
+                                dotHeight: 10,
+                                dotWidth: 10,
+                                maxVisibleDots: 11,
+                                spacing: 15.0),
                           )
                         ]),
                         PageView.builder(
@@ -100,16 +100,75 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                           onPressed: () {
                                             //TODO check Answer
                                             if (i == snapshot.data.documents.length - 1) {
-                                              _pageController.jumpToPage(0);
+                                              Future<void> _showEndDialog() async {
+                                                return showDialog<void>(
+                                                  context: context,
+                                                  barrierDismissible:
+                                                      false, // user must tap button!
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog(
+                                                      shape: RoundedRectangleBorder(),
+                                                      title: Text('Attention'),
+                                                      content: SingleChildScrollView(
+                                                        child: ListBody(
+                                                          children: <Widget>[
+                                                            Text(
+                                                                'Questionnaire has been completely processed '),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      actions: <Widget>[
+                                                        FlatButton(
+                                                          child: Text(
+                                                            'Activate Reminder',
+                                                            style: TextStyle(
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.lightGreen,
+                                                              fontFamily: 'Montserrat',
+                                                              fontSize: 20.0,
+                                                              letterSpacing: 2,
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      MyBottomNavigationBar()),
+                                                            );
+                                                          },
+                                                        ),
+                                                        FlatButton(
+                                                          child: Text(
+                                                            'Okay',
+                                                            style: TextStyle(
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.lightGreen,
+                                                              fontFamily: 'Montserrat',
+                                                              fontSize: 20.0,
+                                                              letterSpacing: 2,
+                                                            ),
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      MyBottomNavigationBar()),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              }
+
+                                              _showEndDialog();
                                             } else {
                                               _pageController.nextPage(
                                                   duration: Duration(milliseconds: 300),
                                                   curve: Curves.easeIn);
-
-                                              _sumValue = _sumValue + sliderValue;
-                                              print(_sumValue);
-                                              //DateTime now = DateTime.now();
-                                              //String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(now);
                                               sliderValue = 4;
                                             }
                                           }),
@@ -178,8 +237,6 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                               myFeedbackText = "strongly agree";
                             }
                           });
-                          /*_sumValue = _sumValue + sliderValue;
-                          print(_sumValue);*/
                         },
                       ),
                     ),
@@ -225,33 +282,6 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                 letterSpacing: 2,
               )),
         ],
-      ),
-    );
-  }
-}
-
-/*class QuestionModelScale {
-  String title;
-  String description;
-
-  QuestionModelScale(this.title, this.description);
-}*/
-
-class SlideDots extends StatelessWidget {
-  bool isActive;
-
-  SlideDots(this.isActive);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 150),
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      height: isActive ? 12 : 8,
-      width: isActive ? 12 : 8,
-      decoration: BoxDecoration(
-        color: isActive ? Colors.lightGreen[700] : Colors.grey,
-        borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
     );
   }

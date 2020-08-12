@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../../Widgets/MyBottomNavigationBar.dart';
 
 enum answerAlternatives { No, sometimes, often }
 
@@ -17,7 +17,7 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
   final PageController _pageController = PageController(initialPage: 0);
   var myFeedbackText = 'neutral';
   var sliderValue = 4.0;
-  int selectedItem;
+  bool _isSelected = false;
   answerAlternatives _alternatives;
   @override
   void dispose() {
@@ -40,15 +40,17 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
           ),
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: Text(
-            widget.quename.toUpperCase(),
-            //textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 25,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w600,
-                color: Colors.lightGreen[700],
-                letterSpacing: 2),
+          title: Center(
+            child: Text(
+              widget.quename.toUpperCase(),
+              //textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 25,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w600,
+                  color: Colors.lightGreen[700],
+                  letterSpacing: 2),
+            ),
           ),
         ),
         body: StreamBuilder(
@@ -103,99 +105,14 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
                                             backgroundColor: Colors.lightGreen[700],
                                             onPressed: () {
                                               //TODO check Answer
-                                              Future<void> _showMyDialog() async {
-                                                return showDialog<void>(
-                                                  context: context,
-                                                  barrierDismissible:
-                                                      false, // user must tap button!
-                                                  builder: (BuildContext context) {
-                                                    return AlertDialog(
-                                                      shape: RoundedRectangleBorder(),
-                                                      title: Text('Attention'),
-                                                      content: SingleChildScrollView(
-                                                        child: ListBody(
-                                                          children: <Widget>[
-                                                            Text('Please select an answer option'),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      actions: <Widget>[
-                                                        FlatButton(
-                                                          child: Text(
-                                                            'Okay',
-                                                            style: TextStyle(
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Colors.lightGreen,
-                                                              fontFamily: 'Montserrat',
-                                                              fontSize: 20.0,
-                                                              letterSpacing: 2,
-                                                            ),
-                                                          ),
-                                                          onPressed: () {
-                                                            Navigator.of(context).pop();
-                                                          },
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                );
-                                              }
-
-                                              if (_alternatives == null) {
-                                                _showMyDialog();
+                                              if (i == snapshot.data.documents.length - 1) {
+                                                _pageController.jumpToPage(0);
                                               } else {
-                                                if (i == snapshot.data.documents.length - 1) {
-                                                  Future<void> _showEndDialog() async {
-                                                    return showDialog<void>(
-                                                      context: context,
-                                                      barrierDismissible:
-                                                          false, // user must tap button!
-                                                      builder: (BuildContext context) {
-                                                        return AlertDialog(
-                                                          shape: RoundedRectangleBorder(),
-                                                          title: Text('Attention'),
-                                                          content: SingleChildScrollView(
-                                                            child: ListBody(
-                                                              children: <Widget>[
-                                                                Text(
-                                                                    'Questionnaire has been completely processed '),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          actions: <Widget>[
-                                                            FlatButton(
-                                                              child: Text(
-                                                                'Okay',
-                                                                style: TextStyle(
-                                                                  fontWeight: FontWeight.bold,
-                                                                  color: Colors.lightGreen,
-                                                                  fontFamily: 'Montserrat',
-                                                                  fontSize: 20.0,
-                                                                  letterSpacing: 2,
-                                                                ),
-                                                              ),
-                                                              onPressed: () {
-                                                                Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder: (context) =>
-                                                                          MyBottomNavigationBar()),
-                                                                );
-                                                              },
-                                                            ),
-                                                          ],
-                                                        );
-                                                      },
-                                                    );
-                                                  }
+                                                _pageController.nextPage(
+                                                    duration: Duration(milliseconds: 300),
+                                                    curve: Curves.easeIn);
 
-                                                  _showEndDialog();
-                                                } else {
-                                                  _pageController.nextPage(
-                                                      duration: Duration(milliseconds: 300),
-                                                      curve: Curves.easeIn);
-                                                  _alternatives = null;
-                                                }
+                                                _alternatives = null;
                                               }
                                             }),
                                       )
@@ -298,6 +215,36 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
               )),
         ],
       ),
+    );
+  }
+}
+
+class RadioListBuilder extends StatefulWidget {
+  final int num;
+
+  const RadioListBuilder({Key key, this.num}) : super(key: key);
+
+  @override
+  RadioListBuilderState createState() {
+    return RadioListBuilderState();
+  }
+}
+
+class RadioListBuilderState extends State<RadioListBuilder> {
+  int value;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return RadioListTile(
+          value: index,
+          groupValue: value,
+          onChanged: (ind) => setState(() => value = ind),
+          title: Text("Number $index"),
+        );
+      },
+      itemCount: widget.num,
     );
   }
 }

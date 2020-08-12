@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../Overview.dart';
-import 'PageViewUpdate.dart';
+import 'Overview.dart';
+import '../Screens/Questions/PageViewUpdate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum Department { back, start }
