@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
 
 enum Department { back, start }
 
@@ -12,9 +13,44 @@ class BuildWheelEval extends StatefulWidget {
 }
 
 class _BuildWheelEvalState extends State<BuildWheelEval> {
+  int _currentPage = 0;
+  final PageController _pageController = PageController(initialPage: 0);
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
+  _onPageChanged(int index) {
+    setState(() {
+      _currentPage = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          size: 30,
+          color: Colors.lightGreen, //change your color here
+        ),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          widget.quename.toUpperCase(),
+          // textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 25,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w600,
+              color: Colors.lightGreen[700],
+              letterSpacing: 2),
+        ),
+        actions: [
+          IconButton(icon: Icon(Icons.share, size: 30), onPressed: () {}),
+        ],
+      ),
       // backgroundColor: Colors.white,
       body: SafeArea(
           child: Column(
@@ -22,17 +58,7 @@ class _BuildWheelEvalState extends State<BuildWheelEval> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(10),
-            child: Text(widget.quename,
-                style: TextStyle(
-                    fontSize: 30,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.lightGreen[700],
-                    letterSpacing: 2)),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
             child: Text('Here should be a graph',
                 style: TextStyle(
                     fontSize: 23,
@@ -45,7 +71,21 @@ class _BuildWheelEvalState extends State<BuildWheelEval> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                IconButton(icon: Icon(Icons.chevron_left, size: 30), onPressed: null),
+                Transform.rotate(
+                  angle: 3 * pi / 2,
+                  child: IconButton(
+                      icon: Icon(Icons.keyboard_capslock, size: 30),
+                      onPressed: () {
+                        _pageController.animateToPage(0,
+                            duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                      }),
+                ),
+                IconButton(
+                    icon: Icon(Icons.chevron_left, size: 30),
+                    onPressed: () {
+                      _pageController.previousPage(
+                          duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                    }),
                 Text('Record x',
                     style: TextStyle(
                         fontSize: 23,
@@ -53,28 +93,60 @@ class _BuildWheelEvalState extends State<BuildWheelEval> {
                         fontWeight: FontWeight.w600,
                         color: Colors.black87,
                         letterSpacing: 2)),
-                IconButton(icon: Icon(Icons.chevron_right, size: 30), onPressed: null)
+                IconButton(
+                    icon: Icon(Icons.chevron_right, size: 30),
+                    onPressed: () {
+                      _pageController.nextPage(
+                          duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+                    }),
+                Transform.rotate(
+                  angle: pi / 2,
+                  child: IconButton(
+                      icon: Icon(Icons.keyboard_capslock, size: 30),
+                      onPressed: () {
+                        _pageController.animateToPage(3,
+                            duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                      }),
+                ),
               ],
             ),
           ),
+          Center(
+            child: Text('x of y',
+                style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey,
+                    letterSpacing: 2)),
+          ),
+          SizedBox(height: 10),
           Expanded(
-            child: StreamBuilder(
-                stream: Firestore.instance
-                    .collection('WheelQuestionnaires')
-                    .document(widget.quename)
-                    .collection("Questions")
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) return const CircularProgressIndicator();
-                  return ListView.separated(
-                    padding: const EdgeInsets.all(8),
-                    shrinkWrap: true,
-                    itemCount: snapshot.data.documents.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return _buildListTile(context, snapshot.data.documents[index], index);
-                    },
-                    separatorBuilder: (BuildContext context, int index) => const Divider(),
-                  );
+            child: PageView.builder(
+                physics: new NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                controller: _pageController,
+                onPageChanged: _onPageChanged,
+                itemCount: 3,
+                itemBuilder: (ctx, i) {
+                  return StreamBuilder(
+                      stream: Firestore.instance
+                          .collection('WheelQuestionnaires')
+                          .document(widget.quename)
+                          .collection("Questions")
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) return const CircularProgressIndicator();
+                        return ListView.separated(
+                          padding: const EdgeInsets.all(8),
+                          shrinkWrap: true,
+                          itemCount: snapshot.data.documents.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return _buildListTile(context, snapshot.data.documents[index], index);
+                          },
+                          separatorBuilder: (BuildContext context, int index) => const Divider(),
+                        );
+                      });
                 }),
           ),
         ],

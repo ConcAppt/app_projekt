@@ -93,7 +93,7 @@ Widget _buildListTile(BuildContext context, DocumentSnapshot document) {
               context: context,
               builder: (BuildContext context) {
                 return SimpleDialog(
-                  title: const Text('Do you want to take the test now?'),
+                  title: const Text('Do you want to look at the results?'),
                   children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
