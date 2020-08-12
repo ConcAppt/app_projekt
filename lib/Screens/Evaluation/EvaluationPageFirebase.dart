@@ -1,13 +1,5 @@
-import 'package:appprojekt/Screens/Questions/SwipingQuestionsFirebase.dart';
-import 'package:appprojekt/Screens/Questions/MultipleChoiceQuestionsFirebase.dart';
-import 'package:appprojekt/Screens/Questions/WheelQuestionsFirebase.dart';
 import 'package:flutter/material.dart';
-import '../Questions/PageViewUpdate.dart';
-import '../../Ablage/Questionnaire.dart';
-import '../Questions/QuestionnaireFirebase.dart';
-import '../../Widgets/MyBottomNavigationBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'Charts.dart';
 import 'SwipingQuestionsEvaluation.dart';
 import 'WheelQuestionsEvaluation.dart';
 import 'MultipleChoiceEvaluation.dart';

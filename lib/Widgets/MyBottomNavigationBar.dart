@@ -1,10 +1,7 @@
 import 'package:appprojekt/Screens/Home/HomePageFirebase.dart';
-import 'file:///C:/Users/paulb/Desktop/app_projekt/AndroidDoc/app_projektTG/lib/Ablage/QuestionsWheel.dart';
 import 'package:flutter/material.dart';
 import '../Screens/Evaluation/EvaluationPageFirebase.dart';
 import '../Screens/Profile/ProfilePage.dart';
-import '../Screens/Settings/SettingsPage.dart';
-import '../Ablage/MultipleChoiceQuestions.dart';
 import '../Screens/Start/Start.dart';
 //import '../Screens/Home/PageViewUpdate.dart';
 import '../Screens/Questions/SwipingQuestionsFirebase.dart';
@@ -19,10 +16,8 @@ class _HomeState extends State<MyBottomNavigationBar> {
   final List<Widget> _children = [
     HomePage(),
     EvaluationPage(),
+    ProfilePage(),
     Start(),
-    // ProfilePage(),
-    //BuildMyQuestionnaire(),
-    QuestionWheel(),
   ];
 
   @override

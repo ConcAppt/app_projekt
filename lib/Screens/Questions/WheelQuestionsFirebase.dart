@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../Home/HomePageFirebase.dart';
 import '../../Widgets/MyBottomNavigationBar.dart';
 
 class BuildWheelQuestionnaire extends StatefulWidget {
@@ -209,138 +207,6 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
             }));
   }
 
-  ListWheelScrollView _buildListWheel(DocumentSnapshot document) {
-    return ListWheelScrollView(itemExtent: 100, squeeze: 0.9, clipToSize: false, children: [
-      Container(
-        child: Center(
-          child: Text(
-            document['Answers[i]{text}'],
-            style: TextStyle(
-              color: Colors.green,
-              fontFamily: 'Montserrat',
-              fontSize: 20.0,
-              letterSpacing: 2,
-            ),
-          ),
-        ),
-      ),
-      Container(
-        child: Text(
-          '1',
-          style: TextStyle(
-            color: Colors.lightGreen,
-            fontFamily: 'Montserrat',
-            fontSize: 20.0,
-            letterSpacing: 2,
-          ),
-        ),
-      ),
-      Container(
-        height: 20,
-        child: Text(
-          document['twoCase'],
-          style: TextStyle(
-            color: Colors.lime,
-            fontFamily: 'Montserrat',
-            fontSize: 20.0,
-            letterSpacing: 2,
-          ),
-        ),
-      ),
-      Container(
-        height: 20,
-        child: Text(
-          '3',
-          style: TextStyle(
-            color: Colors.yellow,
-            fontFamily: 'Montserrat',
-            fontSize: 20.0,
-            letterSpacing: 2,
-          ),
-        ),
-      ),
-      Container(
-        height: 20,
-        child: Center(
-          child: Text(
-            document['fourCase'],
-            //overflow: TextOverflow.visible,
-            style: TextStyle(
-              color: Colors.amber,
-              fontFamily: 'Montserrat',
-              fontSize: 20.0,
-              letterSpacing: 2,
-            ),
-          ),
-        ),
-      ),
-      Container(
-        height: 20,
-        child: Center(
-          child: Text(
-            '5',
-            style: TextStyle(
-              color: Colors.orange,
-              fontFamily: 'Montserrat',
-              fontSize: 20.0,
-              letterSpacing: 2,
-            ),
-          ),
-        ),
-      ),
-      Container(
-        height: 20,
-        child: Text(
-          document['sixCase'],
-          style: TextStyle(
-            color: Colors.deepOrange,
-            fontFamily: 'Montserrat',
-            fontSize: 20.0,
-            letterSpacing: 2,
-          ),
-        ),
-      ),
-    ]);
-  }
-
-  ListView _listView(DocumentSnapshot document) {
-    return ListView.separated(
-      padding: const EdgeInsets.all(8),
-      itemCount: document['answers'].length,
-      itemBuilder: (context, i) {
-        List answers = document['answers'];
-        double interpolation = 1 / (answers.length);
-        Color color = Color.lerp(Colors.green, Colors.red, i * interpolation);
-        return Card(
-          child: InkWell(
-            splashColor: Colors.lightGreen,
-            onTap: () {
-              print('Card tapped $i');
-            },
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  answers[i],
-                  style: TextStyle(
-                    color: color,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat',
-                    fontSize: 20.0,
-                    letterSpacing: 2,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-      separatorBuilder: (context, i) => const SizedBox(
-        height: 10,
-      ),
-    );
-  }
-
   ListView _listViewListTile(DocumentSnapshot document) {
     return ListView.separated(
       padding: const EdgeInsets.all(8),
@@ -349,8 +215,7 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
         List answers = document['answers'];
         double interpolation = 1 / (answers.length);
 
-        Color color = Color.lerp(Colors.green, Colors.yellow, i * interpolation);
-        Color color2 = Color.lerp(Colors.yellow, Colors.red, i * interpolation);
+        Color color = Color.lerp(Colors.green, Colors.red, i * interpolation);
 
         return Card(
           color: (selectedCard == i) ? Colors.grey[300] : null,
@@ -377,44 +242,6 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
               });
               print('Card tapped $i');
             },
-          ),
-        );
-      },
-      separatorBuilder: (context, i) => const SizedBox(
-        height: 10,
-      ),
-    );
-  }
-
-  ListView _CheckboxList(DocumentSnapshot document) {
-    return ListView.separated(
-      padding: const EdgeInsets.all(8),
-      itemCount: document['answers'].length,
-      itemBuilder: (context, i) {
-        List answers = document['answers'];
-        double interpolation = 1 / (answers.length);
-        Color color = Color.lerp(Colors.green, Colors.red, i * interpolation);
-        return Card(
-          child: InkWell(
-            splashColor: Colors.lightGreen,
-            onTap: () {
-              print('Card tapped $i');
-            },
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  answers[i],
-                  style: TextStyle(
-                    color: color,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat',
-                    fontSize: 20.0,
-                    letterSpacing: 2,
-                  ),
-                ),
-              ),
-            ),
           ),
         );
       },

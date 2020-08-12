@@ -14,6 +14,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         theme: ThemeData(primaryColor: Colors.teal[700], backgroundColor: Colors.grey[200]),
         // Initially display FirstPage
-        home: MyBottomNavigationBar());
+        home: Start());
   }
 }
