@@ -3,9 +3,10 @@ import 'package:appprojekt/data/Database.dart';
 import 'package:appprojekt/models/user.dart';
 import 'package:flutter/material.dart';
 
+import '../../Widgets/UserProvider_InWi.dart';
+import '../../Widgets/UserProvider_InWi.dart';
+
 class ProfilePage extends StatelessWidget {
-  ProfilePage({@required this.user});
-  final User user;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +31,7 @@ class ProfilePage extends StatelessWidget {
                   children: <Widget>[
                     SizedBox(
                       width: 140,
-                      child: Text(user.name,
+                      child: Text(UserProvider.of(context).user.name,
                           textAlign: TextAlign.right,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -55,7 +56,7 @@ class ProfilePage extends StatelessWidget {
                         color: Colors.lightGreen[700], fontFamily: 'Montserrat', fontSize: 25.0)),
                 Row(
                   children: <Widget>[
-                    Text(user.age.toString(),
+                    Text(UserProvider.of(context).user.age.toString(),
                         textAlign: TextAlign.right,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -79,7 +80,7 @@ class ProfilePage extends StatelessWidget {
                   children: <Widget>[
                     SizedBox(
                       width: 140,
-                      child: Text(user.email,
+                      child: Text(UserProvider.of(context).user.email,
                           textAlign: TextAlign.right,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -107,7 +108,7 @@ class ProfilePage extends StatelessWidget {
                   children: <Widget>[
                     SizedBox(
                       width: 140,
-                      child: Text(String.fromCharCode(0x2022) * user.password.length,
+                      child: Text(String.fromCharCode(0x2022) * UserProvider.of(context).user.password.length,
                           textAlign: TextAlign.right,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

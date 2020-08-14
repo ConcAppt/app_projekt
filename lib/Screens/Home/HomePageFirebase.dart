@@ -2,6 +2,14 @@ import 'package:appprojekt/Screens/Questions/SwipingQuestionsFirebase.dart';
 import 'package:appprojekt/Screens/Questions/MultipleChoiceQuestionsFirebase.dart';
 import 'package:appprojekt/Screens/Questions/WheelQuestionsFirebase.dart';
 import 'package:flutter/material.dart';
+import '../../Widgets/UserProvider_InWi.dart';
+import '../../Widgets/UserProvider_InWi.dart';
+import '../../Widgets/UserProvider_InWi.dart';
+import '../../Widgets/UserProvider_InWi.dart';
+import '../../Widgets/UserProvider_InWi.dart';
+import '../../Widgets/UserProvider_InWi.dart';
+import '../../Widgets/UserProvider_InWi.dart';
+import '../../models/user.dart';
 import '../Questions/PageViewUpdate.dart';
 import '../../Ablage/Questionnaire.dart';
 import '../Questions/QuestionnaireFirebase.dart';
@@ -21,15 +29,41 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
           child: Column(
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(10),
-            child: Text('Hello X!',
-                style: TextStyle(
-                    fontSize: 30,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.lightGreen[700],
-                    letterSpacing: 2)),
+          Center(
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                  child: Text('Hello',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w600,
+                          color: Colors.lightGreen[700],
+                          letterSpacing: 2)),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                  child: Text(UserProvider.of(context).user.name,
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w600,
+                          color: Colors.lightGreen[700],
+                          letterSpacing: 2)),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                  child: Text('!',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w600,
+                          color: Colors.lightGreen[700],
+                          letterSpacing: 2)),
+                ),
+              ],
+            ),
           ),
           Container(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -66,108 +100,121 @@ class _HomePageState extends State<HomePage> {
 enum Department { back, start }
 
 Widget _buildListTile(BuildContext context, DocumentSnapshot document) {
-  return Card(
-    color: Colors.lightGreen[600].withOpacity(0.7),
-    child: ListTile(
-      title: Text(
-        (document['questionnaireName'] + "\t"),
-        style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Montserrat',
-            fontSize: 15),
-      ),
-      subtitle: Center(
-        child: Text(
-          (document['questionnaireDescription'] + "\n\n" + document['questionnaireScope']),
+  return UserProvider(
+    user: UserProvider.of(context).user,
+    child: Card(
+      color: Colors.lightGreen[600].withOpacity(0.7),
+      child: ListTile(
+        title: Text(
+          (document['questionnaireName'] + "\t"),
           style: TextStyle(
               color: Colors.black87,
+              fontWeight: FontWeight.bold,
               fontFamily: 'Montserrat',
-              letterSpacing: 1.5,
-              fontWeight: FontWeight.w400,
-              fontSize: 13),
+              fontSize: 15),
         ),
-      ),
-      dense: true,
-      isThreeLine: true,
-      onTap: () {
-        Future<void> openDialog() async {
-          switch (await showDialog<Department>(
-              context: context,
-              builder: (BuildContext context) {
-                return SimpleDialog(
-                  title: const Text('Do you want to take the test now?'),
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.lightGreen[600].withOpacity(0.7),
+        subtitle: Center(
+          child: Text(
+            (document['questionnaireDescription'] + "\n\n" + document['questionnaireScope']),
+            style: TextStyle(
+                color: Colors.black87,
+                fontFamily: 'Montserrat',
+                letterSpacing: 1.5,
+                fontWeight: FontWeight.w400,
+                fontSize: 13),
+          ),
+        ),
+        dense: true,
+        isThreeLine: true,
+        onTap: () {
+          User newuser = UserProvider.of(context).user;
+          Future<void> openDialog() async {
+            switch (await showDialog<Department>(
+                context: context,
+                builder: (BuildContext context) {
+                  return SimpleDialog(
+                    title: const Text('Do you want to take the test now?'),
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.lightGreen[600].withOpacity(0.7),
+                            ),
+                            child: SimpleDialogOption(
+                              onPressed: () {
+                                Navigator.pop(context, Department.back);
+                              },
+                              child: const Text('Back'),
+                            ),
                           ),
-                          child: SimpleDialogOption(
-                            onPressed: () {
-                              Navigator.pop(context, Department.back);
-                            },
-                            child: const Text('Back'),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.lightGreen[600].withOpacity(0.7),
+                            ),
+                            child: SimpleDialogOption(
+                              onPressed: () {
+                                Navigator.pop(context, Department.start);
+                              },
+                              child: const Text('Start'),
+                            ),
                           ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.lightGreen[600].withOpacity(0.7),
-                          ),
-                          child: SimpleDialogOption(
-                            onPressed: () {
-                              Navigator.pop(context, Department.start);
-                            },
-                            child: const Text('Start'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        style: BorderStyle.none,
+                        ],
                       ),
-                      borderRadius: BorderRadius.circular(10)),
-                );
-              })) {
-            case Department.back:
-              //....
-              break;
-            case Department.start:
-              print('start gedrückt');
-              if (document['type'] == 'SwipingQuestion') {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => BuildSwipingQuestionnaire(
-                              quename: document['questionnaireName'],
-                            )));
-              } else if (document['type'] == 'WheelQuestion') {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => BuildWheelQuestionnaire(
-                              quename: document['questionnaireName'],
-                            )));
-              } else if (document['type'] == 'MultipleChoiceQuestion') {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => BuildMultipleChoiceQuestionnaire(
-                              quename: document['questionnaireName'],
-                            )));
-              }
-              break;
+                    ],
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          style: BorderStyle.none,
+                        ),
+                        borderRadius: BorderRadius.circular(10)),
+                  );
+                })) {
+              case Department.back:
+                //....
+                break;
+              case Department.start:
+                print('start gedrückt');
+                if (document['type'] == 'SwipingQuestion') {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UserProvider(
+                            user: newuser,
+                            child: BuildSwipingQuestionnaire(
+                                  quename: document['questionnaireName'],
+                                ),
+                          )));
+                } else if (document['type'] == 'WheelQuestion') {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UserProvider(
+                            user: newuser,
+                            child: BuildWheelQuestionnaire(
+                                  quename: document['questionnaireName'],
+                                ),
+                          )));
+                } else if (document['type'] == 'MultipleChoiceQuestion') {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UserProvider(
+                            user: newuser,
+                            child: BuildMultipleChoiceQuestionnaire(
+                                  quename: document['questionnaireName'],
+                                ),
+                          )));
+                }
+                break;
+            }
           }
-        }
 
-        openDialog();
-      },
+          openDialog();
+        },
+      ),
     ),
   );
 }

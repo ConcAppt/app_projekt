@@ -1,6 +1,6 @@
 import 'dart:html';
 
-import 'file:///C:/Users/paulb/Desktop/app_projekt/AndroidDoc/app_projektTG/lib/Ablage/Questionnaire.dart';
+import 'package:appprojekt/Ablage/Questionnaire.dart';
 import 'package:flutter/material.dart';
 
 class QuestionsPage extends StatefulWidget {

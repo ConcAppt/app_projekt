@@ -12,7 +12,7 @@ class MyBottomNavigationBar extends StatefulWidget {
 }
 
 class _HomeState extends State<MyBottomNavigationBar> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   final List<Widget> _children = [
     HomePage(),
     EvaluationPage(),

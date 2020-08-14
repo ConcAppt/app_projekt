@@ -54,18 +54,6 @@ class _LogListState extends State<LogList> {
         break;
     }
   }
-  /*Future<User> _loginUser (String email, String password) async{
-    User newUser = User.fromJson({
-        email: "support@appprojekt.de",
-        password: "appprojekt12"
-    });
-    await DBProvider.db.newUser(newUser).then((val) async{
-      if (val == 1) {
-        User user = await DBProvider.db.loginUser(email, password);
-        return user;
-      }
-    });
-  }*/
 
   @override
   Widget build(BuildContext context) {
