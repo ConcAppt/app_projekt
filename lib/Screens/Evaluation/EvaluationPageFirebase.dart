@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:appprojekt/Widgets/UserProvider_InWi.dart';
+import 'package:appprojekt/data/Database.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'SwipingQuestionsEvaluation.dart';
@@ -63,6 +67,15 @@ class _EvaluationPageState extends State<EvaluationPage> {
 }
 
 enum Department { back, start }
+
+countRecords(BuildContext context, String questionnaire) async{
+  String records = await DBProvider.db.getRecords(UserProvider.of(context).user.email, questionnaire);
+  var count = jsonDecode(records);
+  Map<String, dynamic> cou = count[0];
+  var c = cou["count(id)"];
+
+  return c;
+}
 
 Widget _buildListTile(BuildContext context, DocumentSnapshot document) {
   return Card(

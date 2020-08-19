@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:appprojekt/models/data.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:path/path.dart';
@@ -10,6 +13,7 @@ class DBProvider {
   static final DBProvider db = DBProvider._();
   factory DBProvider() => db;
   static Database _database;
+  //static Database _databaseQ;
 
   Future<Database> get database async {
     if(_database != null)
@@ -18,6 +22,15 @@ class DBProvider {
     _database = await initDB();
     return _database;
   }
+
+  /*Future<Database> get databaseQ async {
+    if(_databaseQ != null)
+      return _databaseQ;
+
+    _databaseQ = await initDBQ();
+    return _databaseQ;
+  }*/
+
 
   initDB() async {
     return await openDatabase(
@@ -28,8 +41,14 @@ class DBProvider {
             name TEXT, age INTEGER, email TEXT PRIMARY KEY, password TEXT
           )
         ''');
+        await db.execute('''
+          CREATE TABLE ques (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, date TEXT, 
+            questionnaire TEXT, answers VARCHAR
+          )
+          ''');
       },
-      version: 2
+      version: 3
     );
   }
 
@@ -62,4 +81,36 @@ class DBProvider {
     return res;
   }
 
+
+  newQuestionnaire(Data data) async {
+    final db = await database;
+
+    var res = await db.rawInsert('''
+      INSERT INTO ques(
+        email, date, questionnaire, answers
+      ) VALUES (?, ?, ?, ?)
+    ''', [data.email, data.date, data.questionnaire, data.answers]);
+
+    return res;
+  }
+
+  Future<Data> getValues(String email, String questionnaire) async{
+    var db = await database;
+    var result = await db.rawQuery('''
+    SELECT * FROM ques WHERE email = ? AND questionnaire = ?''',
+        [email, questionnaire]);
+    if (result.length == 0) return null;
+
+    return Data.fromJson(result.first);
+  }
+
+  Future<String> getRecords(String email, String questionnaire) async{
+    var db = await database;
+    var resultRecords = await db.rawQuery('''
+    SELECT count(id) FROM ques WHERE email = ? AND questionnaire = ?
+    ''', [email, questionnaire]);
+    if (resultRecords.length == 0) return ("No Records available");
+
+    return jsonEncode(resultRecords);
+  }
 }

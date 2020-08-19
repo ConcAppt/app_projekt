@@ -1,33 +1,37 @@
 import 'dart:convert';
 
-Data erqFromJson(String str) => Data.fromJson(json.decode(str));
+Data qFromJson(String str) => Data.fromJson(json.decode(str));
 
-String erqToJson(Data data) => json.encode(data.toJson());
+String qToJson(Data data) => json.encode(data.toJson());
 
 class Data {
+  int id;
   String email;
-  String questionnaire;
   String date;
-  int value;
+  String questionnaire;
+  String answers;
 
   Data({
+    this.id,
     this.email,
     this.questionnaire,
     this.date,
-    this.value
+    this.answers,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
+    id: json["id"],
     email: json["email"],
     questionnaire: json["questionnaire"],
     date: json["date"],
-    value: json["value"]
+    answers: json["answers"],
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id,
     "email": email,
     "questionnaire": questionnaire,
     "date": date,
-    "value": value
+    "answers": answers, //.toJson(),
   };
 }

@@ -15,9 +15,9 @@ class _HomeState extends State<MyBottomNavigationBar> {
   int _currentIndex = 2;
   final List<Widget> _children = [
     HomePage(),
-    EvaluationPage(),
+    EvaluationPage(),//make real screen
     ProfilePage(),
-    Start(),
+    Start(),//same here
   ];
 
   @override
