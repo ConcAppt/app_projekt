@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:appprojekt/data/Database.dart';
+import 'package:appprojekt/models/data.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -22,6 +26,8 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
   var myFeedbackText = 'neutral';
   var sliderValue = 4.0;
   int selectedCard;
+  Map answers = Map<String, int>();
+  int answerint;
   @override
   void dispose() {
     super.dispose();
@@ -107,6 +113,7 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
                                             backgroundColor: Colors.lightGreen[700],
                                             onPressed: () {
                                               User newuser = UserProvider.of(context).user;
+                                              answers['Question ${i+1}'] = answerint;
                                               //TODO check Answer
                                               Future<void> _showMyDialog() async {
                                                 return showDialog<void>(
@@ -178,7 +185,11 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
                                                                   letterSpacing: 2,
                                                                 ),
                                                               ),
-                                                              onPressed: () {
+                                                              onPressed: () async{
+                                                                Data data = Data(id: null, email: newuser.email, date: "date", questionnaire: widget.quename.toUpperCase(), answers: jsonEncode(answers));
+                                                                DBProvider.db.newQuestionnaire(data);
+                                                                Data fetchdata = await DBProvider.db.getValues(newuser.email, widget.quename.toUpperCase());
+                                                                print(fetchdata.toJson());
                                                                 Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(
@@ -247,6 +258,7 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
                   selectedCard = null;
                 } else {
                   selectedCard = i;
+                  answerint = i;
                 }
               });
               print('Card tapped $i');

@@ -33,28 +33,8 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               children: [
                 Container(
-                  padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                  child: Text('Hello',
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.lightGreen[700],
-                          letterSpacing: 2)),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                  child: Text(UserProvider.of(context).user.name,
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.lightGreen[700],
-                          letterSpacing: 2)),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                  child: Text('!',
+                  padding: EdgeInsets.all(10),
+                  child: Text('Hello ${UserProvider.of(context).user.name}!',
                       style: TextStyle(
                           fontSize: 30,
                           fontFamily: 'Montserrat',
