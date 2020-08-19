@@ -101,6 +101,9 @@ class DBProvider {
         [email, questionnaire]);
     if (result.length == 0) return null;
 
+    for (int i=0; i < result.length; i++){
+      //list[i] = Data.fromJson(result[i]);
+    }
     return Data.fromJson(result.first);
   }
 
