@@ -86,7 +86,7 @@ class _BuildWheelEvalState extends State<BuildWheelEval> {
                       _pageController.previousPage(
                           duration: Duration(milliseconds: 300), curve: Curves.easeIn);
                     }),
-                Text('Record x',
+                Text('Record ${_currentPage + 1}',
                     style: TextStyle(
                         fontSize: 23,
                         fontFamily: 'Montserrat',
@@ -112,7 +112,7 @@ class _BuildWheelEvalState extends State<BuildWheelEval> {
             ),
           ),
           Center(
-            child: Text('x of y',
+            child: Text('${_currentPage + 1} of lengthArray',
                 style: TextStyle(
                     fontSize: 15,
                     fontFamily: 'Montserrat',
@@ -171,14 +171,36 @@ Widget _buildListTile(BuildContext context, DocumentSnapshot document, index) {
               fontSize: 15),
         ),
       ),
-      subtitle: Text(
-        (document['description']),
-        style: TextStyle(
-            color: Colors.black87,
-            fontFamily: 'Montserrat',
-            letterSpacing: 1.5,
-            fontWeight: FontWeight.w400,
-            fontSize: 13),
+      subtitle: RichText(
+        text: TextSpan(
+          text: document['description'],
+          style: TextStyle(
+              color: Colors.black87,
+              fontFamily: 'Montserrat',
+              letterSpacing: 1.5,
+              fontWeight: FontWeight.w400,
+              fontSize: 13),
+          children: <TextSpan>[
+            TextSpan(
+              text: '\n\n' + 'Selected answer:',
+              style: TextStyle(
+                  color: Colors.black87,
+                  fontFamily: 'Montserrat',
+                  letterSpacing: 1.5,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 13),
+            ),
+            TextSpan(
+              text: ' answer',
+              style: TextStyle(
+                  color: Colors.black87,
+                  fontFamily: 'Montserrat',
+                  letterSpacing: 1.5,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13),
+            ),
+          ],
+        ),
       ),
       dense: true,
       isThreeLine: true,

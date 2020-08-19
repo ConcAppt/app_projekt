@@ -29,41 +29,15 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
           child: Column(
         children: <Widget>[
-          Center(
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                  child: Text('Hello',
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.lightGreen[700],
-                          letterSpacing: 2)),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                  child: Text(UserProvider.of(context).user.name,
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.lightGreen[700],
-                          letterSpacing: 2)),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
-                  child: Text('!',
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.lightGreen[700],
-                          letterSpacing: 2)),
-                ),
-              ],
-            ),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Text('Hello ${UserProvider.of(context).user.name}!',
+                style: TextStyle(
+                    fontSize: 30,
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.lightGreen[700],
+                    letterSpacing: 2)),
           ),
           Container(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -182,31 +156,31 @@ Widget _buildListTile(BuildContext context, DocumentSnapshot document) {
                       context,
                       MaterialPageRoute(
                           builder: (context) => UserProvider(
-                            user: newuser,
-                            child: BuildSwipingQuestionnaire(
+                                user: newuser,
+                                child: BuildSwipingQuestionnaire(
                                   quename: document['questionnaireName'],
                                 ),
-                          )));
+                              )));
                 } else if (document['type'] == 'WheelQuestion') {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => UserProvider(
-                            user: newuser,
-                            child: BuildWheelQuestionnaire(
+                                user: newuser,
+                                child: BuildWheelQuestionnaire(
                                   quename: document['questionnaireName'],
                                 ),
-                          )));
+                              )));
                 } else if (document['type'] == 'MultipleChoiceQuestion') {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => UserProvider(
-                            user: newuser,
-                            child: BuildMultipleChoiceQuestionnaire(
+                                user: newuser,
+                                child: BuildMultipleChoiceQuestionnaire(
                                   quename: document['questionnaireName'],
                                 ),
-                          )));
+                              )));
                 }
                 break;
             }

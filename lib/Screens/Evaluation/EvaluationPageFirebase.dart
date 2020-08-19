@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'SwipingQuestionsEvaluation.dart';
 import 'WheelQuestionsEvaluation.dart';
 import 'MultipleChoiceEvaluation.dart';
+import '../../models/user.dart';
+import '../../Widgets/UserProvider_InWi.dart';
 
 class EvaluationPage extends StatefulWidget {
   @override
@@ -19,7 +21,7 @@ class _EvaluationPageState extends State<EvaluationPage> {
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(10),
-            child: Text('Hello X!',
+            child: Text('Hello ${UserProvider.of(context).user.name}!',
                 style: TextStyle(
                     fontSize: 30,
                     fontFamily: 'Montserrat',
