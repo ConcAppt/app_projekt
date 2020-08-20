@@ -19,7 +19,13 @@ class _EvaluationPageState extends State<EvaluationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(20.0),
+        child: AppBar(
+          backgroundColor: Colors.lightGreen[400],
+          automaticallyImplyLeading: false,
+        ),
+      ),// backgroundColor: Colors.white,
       body: SafeArea(
           child: Column(
         children: <Widget>[

@@ -75,6 +75,16 @@ class DBProvider {
 
   }
 
+  changeName(String email, String password, String mail) async{
+    var db = await database;
+    var changeName = await db.rawQuery('''
+    UPDATE users SET email = ? WHERE email = ? AND password = ? 
+    AND password = ?
+    ''', [mail, email, password]);
+
+    return changeName;
+  }
+
   Future<int> deleteUsers() async {
     var db = await database;
     int res = await db.delete("users");
@@ -132,4 +142,5 @@ class DBProvider {
 
     return jsonEncode(resultRecords);
   }
+
 }
