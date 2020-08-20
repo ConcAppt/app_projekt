@@ -193,7 +193,7 @@ class _BuildSwipingEvalState extends State<BuildSwipingEval> {
                   scrollDirection: Axis.horizontal,
                   controller: _pageController,
                   onPageChanged: _onPageChanged,
-                  itemCount: 3,
+                  itemCount: value,
                   itemBuilder: (ctx, i) {
                     return StreamBuilder(
                         stream: Firestore.instance
