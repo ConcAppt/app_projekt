@@ -1,6 +1,13 @@
+import 'dart:convert';
+
+import 'package:appprojekt/Widgets/UserProvider_InWi.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart';
 import 'dart:math';
+import '../../data/Database.dart';
+
+var recordArray = DBProvider();
 
 enum Department { back, start }
 
@@ -14,7 +21,9 @@ class BuildSwipingEval extends StatefulWidget {
 
 class _BuildSwipingEvalState extends State<BuildSwipingEval> {
   int _currentPage = 0;
+  var record;
   final PageController _pageController = PageController(initialPage: 0);
+
   @override
   void dispose() {
     super.dispose();
@@ -25,6 +34,20 @@ class _BuildSwipingEvalState extends State<BuildSwipingEval> {
     setState(() {
       _currentPage = index;
     });
+  }
+
+  Future<List> getRecord() async {
+    List records = List();
+    record = await jsonDecode(
+        DBProvider.db.getRecords(UserProvider.of(context).user.email, widget.quename).toString());
+    var json = jsonDecode(record);
+    for (Map<String, dynamic> map in json) {
+      records.add(record(map));
+    }
+    return records;
+
+    /*await jsonDecode(
+        DBProvider().getRecords(UserProvider.of(context).user.email, widget.quename).toString());*/
   }
 
   @override
@@ -50,16 +73,56 @@ class _BuildSwipingEvalState extends State<BuildSwipingEval> {
           IconButton(
               icon: Icon(Icons.share, size: 30),
               onPressed: () {
+                print(record);
                 Future<void> _showExportDialog() async {
                   return showDialog<void>(
                     context: context,
                     barrierDismissible: false, // user must tap button!
                     builder: (BuildContext context) {
                       return AlertDialog(
-                          //scrollable: true,
+                          scrollable: true,
                           shape: RoundedRectangleBorder(),
                           title: Text('Export your Files'),
-                          content: Text('lol'),
+                          content: Container(
+                            height: 350,
+                            width: double.maxFinite,
+                            child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                              Text('Please select the reports you want to send'),
+                              SizedBox(height: 10.0),
+                              Expanded(
+                                child: FutureBuilder(
+                                  builder: (context, AsyncSnapshot<List> snapshot) {
+                                    return ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: snapshot.data.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return ListTile(
+                                          onLongPress: () {
+                                            setState(() {
+                                              record[index].selected = !record[index].selected;
+
+                                              log(record[index].selected);
+                                            });
+                                          },
+                                          selected: record[index].selected,
+                                          leading: GestureDetector(
+                                            behavior: HitTestBehavior.opaque,
+                                            onTap: () {},
+                                          ),
+                                          title: Text('Record ' + record[index].toString()),
+                                          subtitle: Text('Datum'),
+                                          trailing: (record[index].selected)
+                                              ? Icon(Icons.check_box)
+                                              : Icon(Icons.check_box_outline_blank),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  future: getRecord(),
+                                ),
+                              )
+                            ]),
+                          ),
                           actions: <Widget>[
                             ButtonBar(
                               children: <Widget>[
