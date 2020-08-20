@@ -94,17 +94,33 @@ class DBProvider {
     return res;
   }
 
-  Future<Data> getValues(String email, String questionnaire) async{
+  Future<Map<dynamic,dynamic>> getValues(String email, String questionnaire, int i) async{
     var db = await database;
     var result = await db.rawQuery('''
     SELECT * FROM ques WHERE email = ? AND questionnaire = ?''',
         [email, questionnaire]);
     if (result.length == 0) return null;
 
-    for (int i=0; i < result.length; i++){
-      //list[i] = Data.fromJson(result[i]);
-    }
-    return Data.fromJson(result.first);
+    if(questionnaire == "ERQ"){
+      Map<dynamic, dynamic> map = result[i];
+      String str = map["answers"];
+      Map<dynamic, dynamic> newmap = jsonDecode(str);
+
+      return newmap;}
+
+    if(questionnaire == "FSFI"){
+      Map<dynamic, dynamic> map = result[i];
+      String str = map["answers"];
+      Map<dynamic, dynamic> newmap = jsonDecode(str);
+
+      return newmap;}
+
+    if((questionnaire == "EMQUE")||(questionnaire == "emQue")){
+      Map<dynamic, dynamic> map = result[i];
+      String str = map["answers"];
+      Map<dynamic, dynamic> newmap = jsonDecode(str);
+
+      return newmap;}
   }
 
   Future<String> getRecords(String email, String questionnaire) async{
@@ -112,7 +128,7 @@ class DBProvider {
     var resultRecords = await db.rawQuery('''
     SELECT count(id) FROM ques WHERE email = ? AND questionnaire = ?
     ''', [email, questionnaire]);
-    if (resultRecords.length == 0) return ("No Records available");
+    if (resultRecords.length == 0) return "No Records available";
 
     return jsonEncode(resultRecords);
   }

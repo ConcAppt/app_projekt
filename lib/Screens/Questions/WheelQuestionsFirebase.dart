@@ -26,8 +26,8 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
   var myFeedbackText = 'neutral';
   var sliderValue = 4.0;
   int selectedCard;
-  Map answers = Map<String, int>();
-  int answerint;
+  Map answers = Map<String, String>();
+  String answerstr;
   @override
   void dispose() {
     super.dispose();
@@ -113,7 +113,7 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
                                             backgroundColor: Colors.lightGreen[700],
                                             onPressed: () {
                                               User newuser = UserProvider.of(context).user;
-                                              answers['Question ${i+1}'] = answerint;
+                                              answers['Question ${i+1}'] = answerstr;
                                               //TODO check Answer
                                               Future<void> _showMyDialog() async {
                                                 return showDialog<void>(
@@ -188,8 +188,6 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
                                                               onPressed: () async{
                                                                 Data data = Data(id: null, email: newuser.email, date: "date", questionnaire: widget.quename.toUpperCase(), answers: jsonEncode(answers));
                                                                 DBProvider.db.newQuestionnaire(data);
-                                                                Data fetchdata = await DBProvider.db.getValues(newuser.email, widget.quename.toUpperCase());
-                                                                print(fetchdata.toJson());
                                                                 Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(
@@ -258,7 +256,7 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
                   selectedCard = null;
                 } else {
                   selectedCard = i;
-                  answerint = i;
+                  answerstr = answers[i];
                 }
               });
               print('Card tapped $i');

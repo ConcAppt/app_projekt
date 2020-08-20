@@ -28,8 +28,8 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
   var sliderValue = 4.0;
   int selectedItem;
   answerAlternatives _alternatives;
-  Map answers = Map<String, int>();
-  int answerint;
+  Map answers = Map<String, String>();
+  String answerstr;
   @override
   void dispose() {
     super.dispose();
@@ -116,7 +116,7 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
                                               backgroundColor: Colors.lightGreen[700],
                                               onPressed: () {
                                                 User newuser = UserProvider.of(context).user;
-                                                answers['Question ${i+1}'] = answerint;
+                                                answers['Question ${i+1}'] = answerstr;
                                                 //TODO check Answer
                                                 Future<void> _showMyDialog() async {
                                                   return showDialog<void>(
@@ -192,8 +192,6 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
                                                                 onPressed: () async {
                                                                   Data data = Data(id: null, email: newuser.email, date: "date", questionnaire: widget.quename.toUpperCase(), answers: jsonEncode(answers));
                                                                   DBProvider.db.newQuestionnaire(data);
-                                                                  Data fetchdata = await DBProvider.db.getValues(newuser.email, widget.quename.toUpperCase());
-                                                                  print(fetchdata.toJson());
                                                                   Navigator.push(
                                                                     context,
                                                                     MaterialPageRoute(
@@ -250,7 +248,7 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
             onChanged: (answerAlternatives value) {
               setState(() {
                 _alternatives = value;
-                answerint = 1;
+                answerstr = 'Not at all applicable';
               });
             },
           ),
@@ -268,7 +266,7 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
             onChanged: (answerAlternatives value) {
               setState(() {
                 _alternatives = value;
-                answerint = 2;
+                answerstr = 'A little or sometimes applicable';
               });
             },
           ),
@@ -286,7 +284,7 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
             onChanged: (answerAlternatives value) {
               setState(() {
                 _alternatives = value;
-                answerint = 3;
+                answerstr = 'Clearly or often applicable';
               });
             },
           ),
