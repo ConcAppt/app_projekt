@@ -75,14 +75,40 @@ class DBProvider {
 
   }
 
-  changeName(String email, String password, String mail) async{
+  Future<int> changeName(String name, String email, String password) async{
     var db = await database;
-    var changeName = await db.rawQuery('''
-    UPDATE users SET email = ? WHERE email = ? AND password = ? 
-    AND password = ?
-    ''', [mail, email, password]);
+    var changeName = await db.rawUpdate('''
+    UPDATE users SET name = ? WHERE email = ? AND password = ? 
+    ''', [name, email, password]);
 
     return changeName;
+  }
+
+  Future<int> changeAge(int age, String email, String password) async{
+    var db = await database;
+    var changeAge = await db.rawUpdate('''
+    UPDATE users SET age = ? WHERE email = ? AND password = ? 
+    ''', [age, email, password]);
+
+    return changeAge;
+  }
+
+  Future<int> changeMail(String mail, String email, String password) async{
+    var db = await database;
+    var changeMail = await db.rawUpdate('''
+    UPDATE users SET email = ? WHERE email = ? AND password = ? 
+    ''', [mail, email, password]);
+
+    return changeMail;
+  }
+
+  Future<int> changePassword(String pass, String email, String password) async{
+    var db = await database;
+    var changePassword = await db.rawUpdate('''
+    UPDATE users SET password = ? WHERE email = ? AND password = ? 
+    ''', [pass, email, password]);
+
+    return changePassword;
   }
 
   Future<int> deleteUsers() async {
