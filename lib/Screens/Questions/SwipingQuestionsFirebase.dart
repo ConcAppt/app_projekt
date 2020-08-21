@@ -15,8 +15,10 @@ import '../../models/user.dart';
 class BuildSwipingQuestionnaire extends StatefulWidget {
   BuildSwipingQuestionnaire({Key key, this.quename}) : super(key: key);
   final quename;
+
   @override
-  _BuildSwipingQuestionnaireState createState() => _BuildSwipingQuestionnaireState();
+  _BuildSwipingQuestionnaireState createState() =>
+      _BuildSwipingQuestionnaireState();
 }
 
 class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
@@ -26,6 +28,7 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
   var myFeedbackText = 'neutral';
   var sliderValue = 4.0;
   Map answers = Map<String, dynamic>();
+
   @override
   void dispose() {
     super.dispose();
@@ -77,19 +80,21 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                           child: Stack(
                         alignment: AlignmentDirectional.topCenter,
                         children: <Widget>[
-                          Stack(alignment: AlignmentDirectional.topCenter, children: <Widget>[
-                            SmoothPageIndicator(
-                              controller: _pageController,
-                              count: snapshot.data.documents.length,
-                              effect: ScrollingDotsEffect(
-                                  activeDotColor: Colors.lightGreen[700],
-                                  dotColor: Colors.grey,
-                                  dotHeight: 10,
-                                  dotWidth: 10,
-                                  maxVisibleDots: 11,
-                                  spacing: 15.0),
-                            )
-                          ]),
+                          Stack(
+                              alignment: AlignmentDirectional.topCenter,
+                              children: <Widget>[
+                                SmoothPageIndicator(
+                                  controller: _pageController,
+                                  count: snapshot.data.documents.length,
+                                  effect: ScrollingDotsEffect(
+                                      activeDotColor: Colors.lightGreen[700],
+                                      dotColor: Colors.grey,
+                                      dotHeight: 10,
+                                      dotWidth: 10,
+                                      maxVisibleDots: 11,
+                                      spacing: 15.0),
+                                )
+                              ]),
                           PageView.builder(
                               physics: new NeverScrollableScrollPhysics(),
                               scrollDirection: Axis.horizontal,
@@ -102,28 +107,42 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                   child: Column(
                                     children: <Widget>[
                                       Expanded(
-                                          child: _buildDescriptionItem(snapshot.data.documents[i])),
-                                      Expanded(child: _buildSlider(snapshot.data.documents[i])),
+                                          child: _buildDescriptionItem(
+                                              snapshot.data.documents[i])),
+                                      Expanded(
+                                          child: _buildSlider(
+                                              snapshot.data.documents[i])),
                                       Container(
                                         child: FloatingActionButton.extended(
                                             icon: Icon(Icons.navigate_next),
                                             label: Text('Next'),
-                                            backgroundColor: Colors.lightGreen[700],
+                                            backgroundColor:
+                                                Colors.lightGreen[700],
                                             onPressed: () {
-                                              User newuser = UserProvider.of(context).user;
-                                              answers['Question ${i+1}'] = myFeedbackText;
+                                              User newuser =
+                                                  UserProvider.of(context).user;
+                                              answers['Question ${i + 1}'] =
+                                                  myFeedbackText;
                                               //TODO check Answer
-                                              if (i == snapshot.data.documents.length - 1) {
-                                                Future<void> _showEndDialog() async {
+                                              if (i ==
+                                                  snapshot.data.documents
+                                                          .length -
+                                                      1) {
+                                                Future<void>
+                                                    _showEndDialog() async {
                                                   return showDialog<void>(
                                                     context: context,
-                                                    barrierDismissible:
-                                                        false, // user must tap button!
-                                                    builder: (BuildContext context) {
+                                                    barrierDismissible: false,
+                                                    // user must tap button!
+                                                    builder:
+                                                        (BuildContext context) {
                                                       return AlertDialog(
-                                                        shape: RoundedRectangleBorder(),
-                                                        title: Text('Attention'),
-                                                        content: SingleChildScrollView(
+                                                        shape:
+                                                            RoundedRectangleBorder(),
+                                                        title:
+                                                            Text('Attention'),
+                                                        content:
+                                                            SingleChildScrollView(
                                                           child: ListBody(
                                                             children: <Widget>[
                                                               Text(
@@ -136,19 +155,27 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                             child: Text(
                                                               'Activate Reminder',
                                                               style: TextStyle(
-                                                                fontWeight: FontWeight.bold,
-                                                                color: Colors.lightGreen,
-                                                                fontFamily: 'Montserrat',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .lightGreen,
+                                                                fontFamily:
+                                                                    'Montserrat',
                                                                 fontSize: 20.0,
-                                                                letterSpacing: 2,
+                                                                letterSpacing:
+                                                                    2,
                                                               ),
                                                             ),
                                                             onPressed: () {
                                                               Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
-                                                                    builder: (context) =>
-                                                                        UserProvider(user: newuser, child: MyBottomNavigationBar())),
+                                                                    builder: (context) => UserProvider(
+                                                                        user:
+                                                                            newuser,
+                                                                        child:
+                                                                            MyBottomNavigationBar())),
                                                               );
                                                             },
                                                           ),
@@ -156,21 +183,43 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                             child: Text(
                                                               'Okay',
                                                               style: TextStyle(
-                                                                fontWeight: FontWeight.bold,
-                                                                color: Colors.lightGreen,
-                                                                fontFamily: 'Montserrat',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .lightGreen,
+                                                                fontFamily:
+                                                                    'Montserrat',
                                                                 fontSize: 20.0,
-                                                                letterSpacing: 2,
+                                                                letterSpacing:
+                                                                    2,
                                                               ),
                                                             ),
-                                                            onPressed: () async{
-                                                              Data data = Data(id: null, email: newuser.email, date: "date", questionnaire: widget.quename.toUpperCase(), answers: jsonEncode(answers));
-                                                              DBProvider.db.newQuestionnaire(data);
+                                                            onPressed:
+                                                                () async {
+                                                              Data data = Data(
+                                                                  id: null,
+                                                                  email: newuser
+                                                                      .email,
+                                                                  date: "date",
+                                                                  questionnaire:
+                                                                      widget
+                                                                          .quename
+                                                                          .toUpperCase(),
+                                                                  answers:
+                                                                      jsonEncode(
+                                                                          answers));
+                                                              DBProvider.db
+                                                                  .newQuestionnaire(
+                                                                      data);
                                                               Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
-                                                                    builder: (context) =>
-                                                                        UserProvider(user: newuser, child: MyBottomNavigationBar())),
+                                                                    builder: (context) => UserProvider(
+                                                                        user:
+                                                                            newuser,
+                                                                        child:
+                                                                            MyBottomNavigationBar())),
                                                               );
                                                             },
                                                           ),
@@ -183,7 +232,8 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                 _showEndDialog();
                                               } else {
                                                 _pageController.nextPage(
-                                                    duration: Duration(milliseconds: 300),
+                                                    duration: Duration(
+                                                        milliseconds: 300),
                                                     curve: Curves.easeIn);
                                                 sliderValue = 4;
                                               }

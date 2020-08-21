@@ -33,56 +33,52 @@ class Start extends StatelessWidget {
             SizedBox(height: 40.0),
             Container(
                 child: RaisedButton(
-                  onPressed: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CaP()),
-                    );
-                  },
-                  color: Colors.lightGreen[700],
-                  padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                  child: Text(
-                    'Create Profile',
-                    style: TextStyle(
-                      fontSize: 28.0,
-                      fontFamily: 'Montserrat',
-                      letterSpacing: 3.0,
-                      color: Colors.grey[100],
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                )
-            ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CaP()),
+                );
+              },
+              color: Colors.lightGreen[700],
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              child: Text(
+                'Create Profile',
+                style: TextStyle(
+                  fontSize: 28.0,
+                  fontFamily: 'Montserrat',
+                  letterSpacing: 3.0,
+                  color: Colors.grey[100],
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            )),
             SizedBox(height: 20.0),
             Container(
                 child: RaisedButton(
-                  onPressed: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LogIn()),
-                    );
-                  },
-                  color: Colors.lightGreen[700],
-                  padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-
-                  child: Text(
-                    'Log In',
-                    style: TextStyle(
-                      fontSize: 28.0,
-                      fontFamily: 'Montserrat',
-                      letterSpacing: 3.0,
-                      color: Colors.grey[100],
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                )
-            ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LogIn()),
+                );
+              },
+              color: Colors.lightGreen[700],
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              child: Text(
+                'Log In',
+                style: TextStyle(
+                  fontSize: 28.0,
+                  fontFamily: 'Montserrat',
+                  letterSpacing: 3.0,
+                  color: Colors.grey[100],
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            )),
           ],
         ),
       ),
     );
   }
 }
-
 
 // TODO Implement this library.

@@ -1,9 +1,8 @@
 import 'package:appprojekt/Screens/Home/HomePageFirebase.dart';
+import 'package:appprojekt/Screens/Settings/SettingsPage.dart';
 import 'package:flutter/material.dart';
 import '../Screens/Evaluation/EvaluationPageFirebase.dart';
 import '../Screens/Profile/ProfilePage.dart';
-import '../Screens/Start/Start.dart';
-//import '../Screens/Home/PageViewUpdate.dart';
 import '../Screens/Questions/SwipingQuestionsFirebase.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
@@ -15,9 +14,9 @@ class _HomeState extends State<MyBottomNavigationBar> {
   int _currentIndex = 2;
   final List<Widget> _children = [
     HomePage(),
-    EvaluationPage(),//make real screen
+    EvaluationPage(),
     ProfilePage(),
-    Start(),//same here
+    SettingsPage(),
   ];
 
   @override

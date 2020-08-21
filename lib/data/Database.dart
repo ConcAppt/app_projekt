@@ -10,14 +10,16 @@ import 'dart:io' as io;
 
 class DBProvider {
   DBProvider._();
+
   static final DBProvider db = DBProvider._();
+
   factory DBProvider() => db;
   static Database _database;
+
   //static Database _databaseQ;
 
   Future<Database> get database async {
-    if(_database != null)
-      return _database;
+    if (_database != null) return _database;
 
     _database = await initDB();
     return _database;
@@ -31,25 +33,21 @@ class DBProvider {
     return _databaseQ;
   }*/
 
-
   initDB() async {
-    return await openDatabase(
-      join(await getDatabasesPath(), 'app_projekt.db'),
-      onCreate: (db, version) async {
-        await db.execute('''
+    return await openDatabase(join(await getDatabasesPath(), 'app_projekt.db'),
+        onCreate: (db, version) async {
+      await db.execute('''
           CREATE TABLE users (
             name TEXT, age INTEGER, email TEXT PRIMARY KEY, password TEXT
           )
         ''');
-        await db.execute('''
+      await db.execute('''
           CREATE TABLE ques (
             id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, date TEXT, 
             questionnaire TEXT, answers VARCHAR
           )
           ''');
-      },
-      version: 3
-    );
+    }, version: 3);
   }
 
   newUser(User newUser) async {
@@ -64,18 +62,16 @@ class DBProvider {
     return res;
   }
 
-  Future<User> loginUser(String email, String password) async{
+  Future<User> loginUser(String email, String password) async {
     var db = await database;
     var result = await db.rawQuery('''
-    SELECT * FROM users WHERE email = ? AND password = ?''',
-        [email, password]);
+    SELECT * FROM users WHERE email = ? AND password = ?''', [email, password]);
     if (result.length == 0) return null;
-    
-    return User.fromJson(result.first);
 
+    return User.fromJson(result.first);
   }
 
-  Future<int> changeName(String name, String email, String password) async{
+  Future<int> changeName(String name, String email, String password) async {
     var db = await database;
     var changeName = await db.rawUpdate('''
     UPDATE users SET name = ? WHERE email = ? AND password = ? 
@@ -84,7 +80,7 @@ class DBProvider {
     return changeName;
   }
 
-  Future<int> changeAge(int age, String email, String password) async{
+  Future<int> changeAge(int age, String email, String password) async {
     var db = await database;
     var changeAge = await db.rawUpdate('''
     UPDATE users SET age = ? WHERE email = ? AND password = ? 
@@ -93,7 +89,7 @@ class DBProvider {
     return changeAge;
   }
 
-  Future<int> changeMail(String mail, String email, String password) async{
+  Future<int> changeMail(String mail, String email, String password) async {
     var db = await database;
     var changeMail = await db.rawUpdate('''
     UPDATE users SET email = ? WHERE email = ? AND password = ? 
@@ -102,7 +98,7 @@ class DBProvider {
     return changeMail;
   }
 
-  Future<int> changePassword(String pass, String email, String password) async{
+  Future<int> changePassword(String pass, String email, String password) async {
     var db = await database;
     var changePassword = await db.rawUpdate('''
     UPDATE users SET password = ? WHERE email = ? AND password = ? 
@@ -117,7 +113,6 @@ class DBProvider {
     return res;
   }
 
-
   newQuestionnaire(Data data) async {
     final db = await database;
 
@@ -130,36 +125,40 @@ class DBProvider {
     return res;
   }
 
-  Future<Map<dynamic,dynamic>> getValues(String email, String questionnaire, int i) async{
+  Future<Map<dynamic, dynamic>> getValues(
+      String email, String questionnaire, int i) async {
     var db = await database;
     var result = await db.rawQuery('''
     SELECT * FROM ques WHERE email = ? AND questionnaire = ?''',
         [email, questionnaire]);
     if (result.length == 0) return null;
 
-    if(questionnaire == "ERQ"){
+    if (questionnaire == "ERQ") {
       Map<dynamic, dynamic> map = result[i];
       String str = map["answers"];
       Map<dynamic, dynamic> newmap = jsonDecode(str);
 
-      return newmap;}
+      return newmap;
+    }
 
-    if(questionnaire == "FSFI"){
+    if (questionnaire == "FSFI") {
       Map<dynamic, dynamic> map = result[i];
       String str = map["answers"];
       Map<dynamic, dynamic> newmap = jsonDecode(str);
 
-      return newmap;}
+      return newmap;
+    }
 
-    if((questionnaire == "EMQUE")||(questionnaire == "emQue")){
+    if ((questionnaire == "EMQUE") || (questionnaire == "emQue")) {
       Map<dynamic, dynamic> map = result[i];
       String str = map["answers"];
       Map<dynamic, dynamic> newmap = jsonDecode(str);
 
-      return newmap;}
+      return newmap;
+    }
   }
 
-  Future<String> getRecords(String email, String questionnaire) async{
+  Future<String> getRecords(String email, String questionnaire) async {
     var db = await database;
     var resultRecords = await db.rawQuery('''
     SELECT count(id) FROM ques WHERE email = ? AND questionnaire = ?
@@ -168,5 +167,4 @@ class DBProvider {
 
     return jsonEncode(resultRecords);
   }
-
 }

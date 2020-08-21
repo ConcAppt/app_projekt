@@ -25,7 +25,7 @@ class _EvaluationPageState extends State<EvaluationPage> {
           backgroundColor: Colors.lightGreen[400],
           automaticallyImplyLeading: false,
         ),
-      ),// backgroundColor: Colors.white,
+      ), // backgroundColor: Colors.white,
       body: SafeArea(
           child: Column(
         children: <Widget>[
@@ -52,28 +52,37 @@ class _EvaluationPageState extends State<EvaluationPage> {
           ),
           Expanded(
             child: StreamBuilder(
-                  stream: Firestore.instance.collection('overviewBank').snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) return const CircularProgressIndicator();
-                    return ListView.separated(
-                            padding: const EdgeInsets.all(8),
-                            shrinkWrap: true,
-                            itemCount: snapshot.data.documents.length,
-                            itemBuilder: (BuildContext context, int index) {
-                            return FutureBuilder(
-                              future: DBProvider.db.getRecords(UserProvider.of(context).user.email, snapshot.data.documents[index]['questionnaireName'].toUpperCase()),
-                              builder: (BuildContext context, AsyncSnapshot<dynamic> snap) {
-                                if (!snap.hasData) {
-                                  return Text('No Data available');
-                                }
-                                var list = jsonDecode(snap.data);
-                                int value = list[0]["count(id)"];
-                                return  _buildListTile(context, snapshot.data.documents[index], value);});
-                      },
-                      separatorBuilder: (BuildContext context, int index) => const Divider(),
-                    );
-                  }
-            ),
+                stream:
+                    Firestore.instance.collection('overviewBank').snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData)
+                    return const CircularProgressIndicator();
+                  return ListView.separated(
+                    padding: const EdgeInsets.all(8),
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.documents.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return FutureBuilder(
+                          future: DBProvider.db.getRecords(
+                              UserProvider.of(context).user.email,
+                              snapshot
+                                  .data.documents[index]['questionnaireName']
+                                  .toUpperCase()),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<dynamic> snap) {
+                            if (!snap.hasData) {
+                              return Text('No Data available');
+                            }
+                            var list = jsonDecode(snap.data);
+                            int value = list[0]["count(id)"];
+                            return _buildListTile(
+                                context, snapshot.data.documents[index], value);
+                          });
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
+                  );
+                }),
           ),
         ],
       )),
@@ -83,8 +92,8 @@ class _EvaluationPageState extends State<EvaluationPage> {
 
 enum Department { back, start }
 
-
-Widget _buildListTile(BuildContext context, DocumentSnapshot document, int value) {
+Widget _buildListTile(
+    BuildContext context, DocumentSnapshot document, int value) {
   return Card(
     color: Colors.lightGreen[600].withOpacity(0.7),
     child: ListTile(
@@ -165,31 +174,31 @@ Widget _buildListTile(BuildContext context, DocumentSnapshot document, int value
                     context,
                     MaterialPageRoute(
                         builder: (context) => UserProvider(
-                          user: newuser,
-                          child: BuildSwipingEval(
+                              user: newuser,
+                              child: BuildSwipingEval(
                                 quename: document['questionnaireName'],
                               ),
-                        )));
+                            )));
               } else if (document['type'] == 'WheelQuestion') {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => UserProvider(
-                          user: newuser,
-                          child: BuildWheelEval(
+                              user: newuser,
+                              child: BuildWheelEval(
                                 quename: document['questionnaireName'],
                               ),
-                        )));
+                            )));
               } else if (document['type'] == 'MultipleChoiceQuestion') {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => UserProvider(
-                          user: newuser,
-                          child: BuildMCEval(
+                              user: newuser,
+                              child: BuildMCEval(
                                 quename: document['questionnaireName'],
                               ),
-                        )));
+                            )));
               }
               break;
           }

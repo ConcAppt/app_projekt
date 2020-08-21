@@ -39,16 +39,19 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
             child: StreamBuilder(
-                stream: Firestore.instance.collection('overviewBank').snapshots(),
+                stream:
+                    Firestore.instance.collection('overviewBank').snapshots(),
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) return const CircularProgressIndicator();
+                  if (!snapshot.hasData)
+                    return const CircularProgressIndicator();
                   return ListView.separated(
                     padding: const EdgeInsets.all(8),
                     itemCount: snapshot.data.documents.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Questionnaire(questionnaireNumber: index);
                     },
-                    separatorBuilder: (BuildContext context, int index) => const Divider(),
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
                   );
                 }),
           ),

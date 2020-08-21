@@ -2,6 +2,7 @@ import 'package:appprojekt/Screens/Profile/ProfilePage.dart';
 import 'package:appprojekt/Widgets/MyBottomNavigationBar.dart';
 import 'package:appprojekt/Widgets/UserProvider_InWi.dart';
 import 'package:flutter/material.dart';
+
 //import 'package:email_validator/email_validator.dart';
 import 'package:appprojekt/models/user.dart';
 import 'package:appprojekt/data/Database.dart';
@@ -64,7 +65,9 @@ class _LogListState extends State<LogList> {
         children: <Widget>[
           Text('e-Mail:',
               style: TextStyle(
-                  color: Colors.lightGreen[700], fontFamily: 'Montserrat', fontSize: 25.0)),
+                  color: Colors.lightGreen[700],
+                  fontFamily: 'Montserrat',
+                  fontSize: 25.0)),
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
@@ -89,7 +92,9 @@ class _LogListState extends State<LogList> {
           ),
           Text('Password:',
               style: TextStyle(
-                  color: Colors.lightGreen[700], fontFamily: 'Montserrat', fontSize: 25.0)),
+                  color: Colors.lightGreen[700],
+                  fontFamily: 'Montserrat',
+                  fontSize: 25.0)),
           TextFormField(
             obscureText: true,
             decoration: const InputDecoration(
@@ -126,13 +131,14 @@ class _LogListState extends State<LogList> {
                   if (_formKey.currentState.validate()) {
                     // Process data.
                     if (true) {
-                      User user = await DBProvider.db.loginUser(_email, _password);
+                      User user =
+                          await DBProvider.db.loginUser(_email, _password);
                       if (user != null) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  UserProvider(user: user, child: MyBottomNavigationBar())),
+                              builder: (context) => UserProvider(
+                                  user: user, child: MyBottomNavigationBar())),
                         );
                       } else {
                         openDialog();

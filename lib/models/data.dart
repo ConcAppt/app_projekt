@@ -20,18 +20,18 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    id: json["id"],
-    email: json["email"],
-    questionnaire: json["questionnaire"],
-    date: json["date"],
-    answers: json["answers"],
-  );
+        id: json["id"],
+        email: json["email"],
+        questionnaire: json["questionnaire"],
+        date: json["date"],
+        answers: json["answers"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "email": email,
-    "questionnaire": questionnaire,
-    "date": date,
-    "answers": answers, //.toJson(),
-  };
+        "id": id,
+        "email": email,
+        "questionnaire": questionnaire,
+        "date": date,
+        "answers": answers, //.toJson(),
+      };
 }

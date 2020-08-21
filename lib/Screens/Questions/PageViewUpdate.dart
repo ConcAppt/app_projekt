@@ -9,6 +9,7 @@ class BuildMyQuestionnaire extends StatefulWidget {
 class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
   int _currentPage = 0;
   final PageController _pageController = PageController(initialPage: 0);
+
   @override
   void dispose() {
     super.dispose();
@@ -109,8 +110,8 @@ class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
         '',
         'neutral',
         'strongly agree'),
-    QuestionModel('', ' I keep my emotions to myself.', 'strongly diasagree', '', 'neutral',
-        'strongly agree'),
+    QuestionModel('', ' I keep my emotions to myself.', 'strongly diasagree',
+        '', 'neutral', 'strongly agree'),
     QuestionModel(
         '',
         'When I want to feel more positive emotion (such as joy or amusement), I change what I’m thinking about.',
@@ -119,6 +120,7 @@ class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
         'neutral',
         'strongly agree')
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,19 +148,24 @@ class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
                 child: Stack(
                   alignment: AlignmentDirectional.topCenter,
                   children: <Widget>[
-                    Stack(alignment: AlignmentDirectional.topCenter, children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 35),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            for (int i = 0; i < questionsList.length; i++)
-                              if (i == _currentPage) SlideDots(true) else SlideDots(false)
-                          ],
-                        ),
-                      )
-                    ]),
+                    Stack(
+                        alignment: AlignmentDirectional.topCenter,
+                        children: <Widget>[
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 35),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                for (int i = 0; i < questionsList.length; i++)
+                                  if (i == _currentPage)
+                                    SlideDots(true)
+                                  else
+                                    SlideDots(false)
+                              ],
+                            ),
+                          )
+                        ]),
                     PageView.builder(
                         scrollDirection: Axis.horizontal,
                         controller: _pageController,
@@ -169,10 +176,13 @@ class _BuildMyQuestionnaireState extends State<BuildMyQuestionnaire> {
                             margin: const EdgeInsets.only(top: 0.0),
                             child: Column(
                               children: <Widget>[
-                                Expanded(child: _buildDescriptionItem(questionsList[i])),
+                                Expanded(
+                                    child: _buildDescriptionItem(
+                                        questionsList[i])),
                                 Flexible(
                                     child: Padding(
-                                  padding: const EdgeInsets.only(left: 20.0, right: 10.0),
+                                  padding: const EdgeInsets.only(
+                                      left: 20.0, right: 10.0),
                                   child: _buildListWheel(questionsList[i]),
                                 )),
                               ],
@@ -325,8 +335,8 @@ class QuestionModel {
   String fourCase;
   String sixCase;
 
-  QuestionModel(
-      this.title, this.description, this.zeroCase, this.twoCase, this.fourCase, this.sixCase);
+  QuestionModel(this.title, this.description, this.zeroCase, this.twoCase,
+      this.fourCase, this.sixCase);
 }
 
 class SlideDots extends StatelessWidget {

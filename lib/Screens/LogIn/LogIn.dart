@@ -15,11 +15,10 @@ class LogIn extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(50.0),
             child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                child: LogList()
+                physics: AlwaysScrollableScrollPhysics(), child: LogList()
                 //lul
-              ),
-            ),
+                ),
+          ),
         ),
       ),
     );

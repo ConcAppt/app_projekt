@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.lightGreen[400],
           automaticallyImplyLeading: false,
         ),
-      ),// backgroundColor: Colors.white,
+      ), // backgroundColor: Colors.white,
       body: SafeArea(
           child: Column(
         children: <Widget>[
@@ -57,17 +57,21 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
             child: StreamBuilder(
-                stream: Firestore.instance.collection('overviewBank').snapshots(),
+                stream:
+                    Firestore.instance.collection('overviewBank').snapshots(),
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) return const CircularProgressIndicator();
+                  if (!snapshot.hasData)
+                    return const CircularProgressIndicator();
                   return ListView.separated(
                     padding: const EdgeInsets.all(8),
                     shrinkWrap: true,
                     itemCount: snapshot.data.documents.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return _buildListTile(context, snapshot.data.documents[index]);
+                      return _buildListTile(
+                          context, snapshot.data.documents[index]);
                     },
-                    separatorBuilder: (BuildContext context, int index) => const Divider(),
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
                   );
                 }),
           ),
@@ -95,7 +99,9 @@ Widget _buildListTile(BuildContext context, DocumentSnapshot document) {
         ),
         subtitle: Center(
           child: Text(
-            (document['questionnaireDescription'] + "\n\n" + document['questionnaireScope']),
+            (document['questionnaireDescription'] +
+                "\n\n" +
+                document['questionnaireScope']),
             style: TextStyle(
                 color: Colors.black87,
                 fontFamily: 'Montserrat',

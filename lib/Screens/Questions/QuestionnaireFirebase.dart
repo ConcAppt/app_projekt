@@ -11,6 +11,7 @@ class BuildOverview extends StatefulWidget {
   BuildOverview({Key key, this.index, this.document}) : super(key: key);
   final document;
   final index;
+
   @override
   _BuildOverviewState createState() => _BuildOverviewState();
 }
@@ -75,7 +76,9 @@ class _BuildOverviewState extends State<BuildOverview> {
                   print('start gedrückt');
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserProvider(user: newuser, child: BuildMyQuestionnaire())),
+                    MaterialPageRoute(
+                        builder: (context) => UserProvider(
+                            user: newuser, child: BuildMyQuestionnaire())),
                   );
                   break;
               }
@@ -119,7 +122,9 @@ class _BuildOverviewState extends State<BuildOverview> {
                 Text(
                   widget.document['questionnaireScope'],
                   style: TextStyle(
-                      color: Colors.black87, fontFamily: 'Montserrat', fontWeight: FontWeight.w500),
+                      color: Colors.black87,
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w500),
                 )
               ],
             ),
