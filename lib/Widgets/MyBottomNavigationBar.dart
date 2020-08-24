@@ -1,30 +1,33 @@
 import 'package:appprojekt/Screens/Home/HomePageFirebase.dart';
-import 'package:appprojekt/Screens/Settings/SettingsPage.dart';
 import 'package:flutter/material.dart';
 import '../Screens/Evaluation/EvaluationPageFirebase.dart';
 import '../Screens/Profile/ProfilePage.dart';
+import '../Screens/Start/Start.dart';
+//import '../Screens/Home/PageViewUpdate.dart';
 import '../Screens/Questions/SwipingQuestionsFirebase.dart';
+import '../Screens/Settings/SettingsPage.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
+  MyBottomNavigationBar({Key key, this.currentIndex}) : super(key: key);
+  int currentIndex;
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<MyBottomNavigationBar> {
-  int _currentIndex = 2;
   final List<Widget> _children = [
     HomePage(),
-    EvaluationPage(),
+    EvaluationPage(), //make real screen
     ProfilePage(),
-    SettingsPage(),
+    SettingsPage(), //same here
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex],
+      body: _children[widget.currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
+          currentIndex: widget.currentIndex,
           type: BottomNavigationBarType.shifting,
           iconSize: 35,
           backgroundColor: Colors.lightGreen[700],
@@ -50,7 +53,7 @@ class _HomeState extends State<MyBottomNavigationBar> {
           ],
           onTap: (index) {
             setState(() {
-              _currentIndex = index;
+              widget.currentIndex = index;
             });
           }),
     );

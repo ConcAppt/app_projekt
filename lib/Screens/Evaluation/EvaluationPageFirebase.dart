@@ -18,6 +18,7 @@ class EvaluationPage extends StatefulWidget {
 class _EvaluationPageState extends State<EvaluationPage> {
   @override
   Widget build(BuildContext context) {
+    User user = UserProvider.of(context).user;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0),
@@ -52,35 +53,27 @@ class _EvaluationPageState extends State<EvaluationPage> {
           ),
           Expanded(
             child: StreamBuilder(
-                stream:
-                    Firestore.instance.collection('overviewBank').snapshots(),
+                stream: Firestore.instance.collection('overviewBank').snapshots(),
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData)
-                    return const CircularProgressIndicator();
+                  if (!snapshot.hasData) return const CircularProgressIndicator();
                   return ListView.separated(
                     padding: const EdgeInsets.all(8),
                     shrinkWrap: true,
                     itemCount: snapshot.data.documents.length,
                     itemBuilder: (BuildContext context, int index) {
                       return FutureBuilder(
-                          future: DBProvider.db.getRecords(
-                              UserProvider.of(context).user.email,
-                              snapshot
-                                  .data.documents[index]['questionnaireName']
-                                  .toUpperCase()),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<dynamic> snap) {
+                          future: DBProvider.db.getRecords(UserProvider.of(context).user.email,
+                              snapshot.data.documents[index]['questionnaireName'].toUpperCase()),
+                          builder: (BuildContext context, AsyncSnapshot<dynamic> snap) {
                             if (!snap.hasData) {
                               return Text('No Data available');
                             }
                             var list = jsonDecode(snap.data);
                             int value = list[0]["count(id)"];
-                            return _buildListTile(
-                                context, snapshot.data.documents[index], value);
+                            return _buildListTile(context, snapshot.data.documents[index], value);
                           });
                     },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
+                    separatorBuilder: (BuildContext context, int index) => const Divider(),
                   );
                 }),
           ),
@@ -92,8 +85,7 @@ class _EvaluationPageState extends State<EvaluationPage> {
 
 enum Department { back, start }
 
-Widget _buildListTile(
-    BuildContext context, DocumentSnapshot document, int value) {
+Widget _buildListTile(BuildContext context, DocumentSnapshot document, int value) {
   return Card(
     color: Colors.lightGreen[600].withOpacity(0.7),
     child: ListTile(

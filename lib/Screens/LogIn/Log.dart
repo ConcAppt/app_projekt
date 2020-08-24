@@ -65,9 +65,7 @@ class _LogListState extends State<LogList> {
         children: <Widget>[
           Text('e-Mail:',
               style: TextStyle(
-                  color: Colors.lightGreen[700],
-                  fontFamily: 'Montserrat',
-                  fontSize: 25.0)),
+                  color: Colors.lightGreen[700], fontFamily: 'Montserrat', fontSize: 25.0)),
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
@@ -92,9 +90,7 @@ class _LogListState extends State<LogList> {
           ),
           Text('Password:',
               style: TextStyle(
-                  color: Colors.lightGreen[700],
-                  fontFamily: 'Montserrat',
-                  fontSize: 25.0)),
+                  color: Colors.lightGreen[700], fontFamily: 'Montserrat', fontSize: 25.0)),
           TextFormField(
             obscureText: true,
             decoration: const InputDecoration(
@@ -131,14 +127,16 @@ class _LogListState extends State<LogList> {
                   if (_formKey.currentState.validate()) {
                     // Process data.
                     if (true) {
-                      User user =
-                          await DBProvider.db.loginUser(_email, _password);
+                      User user = await DBProvider.db.loginUser(_email, _password);
                       if (user != null) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => UserProvider(
-                                  user: user, child: MyBottomNavigationBar())),
+                                  user: user,
+                                  child: MyBottomNavigationBar(
+                                    currentIndex: 0,
+                                  ))),
                         );
                       } else {
                         openDialog();

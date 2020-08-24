@@ -113,8 +113,7 @@ class _ListState extends State<List> {
         //....
         break;
       case Department.LogIn:
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LogIn()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LogIn()));
         break;
     }
   }
@@ -128,9 +127,7 @@ class _ListState extends State<List> {
         children: <Widget>[
           Text('Name:',
               style: TextStyle(
-                  color: Colors.lightGreen[700],
-                  fontFamily: 'Montserrat',
-                  fontSize: 25.0)),
+                  color: Colors.lightGreen[700], fontFamily: 'Montserrat', fontSize: 25.0)),
           TextFormField(
             decoration: const InputDecoration(
               icon: Icon(Icons.person),
@@ -152,13 +149,10 @@ class _ListState extends State<List> {
           SizedBox(height: 10.0),
           Text('Age:',
               style: TextStyle(
-                  color: Colors.lightGreen[700],
-                  fontFamily: 'Montserrat',
-                  fontSize: 25.0)),
+                  color: Colors.lightGreen[700], fontFamily: 'Montserrat', fontSize: 25.0)),
           TextFormField(
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-                icon: Icon(Icons.cake), hintText: 'Enter your age'),
+            decoration: const InputDecoration(icon: Icon(Icons.cake), hintText: 'Enter your age'),
             style: TextStyle(fontSize: 20.0),
             validator: (value) {
               if (value.isEmpty) {
@@ -177,9 +171,7 @@ class _ListState extends State<List> {
           ),
           Text('e-Mail:',
               style: TextStyle(
-                  color: Colors.lightGreen[700],
-                  fontFamily: 'Montserrat',
-                  fontSize: 25.0)),
+                  color: Colors.lightGreen[700], fontFamily: 'Montserrat', fontSize: 25.0)),
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
@@ -204,9 +196,7 @@ class _ListState extends State<List> {
           ),
           Text('Password:',
               style: TextStyle(
-                  color: Colors.lightGreen[700],
-                  fontFamily: 'Montserrat',
-                  fontSize: 25.0)),
+                  color: Colors.lightGreen[700], fontFamily: 'Montserrat', fontSize: 25.0)),
           TextFormField(
             obscureText: true,
             decoration: const InputDecoration(
@@ -231,9 +221,7 @@ class _ListState extends State<List> {
           ),
           Text('Confirm Password:',
               style: TextStyle(
-                  color: Colors.lightGreen[700],
-                  fontFamily: 'Montserrat',
-                  fontSize: 25.0)),
+                  color: Colors.lightGreen[700], fontFamily: 'Montserrat', fontSize: 25.0)),
           TextFormField(
             obscureText: true,
             decoration: const InputDecoration(
@@ -269,13 +257,10 @@ class _ListState extends State<List> {
                   // the form is invalid.
                   if (_formKey.currentState.validate()) {
                     if (true && (_password == _confirmpassword)) {
-                      var newDBUser = User(
-                          name: _name,
-                          age: _age,
-                          email: _email,
-                          password: _password);
-                      User user = await DBProvider.db
-                          .loginUser(newDBUser.email, newDBUser.password);
+                      var newDBUser =
+                          User(name: _name, age: _age, email: _email, password: _password);
+                      User user =
+                          await DBProvider.db.loginUser(newDBUser.email, newDBUser.password);
                       if (user == null) {
                         DBProvider.db.newUser(newDBUser);
                         Navigator.push(
@@ -283,7 +268,9 @@ class _ListState extends State<List> {
                           MaterialPageRoute(
                               builder: (context) => UserProvider(
                                   user: newDBUser,
-                                  child: MyBottomNavigationBar())),
+                                  child: MyBottomNavigationBar(
+                                    currentIndex: 2,
+                                  ))),
                         );
                       } else {
                         userExists();

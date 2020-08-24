@@ -3,12 +3,7 @@ import 'package:appprojekt/Screens/Questions/MultipleChoiceQuestionsFirebase.dar
 import 'package:appprojekt/Screens/Questions/WheelQuestionsFirebase.dart';
 import 'package:flutter/material.dart';
 import '../../Widgets/UserProvider_InWi.dart';
-import '../../Widgets/UserProvider_InWi.dart';
-import '../../Widgets/UserProvider_InWi.dart';
-import '../../Widgets/UserProvider_InWi.dart';
-import '../../Widgets/UserProvider_InWi.dart';
-import '../../Widgets/UserProvider_InWi.dart';
-import '../../Widgets/UserProvider_InWi.dart';
+
 import '../../models/user.dart';
 import '../Questions/PageViewUpdate.dart';
 import '../../Ablage/Questionnaire.dart';
@@ -24,6 +19,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    User user = UserProvider.of(context).user;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0),
