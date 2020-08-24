@@ -42,7 +42,7 @@ class _EvaluationPageState extends State<EvaluationPage> {
           Container(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
             child: Text(
-                'Have a look at the results and the graphical evaluation of the questionnaires',
+                'Have a look at the results of the questionnaires',
                 style: TextStyle(
                     fontSize: 23,
                     fontFamily: 'Montserrat',

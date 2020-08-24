@@ -238,7 +238,7 @@ class _BuildMultipleChoiceQuestionnaireState
                                                                       email: newuser
                                                                           .email,
                                                                       date:
-                                                                          "date",
+                                                                          null,
                                                                       questionnaire: widget
                                                                           .quename
                                                                           .toUpperCase(),

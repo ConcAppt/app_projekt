@@ -201,7 +201,7 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                   id: null,
                                                                   email: newuser
                                                                       .email,
-                                                                  date: "date",
+                                                                  date: null,
                                                                   questionnaire:
                                                                       widget
                                                                           .quename

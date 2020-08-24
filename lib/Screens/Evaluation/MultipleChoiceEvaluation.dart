@@ -72,13 +72,25 @@ class _BuildMCEvalState extends State<BuildMCEval> {
               children: <Widget>[
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Text('Here should be a graph',
-                      style: TextStyle(
-                          fontSize: 23,
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey,
-                          letterSpacing: 2)),
+                  child: FutureBuilder(
+                    future: DBProvider.db.getDate(UserProvider.of(context).user.email, widget.quename.toUpperCase(), _currentPage),
+                    builder: (BuildContext context, AsyncSnapshot<dynamic> ap) {
+                      if(!ap.hasData){return Text('No data available',
+                          style: TextStyle(
+                              fontSize: 23,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey,
+                              letterSpacing: 2));}
+                      return Text(ap.data,
+                          style: TextStyle(
+                              fontSize: 23,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey,
+                              letterSpacing: 2));
+                    }
+                  ),
                 ),
                 Container(
                   child: Row(
