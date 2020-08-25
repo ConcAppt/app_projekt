@@ -39,6 +39,12 @@ class DBProvider {
             questionnaire TEXT, answers VARCHAR
           )
           ''');
+          await db.execute('''
+          CREATE TABLE remind (
+            email TEXT, questionnaire TEXT, time TEXT, day TEXT,
+            PRIMARY KEY (email, questionnaire)
+          )
+          ''');
         }, version: 4);
   }
 
@@ -166,7 +172,7 @@ class DBProvider {
 
   Future<String> getDate(String email, String questionnaire, int i) async {
     var db = await database;
-    var resultDate = await await db.rawQuery('''
+    var resultDate = await db.rawQuery('''
     SELECT date FROM ques WHERE email = ? AND questionnaire = ?''',
         [email, questionnaire]);
     if (resultDate.length == 0) return null;
@@ -191,5 +197,19 @@ class DBProvider {
 
       return str3;
     }
+  }
+
+
+
+  newRemind(String email, String questionnaire, String time, String day) async {
+    final db = await database;
+
+    var res = await db.rawInsert('''
+      INSERT INTO remind(
+        email, questionnaire, time, day
+      ) VALUES (?, ?, ?, ?)
+    ''', [email, questionnaire, time, day]);
+
+    return res;
   }
 }
