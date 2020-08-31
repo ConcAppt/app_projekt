@@ -1,3 +1,4 @@
+import 'package:appprojekt/Screens/CreateProfile/CaP.dart';
 import 'package:appprojekt/Screens/Profile/ProfilePage.dart';
 import 'package:appprojekt/Widgets/MyBottomNavigationBar.dart';
 import 'package:appprojekt/Widgets/UserProvider_InWi.dart';
@@ -14,7 +15,7 @@ class LogList extends StatefulWidget {
   _LogListState createState() => _LogListState();
 }
 
-enum Department { back }
+enum Department { back, cap }
 
 class _LogListState extends State<LogList> {
   Map<String, dynamic> newUser = {};
@@ -23,24 +24,42 @@ class _LogListState extends State<LogList> {
   String _email;
   String _password;
 
+
   Future<void> openDialog() async {
     switch (await showDialog<Department>(
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(
-            title: const Text("Wrong e-Mail or password"),
+            title: const Text("This user doesn't exist or wrong e-Mail or password."),
             children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.lightGreen[600].withOpacity(0.7),
-                ),
-                child: SimpleDialogOption(
-                  onPressed: () {
-                    Navigator.pop(context, Department.back);
-                  },
-                  child: const Text('Back'),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.lightGreen[600].withOpacity(0.7),
+                    ),
+                    child: SimpleDialogOption(
+                      onPressed: () {
+                        Navigator.pop(context, Department.back);
+                      },
+                      child: const Text('Back'),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.lightGreen[600].withOpacity(0.7),
+                    ),
+                    child: SimpleDialogOption(
+                      onPressed: () {
+                        Navigator.pop(context, Department.cap);
+                      },
+                      child: const Text('Create a profile'),
+                    ),
+                  ),
+                ],
               ),
             ],
             shape: RoundedRectangleBorder(
@@ -51,7 +70,10 @@ class _LogListState extends State<LogList> {
           );
         })) {
       case Department.back:
-        //....
+      //....
+        break;
+      case Department.cap:
+        Navigator.push(context, MaterialPageRoute(builder: (context) => CaP()));
         break;
     }
   }
