@@ -28,27 +28,25 @@ class DBProvider {
   initDB() async {
     return await openDatabase(join(await getDatabasesPath(), 'app_projekt.db'),
         onCreate: (db, version) async {
-          await db.execute('''
+      await db.execute('''
           CREATE TABLE users (
             name TEXT, age INTEGER, email TEXT PRIMARY KEY, password TEXT
           )
         ''');
-          await db.execute('''
+      await db.execute('''
           CREATE TABLE ques (
             id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, date TIMESTAMP DEFAULT CURRENT_DATE NOT NULL, 
             questionnaire TEXT, answers VARCHAR
           )
           ''');
-          await db.execute('''
+      await db.execute('''
           CREATE TABLE remind (
             email TEXT, questionnaire TEXT, time TEXT, day TEXT,
             PRIMARY KEY (email, questionnaire)
           )
           ''');
-        }, version: 4);
+    }, version: 4);
   }
-
-
 
   newUser(User newUser) async {
     final db = await database;
@@ -113,8 +111,6 @@ class DBProvider {
     return res;
   }
 
-
-
   newQuestionnaire(Data data) async {
     final db = await database;
 
@@ -127,12 +123,10 @@ class DBProvider {
     return res;
   }
 
-  Future<Map<dynamic, dynamic>> getValues(String email, String questionnaire,
-      int i) async {
+  Future<Map<dynamic, dynamic>> getValues(String email, String questionnaire, int i) async {
     var db = await database;
     var result = await db.rawQuery('''
-    SELECT * FROM ques WHERE email = ? AND questionnaire = ?''',
-        [email, questionnaire]);
+    SELECT * FROM ques WHERE email = ? AND questionnaire = ?''', [email, questionnaire]);
     if (result.length == 0) return null;
 
     if (questionnaire == "ERQ") {
@@ -173,8 +167,7 @@ class DBProvider {
   Future<String> getDate(String email, String questionnaire, int i) async {
     var db = await database;
     var resultDate = await db.rawQuery('''
-    SELECT date FROM ques WHERE email = ? AND questionnaire = ?''',
-        [email, questionnaire]);
+    SELECT date FROM ques WHERE email = ? AND questionnaire = ?''', [email, questionnaire]);
     if (resultDate.length == 0) return null;
 
     if (questionnaire == "ERQ") {
@@ -198,8 +191,6 @@ class DBProvider {
       return str3;
     }
   }
-
-
 
   newRemind(String email, String questionnaire, String time, String day) async {
     final db = await database;

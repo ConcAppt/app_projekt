@@ -453,6 +453,7 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                     duration: Duration(milliseconds: 300),
                                                     curve: Curves.easeIn);
                                                 sliderValue = 4;
+                                                myFeedbackText = "neutral";
                                               }
                                             }),
                                       )

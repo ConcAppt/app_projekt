@@ -1,10 +1,6 @@
 import 'package:appprojekt/Screens/Start/Start.dart';
-import 'package:appprojekt/Widgets/MyBottomNavigationBar.dart';
-import 'package:appprojekt/data/Database.dart';
 import 'package:appprojekt/models/user.dart';
 import 'package:flutter/material.dart';
-
-import '../../Widgets/UserProvider_InWi.dart';
 import '../../Widgets/UserProvider_InWi.dart';
 import 'PopUp_Change.dart';
 
@@ -80,8 +76,7 @@ class ProfilePage extends StatelessWidget {
                         onPressed: () async {
                           showDialog(
                             context: context,
-                            builder: (BuildContext context) =>
-                                CustomDialog("name", user),
+                            builder: (BuildContext context) => CustomDialog("name", user),
                           );
                         },
                       )
@@ -104,8 +99,7 @@ class ProfilePage extends StatelessWidget {
                     children: <Widget>[
                       SizedBox(
                         width: 220,
-                        child: Text(
-                            UserProvider.of(context).user.age.toString(),
+                        child: Text(UserProvider.of(context).user.age.toString(),
                             textAlign: TextAlign.right,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -118,8 +112,7 @@ class ProfilePage extends StatelessWidget {
                         onPressed: () async {
                           showDialog(
                             context: context,
-                            builder: (BuildContext context) =>
-                                CustomDialog("age", user),
+                            builder: (BuildContext context) => CustomDialog("age", user),
                           );
                         },
                       )
@@ -158,8 +151,7 @@ class ProfilePage extends StatelessWidget {
                         onPressed: () async {
                           showDialog(
                             context: context,
-                            builder: (BuildContext context) =>
-                                CustomDialog("email", user),
+                            builder: (BuildContext context) => CustomDialog("email", user),
                           );
                         },
                       )
@@ -199,8 +191,7 @@ class ProfilePage extends StatelessWidget {
                         onPressed: () async {
                           showDialog(
                             context: context,
-                            builder: (BuildContext context) =>
-                                CustomDialog("password", user),
+                            builder: (BuildContext context) => CustomDialog("password", user),
                           );
                         },
                       )
@@ -216,14 +207,12 @@ class ProfilePage extends StatelessWidget {
               SizedBox(height: 50.0),
               Center(
                 child: RaisedButton(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 15.0),
+                  padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 15.0),
                   color: Colors.lightGreen[700],
                   highlightElevation: 2,
                   elevation: 8,
                   onPressed: () async {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Start()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Start()));
                   },
                   child: Text(
                     '  Log Out  ',

@@ -18,7 +18,6 @@ class EvaluationPage extends StatefulWidget {
 class _EvaluationPageState extends State<EvaluationPage> {
   @override
   Widget build(BuildContext context) {
-    User user = UserProvider.of(context).user;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0),
@@ -42,8 +41,7 @@ class _EvaluationPageState extends State<EvaluationPage> {
           ),
           Container(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-            child: Text(
-                'Have a look at the results of the questionnaires',
+            child: Text('Have a look at the results of the questionnaires',
                 style: TextStyle(
                     fontSize: 23,
                     fontFamily: 'Montserrat',

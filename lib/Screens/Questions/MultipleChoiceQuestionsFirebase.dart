@@ -1,14 +1,10 @@
 import 'dart:convert';
-
 import 'package:appprojekt/data/Database.dart';
 import 'package:appprojekt/models/data.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../Widgets/MyBottomNavigationBar.dart';
-import '../../Widgets/UserProvider_InWi.dart';
-import '../../Widgets/UserProvider_InWi.dart';
-import '../../Widgets/UserProvider_InWi.dart';
 import '../../Widgets/UserProvider_InWi.dart';
 import '../../models/user.dart';
 
@@ -19,12 +15,10 @@ class BuildMultipleChoiceQuestionnaire extends StatefulWidget {
   final quename;
 
   @override
-  _BuildMultipleChoiceQuestionnaireState createState() =>
-      _BuildMultipleChoiceQuestionnaireState();
+  _BuildMultipleChoiceQuestionnaireState createState() => _BuildMultipleChoiceQuestionnaireState();
 }
 
-class _BuildMultipleChoiceQuestionnaireState
-    extends State<BuildMultipleChoiceQuestionnaire> {
+class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQuestionnaire> {
   int _currentPage = 0;
   final PageController _pageController = PageController(initialPage: 0);
   var myFeedbackText = 'neutral';
@@ -85,21 +79,19 @@ class _BuildMultipleChoiceQuestionnaireState
                         child: Stack(
                           alignment: AlignmentDirectional.topCenter,
                           children: <Widget>[
-                            Stack(
-                                alignment: AlignmentDirectional.topCenter,
-                                children: <Widget>[
-                                  SmoothPageIndicator(
-                                    controller: _pageController,
-                                    count: snapshot.data.documents.length,
-                                    effect: ScrollingDotsEffect(
-                                        activeDotColor: Colors.lightGreen[700],
-                                        dotColor: Colors.grey,
-                                        dotHeight: 10,
-                                        dotWidth: 10,
-                                        maxVisibleDots: 11,
-                                        spacing: 15.0),
-                                  )
-                                ]),
+                            Stack(alignment: AlignmentDirectional.topCenter, children: <Widget>[
+                              SmoothPageIndicator(
+                                controller: _pageController,
+                                count: snapshot.data.documents.length,
+                                effect: ScrollingDotsEffect(
+                                    activeDotColor: Colors.lightGreen[700],
+                                    dotColor: Colors.grey,
+                                    dotHeight: 10,
+                                    dotWidth: 10,
+                                    maxVisibleDots: 11,
+                                    spacing: 15.0),
+                              )
+                            ]),
                             PageView.builder(
                                 physics: new NeverScrollableScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
@@ -112,39 +104,29 @@ class _BuildMultipleChoiceQuestionnaireState
                                     child: Column(
                                       children: <Widget>[
                                         Expanded(
-                                            child: _buildDescriptionItem(
-                                                snapshot.data.documents[i])),
+                                            child:
+                                                _buildDescriptionItem(snapshot.data.documents[i])),
                                         Expanded(
-                                            child: _buildCheckBoxList(
-                                                snapshot.data.documents[i])),
+                                            child: _buildCheckBoxList(snapshot.data.documents[i])),
                                         Container(
                                           child: FloatingActionButton.extended(
                                               icon: Icon(Icons.navigate_next),
                                               label: Text('Next'),
-                                              backgroundColor:
-                                                  Colors.lightGreen[700],
+                                              backgroundColor: Colors.lightGreen[700],
                                               onPressed: () {
-                                                User newuser =
-                                                    UserProvider.of(context)
-                                                        .user;
-                                                answers['Question ${i + 1}'] =
-                                                    answerstr;
+                                                User newuser = UserProvider.of(context).user;
+                                                answers['Question ${i + 1}'] = answerstr;
                                                 //TODO check Answer
-                                                Future<void>
-                                                    _showMyDialog() async {
+                                                Future<void> _showMyDialog() async {
                                                   return showDialog<void>(
                                                     context: context,
                                                     barrierDismissible: false,
                                                     // user must tap button!
-                                                    builder:
-                                                        (BuildContext context) {
+                                                    builder: (BuildContext context) {
                                                       return AlertDialog(
-                                                        shape:
-                                                            RoundedRectangleBorder(),
-                                                        title:
-                                                            Text('Attention'),
-                                                        content:
-                                                            SingleChildScrollView(
+                                                        shape: RoundedRectangleBorder(),
+                                                        title: Text('Attention'),
+                                                        content: SingleChildScrollView(
                                                           child: ListBody(
                                                             children: <Widget>[
                                                               Text(
@@ -157,22 +139,15 @@ class _BuildMultipleChoiceQuestionnaireState
                                                             child: Text(
                                                               'Okay',
                                                               style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .lightGreen,
-                                                                fontFamily:
-                                                                    'Montserrat',
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.lightGreen,
+                                                                fontFamily: 'Montserrat',
                                                                 fontSize: 20.0,
-                                                                letterSpacing:
-                                                                    2,
+                                                                letterSpacing: 2,
                                                               ),
                                                             ),
                                                             onPressed: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
+                                                              Navigator.of(context).pop();
                                                             },
                                                           ),
                                                         ],
@@ -184,29 +159,19 @@ class _BuildMultipleChoiceQuestionnaireState
                                                 if (_alternatives == null) {
                                                   _showMyDialog();
                                                 } else {
-                                                  if (i ==
-                                                      snapshot.data.documents
-                                                              .length -
-                                                          1) {
-                                                    Future<void>
-                                                        _showEndDialog() async {
+                                                  if (i == snapshot.data.documents.length - 1) {
+                                                    Future<void> _showEndDialog() async {
                                                       return showDialog<void>(
                                                         context: context,
-                                                        barrierDismissible:
-                                                            false,
+                                                        barrierDismissible: false,
                                                         // user must tap button!
-                                                        builder: (BuildContext
-                                                            context) {
+                                                        builder: (BuildContext context) {
                                                           return AlertDialog(
-                                                            shape:
-                                                                RoundedRectangleBorder(),
-                                                            title: Text(
-                                                                'Attention'),
-                                                            content:
-                                                                SingleChildScrollView(
+                                                            shape: RoundedRectangleBorder(),
+                                                            title: Text('Attention'),
+                                                            content: SingleChildScrollView(
                                                               child: ListBody(
-                                                                children: <
-                                                                    Widget>[
+                                                                children: <Widget>[
                                                                   Text(
                                                                       'Questionnaire has been completely processed '),
                                                                 ],
@@ -216,47 +181,34 @@ class _BuildMultipleChoiceQuestionnaireState
                                                               FlatButton(
                                                                 child: Text(
                                                                   'Okay',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .lightGreen,
-                                                                    fontFamily:
-                                                                        'Montserrat',
-                                                                    fontSize:
-                                                                        20.0,
-                                                                    letterSpacing:
-                                                                        2,
+                                                                  style: TextStyle(
+                                                                    fontWeight: FontWeight.bold,
+                                                                    color: Colors.lightGreen,
+                                                                    fontFamily: 'Montserrat',
+                                                                    fontSize: 20.0,
+                                                                    letterSpacing: 2,
                                                                   ),
                                                                 ),
-                                                                onPressed:
-                                                                    () async {
+                                                                onPressed: () async {
                                                                   Data data = Data(
                                                                       id: null,
-                                                                      email: newuser
-                                                                          .email,
-                                                                      date:
-                                                                          null,
-                                                                      questionnaire: widget
-                                                                          .quename
+                                                                      email: newuser.email,
+                                                                      date: null,
+                                                                      questionnaire: widget.quename
                                                                           .toUpperCase(),
-                                                                      answers:
-                                                                          jsonEncode(
-                                                                              answers));
+                                                                      answers: jsonEncode(answers));
                                                                   DBProvider.db
-                                                                      .newQuestionnaire(
-                                                                          data);
-                                                                  Navigator
-                                                                      .push(
+                                                                      .newQuestionnaire(data);
+                                                                  Navigator.push(
                                                                     context,
                                                                     MaterialPageRoute(
-                                                                        builder: (context) => UserProvider(
-                                                                            user:
-                                                                                newuser,
-                                                                            child:
-                                                                                MyBottomNavigationBar())),
+                                                                        builder: (context) =>
+                                                                            UserProvider(
+                                                                                user: newuser,
+                                                                                child:
+                                                                                    MyBottomNavigationBar(
+                                                                                  currentIndex: 0,
+                                                                                ))),
                                                                   );
                                                                 },
                                                               ),
@@ -269,8 +221,7 @@ class _BuildMultipleChoiceQuestionnaireState
                                                     _showEndDialog();
                                                   } else {
                                                     _pageController.nextPage(
-                                                        duration: Duration(
-                                                            milliseconds: 300),
+                                                        duration: Duration(milliseconds: 300),
                                                         curve: Curves.easeIn);
                                                     _alternatives = null;
                                                   }

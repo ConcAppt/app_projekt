@@ -44,20 +44,17 @@ class _CustomDialogState extends State<CustomDialog> {
       children: <Widget>[
         Container(
             padding: EdgeInsets.all(30.0),
-            decoration: new BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.rectangle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10.0,
-                    offset: const Offset(0.0, 10.0),
-                  )
-                ]),
+            decoration:
+                new BoxDecoration(color: Colors.white, shape: BoxShape.rectangle, boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10.0,
+                offset: const Offset(0.0, 10.0),
+              )
+            ]),
             child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
-                child: Column(
-                    mainAxisSize: MainAxisSize.min, // To make the card compact
+                child: Column(mainAxisSize: MainAxisSize.min, // To make the card compact
                     children: <Widget>[
                       Text(
                         'Change your $value',
@@ -109,16 +106,16 @@ class _CustomDialogState extends State<CustomDialog> {
                     if (_formKey.currentState.validate()) {
                       if (true && (user.name != _name)) {
                         print(_name);
-                        await DBProvider.db
-                            .changeName(_name, user.email, user.password);
-                        User newuser = await DBProvider.db
-                            .loginUser(user.email, user.password);
+                        await DBProvider.db.changeName(_name, user.email, user.password);
+                        User newuser = await DBProvider.db.loginUser(user.email, user.password);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => UserProvider(
                                   user: newuser,
-                                  child: MyBottomNavigationBar())),
+                                  child: MyBottomNavigationBar(
+                                    currentIndex: 2,
+                                  ))),
                         );
                       }
                       // Process data
@@ -127,8 +124,7 @@ class _CustomDialogState extends State<CustomDialog> {
                   },
                   child: Text(
                     'submit',
-                    style: TextStyle(
-                        color: Colors.lightGreen[700], fontSize: 25.0),
+                    style: TextStyle(color: Colors.lightGreen[700], fontSize: 25.0),
                   ),
                 ))
           ],
@@ -172,16 +168,16 @@ class _CustomDialogState extends State<CustomDialog> {
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
                       if (true && (user.age != _age)) {
-                        await DBProvider.db
-                            .changeAge(_age, user.email, user.password);
-                        User newuser = await DBProvider.db
-                            .loginUser(user.email, user.password);
+                        await DBProvider.db.changeAge(_age, user.email, user.password);
+                        User newuser = await DBProvider.db.loginUser(user.email, user.password);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => UserProvider(
                                   user: newuser,
-                                  child: MyBottomNavigationBar())),
+                                  child: MyBottomNavigationBar(
+                                    currentIndex: 2,
+                                  ))),
                         );
                       }
                       return null;
@@ -190,8 +186,7 @@ class _CustomDialogState extends State<CustomDialog> {
                   },
                   child: Text(
                     'submit',
-                    style: TextStyle(
-                        color: Colors.lightGreen[700], fontSize: 25.0),
+                    style: TextStyle(color: Colors.lightGreen[700], fontSize: 25.0),
                   ),
                 ))
           ],
@@ -236,16 +231,16 @@ class _CustomDialogState extends State<CustomDialog> {
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
                       if (true && (user.email != _mail)) {
-                        await DBProvider.db
-                            .changeMail(_mail, user.email, user.password);
-                        User newuser =
-                            await DBProvider.db.loginUser(_mail, user.password);
+                        await DBProvider.db.changeMail(_mail, user.email, user.password);
+                        User newuser = await DBProvider.db.loginUser(_mail, user.password);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => UserProvider(
                                   user: newuser,
-                                  child: MyBottomNavigationBar())),
+                                  child: MyBottomNavigationBar(
+                                    currentIndex: 2,
+                                  ))),
                         );
                       }
                       return null;
@@ -253,8 +248,7 @@ class _CustomDialogState extends State<CustomDialog> {
                   },
                   child: Text(
                     'submit',
-                    style: TextStyle(
-                        color: Colors.lightGreen[700], fontSize: 25.0),
+                    style: TextStyle(color: Colors.lightGreen[700], fontSize: 25.0),
                   ),
                 ))
           ],
@@ -342,19 +336,17 @@ class _CustomDialogState extends State<CustomDialog> {
                 child: FlatButton(
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
-                      if (true &&
-                          (_oldpassword != _password) &&
-                          (user.password != _password)) {
-                        await DBProvider.db.changePassword(
-                            _password, user.email, user.password);
-                        User newuser = await DBProvider.db
-                            .loginUser(user.email, _password);
+                      if (true && (_oldpassword != _password) && (user.password != _password)) {
+                        await DBProvider.db.changePassword(_password, user.email, user.password);
+                        User newuser = await DBProvider.db.loginUser(user.email, _password);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => UserProvider(
                                   user: newuser,
-                                  child: MyBottomNavigationBar())),
+                                  child: MyBottomNavigationBar(
+                                    currentIndex: 2,
+                                  ))),
                         );
                       }
                       return null;
@@ -363,8 +355,7 @@ class _CustomDialogState extends State<CustomDialog> {
                   },
                   child: Text(
                     'submit',
-                    style: TextStyle(
-                        color: Colors.lightGreen[700], fontSize: 25.0),
+                    style: TextStyle(color: Colors.lightGreen[700], fontSize: 25.0),
                   ),
                 ))
           ],

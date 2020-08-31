@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:appprojekt/Screens/LogIn/Log.dart';
 
@@ -14,8 +13,7 @@ class LogIn extends StatelessWidget {
         child: Center(
           child: Padding(
             padding: EdgeInsets.all(50.0),
-            child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(), child: LogList()
+            child: SingleChildScrollView(physics: AlwaysScrollableScrollPhysics(), child: LogList()
                 //lul
                 ),
           ),

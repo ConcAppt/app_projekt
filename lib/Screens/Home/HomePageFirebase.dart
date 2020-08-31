@@ -3,12 +3,7 @@ import 'package:appprojekt/Screens/Questions/MultipleChoiceQuestionsFirebase.dar
 import 'package:appprojekt/Screens/Questions/WheelQuestionsFirebase.dart';
 import 'package:flutter/material.dart';
 import '../../Widgets/UserProvider_InWi.dart';
-
 import '../../models/user.dart';
-import '../Questions/PageViewUpdate.dart';
-import '../../Ablage/Questionnaire.dart';
-import '../Questions/QuestionnaireFirebase.dart';
-import '../../Widgets/MyBottomNavigationBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +14,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    User user = UserProvider.of(context).user;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0),
@@ -53,21 +47,17 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
             child: StreamBuilder(
-                stream:
-                    Firestore.instance.collection('overviewBank').snapshots(),
+                stream: Firestore.instance.collection('overviewBank').snapshots(),
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData)
-                    return const CircularProgressIndicator();
+                  if (!snapshot.hasData) return const CircularProgressIndicator();
                   return ListView.separated(
                     padding: const EdgeInsets.all(8),
                     shrinkWrap: true,
                     itemCount: snapshot.data.documents.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return _buildListTile(
-                          context, snapshot.data.documents[index]);
+                      return _buildListTile(context, snapshot.data.documents[index]);
                     },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
+                    separatorBuilder: (BuildContext context, int index) => const Divider(),
                   );
                 }),
           ),
@@ -95,9 +85,7 @@ Widget _buildListTile(BuildContext context, DocumentSnapshot document) {
         ),
         subtitle: Center(
           child: Text(
-            (document['questionnaireDescription'] +
-                "\n\n" +
-                document['questionnaireScope']),
+            (document['questionnaireDescription'] + "\n\n" + document['questionnaireScope']),
             style: TextStyle(
                 color: Colors.black87,
                 fontFamily: 'Montserrat',

@@ -1,9 +1,6 @@
-import 'package:appprojekt/Screens/Profile/ProfilePage.dart';
 import 'package:appprojekt/Widgets/MyBottomNavigationBar.dart';
 import 'package:appprojekt/Widgets/UserProvider_InWi.dart';
 import 'package:flutter/material.dart';
-
-//import 'package:email_validator/email_validator.dart';
 import 'package:appprojekt/models/user.dart';
 import 'package:appprojekt/data/Database.dart';
 

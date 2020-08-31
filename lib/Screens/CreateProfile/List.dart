@@ -1,5 +1,4 @@
 import 'package:appprojekt/Screens/LogIn/LogIn.dart';
-import 'package:appprojekt/Screens/Profile/ProfilePage.dart';
 import 'package:appprojekt/Widgets/MyBottomNavigationBar.dart';
 import 'package:appprojekt/data/Database.dart';
 import 'package:appprojekt/Widgets/UserProvider_InWi.dart';

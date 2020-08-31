@@ -28,6 +28,14 @@ dependencies:
   flutter_datetime_picker: ^1.4.0
   weekday_selector: ^0.4.0
 
+  flutter_email_sender: ^3.0.1
+  flutter_mailer: ^0.5.1
+  image_picker: ^0.6.7+6
+  share: ^0.6.4+5
+  esys_flutter_share: ^1.0.2
+  excel: ^1.1.5
+
+
 
 dev_dependencies:
   flutter_test:
@@ -35,6 +43,9 @@ dev_dependencies:
 
 
 flutter:
+  assets:
+    - assets/exportfile.xlsx
+    - assets/TigerKing.png
   fonts:
     - family: NotoSans
       fonts:
