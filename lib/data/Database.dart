@@ -203,4 +203,14 @@ class DBProvider {
 
     return res;
   }
+
+  Future<String> getRemind(String email, String questionnaire) async {
+    var db = await database;
+    var resultRemind = await db.rawQuery('''
+    SELECT time AND day FROM remind WHERE email = ? AND questionnaire = ?
+    ''', [email, questionnaire]);
+    if (resultRemind.length == 0) return 'No Data available';
+
+    return jsonEncode(resultRemind);
+  }
 }
