@@ -168,12 +168,28 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                           builder: (context, setState) {
                                                         return AlertDialog(
                                                           shape: RoundedRectangleBorder(),
-                                                          title: Text('Attention'),
+                                                          title: Text(
+                                                            'Attention',
+                                                            style: TextStyle(
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.black,
+                                                              fontFamily: 'Montserrat',
+                                                              fontSize: 20.0,
+                                                              letterSpacing: 2,
+                                                            ),
+                                                          ),
                                                           content: SingleChildScrollView(
                                                             child: ListBody(
                                                               children: <Widget>[
                                                                 Text(
-                                                                    'Questionnaire has been completely processed '),
+                                                                  'Questionnaire has been completely processed ',
+                                                                  style: TextStyle(
+                                                                    color: Colors.black,
+                                                                    fontFamily: 'Montserrat',
+                                                                    fontSize: 12.0,
+                                                                    letterSpacing: 2,
+                                                                  ),
+                                                                ),
                                                               ],
                                                             ),
                                                           ),
@@ -220,7 +236,13 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                       letterSpacing: 2,
                                                                     ),
                                                                   ),
-                                                                  onPressed: () {
+                                                                  onPressed: () async {
+                                                                    var reminderData =
+                                                                        await DBProvider.db
+                                                                            .getRemind(
+                                                                                newuser.email,
+                                                                                widget.quename
+                                                                                    .toUpperCase());
                                                                     DatePicker.showTimePicker(
                                                                         context,
                                                                         showSecondsColumn: false,
@@ -254,9 +276,25 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                           ),
                                                                         ),
                                                                         showTitleActions: true,
-                                                                        onChanged: (date) {
+                                                                        onChanged: (date) async {
+                                                                      var reminderList =
+                                                                          jsonDecode(reminderData);
+                                                                      DateTime date =
+                                                                          reminderList[0]["time"];
+
+                                                                      List days = jsonDecode(
+                                                                          reminderList[0]["days"]);
                                                                       setState(() {
-                                                                        dateTimePicker = date;
+                                                                        if (dateTimePicker
+                                                                                .toString() ==
+                                                                            'No '
+                                                                                'Data available') {
+                                                                          dateTimePicker =
+                                                                              DateTime.now();
+                                                                        } else {
+                                                                          dateTimePicker = date;
+                                                                        }
+                                                                        //dateTimePicker = date;
                                                                       });
 
                                                                       print('change $date');
@@ -427,6 +465,13 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                     answers: jsonEncode(answers));
                                                                 DBProvider.db
                                                                     .newQuestionnaire(data);
+
+                                                                DBProvider.db.newRemind(
+                                                                    newuser.email,
+                                                                    widget.quename.toUpperCase(),
+                                                                    dateTimePicker,
+                                                                    jsonEncode(values));
+
                                                                 Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(

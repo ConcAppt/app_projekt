@@ -41,7 +41,7 @@ class DBProvider {
           ''');
       await db.execute('''
           CREATE TABLE remind (
-            email TEXT, questionnaire TEXT, time TEXT, day TEXT,
+            email TEXT, questionnaire TEXT, time DATETIME, days TEXT,
             PRIMARY KEY (email, questionnaire)
           )
           ''');
@@ -192,14 +192,14 @@ class DBProvider {
     }
   }
 
-  newRemind(String email, String questionnaire, String time, String day) async {
+  newRemind(String email, String questionnaire, DateTime time, String days) async {
     final db = await database;
 
     var res = await db.rawInsert('''
       INSERT INTO remind(
-        email, questionnaire, time, day
+        email, questionnaire, time, days
       ) VALUES (?, ?, ?, ?)
-    ''', [email, questionnaire, time, day]);
+    ''', [email, questionnaire, time, days]);
 
     return res;
   }
@@ -207,7 +207,7 @@ class DBProvider {
   Future<String> getRemind(String email, String questionnaire) async {
     var db = await database;
     var resultRemind = await db.rawQuery('''
-    SELECT time AND day FROM remind WHERE email = ? AND questionnaire = ?
+    SELECT time AND days FROM remind WHERE email = ? AND questionnaire = ?
     ''', [email, questionnaire]);
     if (resultRemind.length == 0) return 'No Data available';
 
