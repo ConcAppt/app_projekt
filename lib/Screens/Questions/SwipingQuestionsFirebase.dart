@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:appprojekt/Screens/Home/HomePageFirebase.dart';
+import 'package:intl/intl.dart';
 import 'package:appprojekt/data/Database.dart';
 import 'package:appprojekt/models/data.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
   Map answers = Map<String, dynamic>();
 
   bool state = false;
-  var dateTimePicker = DateTime.now();
+  var dateTimePicker;
 
   final values = List.filled(7, true);
 
@@ -243,6 +244,23 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                                 newuser.email,
                                                                                 widget.quename
                                                                                     .toUpperCase());
+                                                                    if (reminderData ==
+                                                                        'No '
+                                                                            'Data available') {
+                                                                      dateTimePicker = DateTime.now();
+                                                                    } else {
+                                                                      var reminderList =
+                                                                      jsonDecode(reminderData);
+                                                                      String date =
+                                                                      reminderList["time"];
+                                                                      print(date);
+                                                                      DateTime newdate = DateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
+
+                                                                      /*List days = jsonDecode(
+                                                                          reminderList[0]["days"]);*/
+
+                                                                      dateTimePicker = newdate;
+                                                                    }
                                                                     DatePicker.showTimePicker(
                                                                         context,
                                                                         showSecondsColumn: false,
@@ -277,24 +295,8 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                         ),
                                                                         showTitleActions: true,
                                                                         onChanged: (date) async {
-                                                                      var reminderList =
-                                                                          jsonDecode(reminderData);
-                                                                      DateTime date =
-                                                                          reminderList[0]["time"];
-
-                                                                      List days = jsonDecode(
-                                                                          reminderList[0]["days"]);
                                                                       setState(() {
-                                                                        if (dateTimePicker
-                                                                                .toString() ==
-                                                                            'No '
-                                                                                'Data available') {
-                                                                          dateTimePicker =
-                                                                              DateTime.now();
-                                                                        } else {
-                                                                          dateTimePicker = date;
-                                                                        }
-                                                                        //dateTimePicker = date;
+                                                                        dateTimePicker = date;
                                                                       });
 
                                                                       print('change $date');
@@ -456,21 +458,30 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                 ),
                                                               ),
                                                               onPressed: () async {
+                                                                String str = DateFormat("yyyy-MM-dd HH:mm:ss").format(dateTimePicker);
                                                                 Data data = Data(
                                                                     id: null,
                                                                     email: newuser.email,
-                                                                    date: "date",
+                                                                    date: str,
                                                                     questionnaire: widget.quename
                                                                         .toUpperCase(),
                                                                     answers: jsonEncode(answers));
                                                                 DBProvider.db
                                                                     .newQuestionnaire(data);
 
+                                                                if(await DBProvider.db
+                                                                    .getRemind(
+                                                                    newuser.email,
+                                                                    widget.quename
+                                                                        .toUpperCase()) == "No Data available") {
                                                                 DBProvider.db.newRemind(
                                                                     newuser.email,
                                                                     widget.quename.toUpperCase(),
-                                                                    dateTimePicker,
-                                                                    jsonEncode(values));
+                                                                    str,
+                                                                    jsonEncode(values));} else{
+                                                                  DBProvider.db.changeRemind(str, newuser.email,
+                                                                    widget.quename.toUpperCase());
+                                                                }
 
                                                                 Navigator.push(
                                                                   context,

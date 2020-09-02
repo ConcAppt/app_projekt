@@ -2,6 +2,9 @@ import 'package:appprojekt/Screens/Home/HomePageFirebase.dart';
 import 'package:flutter/material.dart';
 import '../Screens/Evaluation/EvaluationPageFirebase.dart';
 import '../Screens/Profile/ProfilePage.dart';
+import '../Screens/Start/Start.dart';
+//import '../Screens/Home/PageViewUpdate.dart';
+import '../Screens/Questions/SwipingQuestionsFirebase.dart';
 import '../Screens/Settings/SettingsPage.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {

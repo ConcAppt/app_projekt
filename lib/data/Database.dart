@@ -41,7 +41,7 @@ class DBProvider {
           ''');
       await db.execute('''
           CREATE TABLE remind (
-            email TEXT, questionnaire TEXT, time DATETIME, days TEXT,
+            email TEXT, questionnaire TEXT, time TEXT, days TEXT,
             PRIMARY KEY (email, questionnaire)
           )
           ''');
@@ -192,7 +192,7 @@ class DBProvider {
     }
   }
 
-  newRemind(String email, String questionnaire, DateTime time, String days) async {
+  newRemind(String email, String questionnaire, String time, String days) async {
     final db = await database;
 
     var res = await db.rawInsert('''
@@ -207,10 +207,38 @@ class DBProvider {
   Future<String> getRemind(String email, String questionnaire) async {
     var db = await database;
     var resultRemind = await db.rawQuery('''
-    SELECT time AND days FROM remind WHERE email = ? AND questionnaire = ?
+    SELECT time FROM remind WHERE email = ? AND questionnaire = ?
     ''', [email, questionnaire]);
     if (resultRemind.length == 0) return 'No Data available';
 
-    return jsonEncode(resultRemind);
+    return jsonEncode(resultRemind.first);
+  }
+
+  Future<String> getRemindDay(String email, String questionnaire) async {
+    var db = await database;
+    var resultRemind = await db.rawQuery('''
+    SELECT days FROM remind WHERE email = ? AND questionnaire = ?
+    ''', [email, questionnaire]);
+    if (resultRemind.length == 0) return 'No Data available';
+
+    return jsonEncode(resultRemind.first);
+  }
+
+  Future<int> changeRemind(String time, String email, String questionnaire) async {
+    var db = await database;
+    var changePassword = await db.rawUpdate('''
+    UPDATE remind SET time = ? WHERE email = ? AND questionnaire = ? 
+    ''', [time, email, questionnaire]);
+
+    return changePassword;
+  }
+
+  Future<int> changeRemindDay(String days, String email, String questionnaire) async {
+    var db = await database;
+    var changePassword = await db.rawUpdate('''
+    UPDATE remind SET days = ? WHERE email = ? AND questionnaire = ? 
+    ''', [days, email, questionnaire]);
+
+    return changePassword;
   }
 }

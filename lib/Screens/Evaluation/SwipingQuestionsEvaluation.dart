@@ -66,10 +66,10 @@ class _BuildSwipingEvalState extends State<BuildSwipingEval> {
 
                 Future<void> _showExportDialog() async {
                   var data = await DBProvider.db.getRecords(
-                      UserProvider.of(context).user.email, widget.quename.toUpperCase());
-                  var datumExcl = await DBProvider.db.getDate(UserProvider.of(context).user.email,
+                      user.email, widget.quename.toUpperCase());
+                  var datumExcl = await DBProvider.db.getDate(user.email,
                       widget.quename.toUpperCase(), _currentPage);
-                  var values = await DBProvider.db.getValues(UserProvider.of(context).user.email,
+                  var values = await DBProvider.db.getValues(user.email,
                       widget.quename.toUpperCase(), _currentPage);
                   var list = jsonDecode(data);
                   int value = list[0]["count(id)"];
