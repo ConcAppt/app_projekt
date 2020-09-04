@@ -10,6 +10,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../Widgets/MyBottomNavigationBar.dart';
 import '../../Widgets/UserProvider_InWi.dart';
 import '../../models/user.dart';
+import 'package:appprojekt/Screens/Start/Start.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -34,6 +35,7 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
   var dateTimePicker;
 
   final values = List.filled(7, true);
+  var days = List.filled(7, true);
 
   FlutterLocalNotificationsPlugin fltrNotification;
 
@@ -59,29 +61,57 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
         onSelectNotification: _notificationSelected);
   }
 
-  Future _showNotification() async {
+  Future _showNotification(DateTime dateTimePicker) async {
+    int hour = int.parse(DateFormat.H().format(dateTimePicker));
+    int minute = int.parse(DateFormat.m().format(dateTimePicker));
+    int second = int.parse(DateFormat.s().format(dateTimePicker));
+    Time notificationTime = Time(hour, minute, second);
+
+    String title = "Hey there!";
+    String body = "Your timer for ${widget.quename} has expired. Please "
+        "have a "
+        "look and answer the questionnaire again";
     var androidDetails = new AndroidNotificationDetails(
-        "Channel ID", "Desi programmer", "This is my channel",
-        importance: Importance.Max);
+      "Channel ID",
+      title,
+      body,
+      importance: Importance.Max,
+    );
+
     var iSODetails = new IOSNotificationDetails();
     var generalNotificationDetails = new NotificationDetails(androidDetails, iSODetails);
 
-    await fltrNotification.show(0, "Task", "You created a Task", generalNotificationDetails,
-        payload: "Task");
+    if (days[0] == true) {
+      fltrNotification.showWeeklyAtDayAndTime(
+          0, title, body, Day.Monday, notificationTime, generalNotificationDetails);
+    }
+    if (days[1] == true) {
+      fltrNotification.showWeeklyAtDayAndTime(
+          1, title, body, Day.Tuesday, notificationTime, generalNotificationDetails);
+    }
+    if (days[2] == true) {
+      fltrNotification.showWeeklyAtDayAndTime(
+          2, title, body, Day.Wednesday, notificationTime, generalNotificationDetails);
+    }
+    if (days[3] == true) {
+      fltrNotification.showWeeklyAtDayAndTime(
+          3, title, body, Day.Thursday, notificationTime, generalNotificationDetails);
+    }
+    if (days[4] == true) {
+      fltrNotification.showWeeklyAtDayAndTime(
+          4, title, body, Day.Friday, notificationTime, generalNotificationDetails);
+    }
+    if (days[5] == true) {
+      fltrNotification.showWeeklyAtDayAndTime(
+          5, title, body, Day.Saturday, notificationTime, generalNotificationDetails);
+    }
+    if (days[6] == true) {
+      fltrNotification.showWeeklyAtDayAndTime(
+          6, title, body, Day.Sunday, notificationTime, generalNotificationDetails);
+    }
   }
 
-  Future _notificationSelected(String payload) async {
-    /* Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => HomePage()),
-    );*/
-    await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: Text("Notification : $payload"),
-      ),
-    );
-  }
+  Future _notificationSelected(String payload) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +231,7 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                   padding: const EdgeInsets.only(
                                                                       left: 4.0),
                                                                   child: Text(
-                                                                    'Activate Reminder',
+                                                                    'Reminder',
                                                                     style: TextStyle(
                                                                       fontWeight: FontWeight.bold,
                                                                       color: Colors.lightGreen,
@@ -228,7 +258,7 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                               children: [
                                                                 FlatButton(
                                                                   child: Text(
-                                                                    'Set Time' + '\n\n' + 'Datum',
+                                                                    'Set Time',
                                                                     style: TextStyle(
                                                                       fontWeight: FontWeight.bold,
                                                                       color: Colors.black54,
@@ -247,14 +277,17 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                     if (reminderData ==
                                                                         'No '
                                                                             'Data available') {
-                                                                      dateTimePicker = DateTime.now();
+                                                                      dateTimePicker =
+                                                                          DateTime.now();
                                                                     } else {
                                                                       var reminderList =
-                                                                      jsonDecode(reminderData);
+                                                                          jsonDecode(reminderData);
                                                                       String date =
-                                                                      reminderList["time"];
+                                                                          reminderList["time"];
                                                                       print(date);
-                                                                      DateTime newdate = DateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
+                                                                      DateTime newdate = DateFormat(
+                                                                              "yyyy-MM-dd HH:mm:ss")
+                                                                          .parse(date);
 
                                                                       /*List days = jsonDecode(
                                                                           reminderList[0]["days"]);*/
@@ -322,7 +355,29 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                       letterSpacing: 2,
                                                                     ),
                                                                   ),
-                                                                  onPressed: () {
+                                                                  onPressed: () async {
+                                                                    var reminderDayData =
+                                                                        await DBProvider.db
+                                                                            .getRemindDay(
+                                                                                newuser.email,
+                                                                                widget.quename
+                                                                                    .toUpperCase());
+                                                                    if (reminderDayData ==
+                                                                        'No '
+                                                                            'Data available') {
+                                                                      days = values;
+                                                                    } else {
+                                                                      var reminderList = jsonDecode(
+                                                                          reminderDayData);
+
+                                                                      days = reminderList["days"];
+                                                                      print(days);
+
+                                                                      /*List days = jsonDecode(
+                                                                          reminderList[0]["days"]);*/
+
+                                                                      //dateTimePicker = newdate;
+                                                                    }
                                                                     showModalBottomSheet<void>(
                                                                       context: context,
                                                                       builder:
@@ -428,12 +483,13 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                                         // perform validation, a DB write, an HTTP call or anything
                                                                                         // else before you actually flip the value,
                                                                                         // it's up to your app's needs.
-                                                                                        values[index] =
-                                                                                            !values[
+
+                                                                                        days[index] =
+                                                                                            !days[
                                                                                                 index];
                                                                                       });
                                                                                     },
-                                                                                    values: values,
+                                                                                    values: days,
                                                                                   ),
                                                                                 ),
                                                                               ],
@@ -458,7 +514,9 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                 ),
                                                               ),
                                                               onPressed: () async {
-                                                                String str = DateFormat("yyyy-MM-dd HH:mm:ss").format(dateTimePicker);
+                                                                String str = DateFormat(
+                                                                        "yyyy-MM-dd HH:mm:ss")
+                                                                    .format(dateTimePicker);
                                                                 Data data = Data(
                                                                     id: null,
                                                                     email: newuser.email,
@@ -469,19 +527,23 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                 DBProvider.db
                                                                     .newQuestionnaire(data);
 
-                                                                if(await DBProvider.db
-                                                                    .getRemind(
-                                                                    newuser.email,
-                                                                    widget.quename
-                                                                        .toUpperCase()) == "No Data available") {
-                                                                DBProvider.db.newRemind(
-                                                                    newuser.email,
-                                                                    widget.quename.toUpperCase(),
-                                                                    str,
-                                                                    jsonEncode(values));} else{
-                                                                  DBProvider.db.changeRemind(str, newuser.email,
-                                                                    widget.quename.toUpperCase());
+                                                                if (await DBProvider.db.getRemind(
+                                                                        newuser.email,
+                                                                        widget.quename
+                                                                            .toUpperCase()) ==
+                                                                    "No Data available") {
+                                                                  DBProvider.db.newRemind(
+                                                                      newuser.email,
+                                                                      widget.quename.toUpperCase(),
+                                                                      str,
+                                                                      jsonEncode(values));
+                                                                } else {
+                                                                  DBProvider.db.changeRemind(
+                                                                      str,
+                                                                      newuser.email,
+                                                                      widget.quename.toUpperCase());
                                                                 }
+                                                                _showNotification(dateTimePicker);
 
                                                                 Navigator.push(
                                                                   context,
