@@ -173,7 +173,9 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
                                                               child: ListBody(
                                                                 children: <Widget>[
                                                                   Text(
-                                                                      'Questionnaire has been completely processed '),
+                                                                      'Questionnaire has been '
+                                                                      'completely processed ',
+                                                                      textAlign: TextAlign.center),
                                                                 ],
                                                               ),
                                                             ),

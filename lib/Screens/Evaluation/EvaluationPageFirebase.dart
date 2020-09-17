@@ -115,7 +115,8 @@ Widget _buildListTile(BuildContext context, DocumentSnapshot document, int value
               context: context,
               builder: (BuildContext context) {
                 return SimpleDialog(
-                  title: const Text('Do you want to look at the results?'),
+                  title: const Text('Do you want to look at the results?',
+                      textAlign: TextAlign.center),
                   children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -159,7 +160,7 @@ Widget _buildListTile(BuildContext context, DocumentSnapshot document, int value
               break;
             case Department.start:
               print('start gedrückt');
-              if (document['type'] == 'SwipingQuestion') {
+              if (document['type'] == 'SliderQuestion') {
                 Navigator.push(
                     context,
                     MaterialPageRoute(

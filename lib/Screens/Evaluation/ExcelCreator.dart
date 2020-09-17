@@ -12,7 +12,7 @@ Future<void> createExportFile(BuildContext context, User user, List docList, Map
   var excel = Excel.createExcel();
   int sheetName = 1;
   List<Sheet> mySheets = [];
-  print('array: $array');
+  // print('array: $array');
   for (var sheetCounter = 0; sheetCounter < array.length; sheetCounter++) {
     if (array[sheetCounter] == true) {
       Future val = DBProvider.db.getValues(user.email, quename.toUpperCase(), sheetCounter);

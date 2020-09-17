@@ -169,7 +169,9 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
                                                             child: ListBody(
                                                               children: <Widget>[
                                                                 Text(
-                                                                    'Questionnaire has been completely processed '),
+                                                                    'Questionnaire has been '
+                                                                    'completely processed ',
+                                                                    textAlign: TextAlign.center),
                                                               ],
                                                             ),
                                                           ),
@@ -253,6 +255,7 @@ class _BuildWheelQuestionnaireState extends State<BuildWheelQuestionnaire> {
             title: Center(
               child: Text(
                 answers[i],
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: color,
                   fontWeight: FontWeight.bold,

@@ -65,12 +65,12 @@ class _BuildSwipingEvalState extends State<BuildSwipingEval> {
                 User user = UserProvider.of(context).user;
 
                 Future<void> _showExportDialog() async {
-                  var data = await DBProvider.db.getRecords(
-                      user.email, widget.quename.toUpperCase());
-                  var datumExcl = await DBProvider.db.getDate(user.email,
-                      widget.quename.toUpperCase(), _currentPage);
-                  var values = await DBProvider.db.getValues(user.email,
-                      widget.quename.toUpperCase(), _currentPage);
+                  var data =
+                      await DBProvider.db.getRecords(user.email, widget.quename.toUpperCase());
+                  var datumExcl = await DBProvider.db
+                      .getDate(user.email, widget.quename.toUpperCase(), _currentPage);
+                  var values = await DBProvider.db
+                      .getValues(user.email, widget.quename.toUpperCase(), _currentPage);
                   var list = jsonDecode(data);
                   int value = list[0]["count(id)"];
                   var array = List.filled(value, false);
@@ -173,7 +173,7 @@ class _BuildSwipingEvalState extends State<BuildSwipingEval> {
                                   ),
                                   StreamBuilder(
                                       stream: Firestore.instance
-                                          .collection('SwipingQuestions')
+                                          .collection("SliderQuestionnaires")
                                           .document(widget.quename)
                                           .collection("Questions")
                                           .snapshots(),
@@ -196,6 +196,9 @@ class _BuildSwipingEvalState extends State<BuildSwipingEval> {
                                             ),
                                             onPressed: () async {
                                               if (listEquals(array, checkArray) == false) {
+                                                await createExportFile(context, user, docList,
+                                                    values, widget.quename, datumExcl, array);
+
                                                 Future<void> _shareFiles() async {
                                                   try {
                                                     String path = await localPath;
@@ -216,8 +219,6 @@ class _BuildSwipingEvalState extends State<BuildSwipingEval> {
                                                   }
                                                 }
 
-                                                await createExportFile(context, user, docList,
-                                                    values, widget.quename, datumExcl, array);
                                                 Future<void> openFile() async {
                                                   String path = await localPath;
                                                   var file = join(path, 'exportfile.xlsx');
@@ -234,7 +235,7 @@ class _BuildSwipingEvalState extends State<BuildSwipingEval> {
                                                   }
                                                 }
 
-                                                openFile();
+                                                // openFile();
                                                 _shareFiles();
                                               } else {
                                                 Future<void> _showSelectDialog() async {
@@ -258,6 +259,7 @@ class _BuildSwipingEvalState extends State<BuildSwipingEval> {
                                                           child: Text(
                                                             'Please select some Reports you '
                                                             'want to share',
+                                                            textAlign: TextAlign.center,
                                                             style: TextStyle(
                                                               color: Colors.black,
                                                               fontFamily: 'Montserrat',
@@ -408,7 +410,7 @@ class _BuildSwipingEvalState extends State<BuildSwipingEval> {
                       itemBuilder: (ctx, i) {
                         return StreamBuilder(
                             stream: Firestore.instance
-                                .collection('SwipingQuestions')
+                                .collection('SliderQuestionnaires')
                                 .document(widget.quename)
                                 .collection("Questions")
                                 .snapshots(),

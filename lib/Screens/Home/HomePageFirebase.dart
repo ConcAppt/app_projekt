@@ -104,7 +104,8 @@ Widget _buildListTile(BuildContext context, DocumentSnapshot document) {
                 context: context,
                 builder: (BuildContext context) {
                   return SimpleDialog(
-                    title: const Text('Do you want to take the test now?'),
+                    title: const Text('Do you want to take the test now?',
+                        textAlign: TextAlign.center),
                     children: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -148,7 +149,7 @@ Widget _buildListTile(BuildContext context, DocumentSnapshot document) {
                 break;
               case Department.start:
                 print('start gedrückt');
-                if (document['type'] == 'SwipingQuestion') {
+                if (document['type'] == 'SliderQuestion') {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
