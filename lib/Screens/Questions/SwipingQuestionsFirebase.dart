@@ -367,24 +367,22 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                             'Data available') {
                                                                       days = values;
                                                                     } else {
+                                                                      List<bool> daysnew = List.filled(7, false);
                                                                       var reminderList = jsonDecode(
                                                                           reminderDayData);
                                                                       List<dynamic> day =
                                                                           jsonDecode(
                                                                               reminderList["days"]);
                                                                       print(day);
-                                                                      for (int i = 0;
-                                                                          i < day.length;
-                                                                          i++) {
-                                                                        var str = day[i];
+                                                                      for (int i = 0; i < day.length; i++) {
+                                                                        String str = day[i].toString();
                                                                         if (str == 'true') {
-                                                                          days[i] = str == 'true';
+                                                                          daysnew[i] = true;
                                                                         } else {
-                                                                          days[i] = str == 'false';
+                                                                          daysnew[i] = false;
                                                                         }
                                                                       }
-                                                                      print(days);
-                                                                      //days = day;
+                                                                      days = daysnew;
                                                                       //print(days);
 
                                                                       /*List days = jsonDecode(

@@ -156,7 +156,7 @@ class _LogListState extends State<LogList> {
                               builder: (context) => UserProvider(
                                   user: user,
                                   child: MyBottomNavigationBar(
-                                    currentIndex: 0,
+                                    currentIndex: 2,
                                   ))),
                         );
                       } else {
