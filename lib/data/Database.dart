@@ -41,7 +41,7 @@ class DBProvider {
           ''');
       await db.execute('''
           CREATE TABLE remind (
-            email TEXT, questionnaire TEXT, time TEXT, days TEXT,
+            email TEXT, questionnaire TEXT, time TEXT, days TEXT, active TEXT,
             PRIMARY KEY (email, questionnaire)
           )
           ''');
@@ -192,14 +192,14 @@ class DBProvider {
     }
   }
 
-  newRemind(String email, String questionnaire, String time, String days) async {
+  newRemind(String email, String questionnaire, String time, String days, String active) async {
     final db = await database;
 
     var res = await db.rawInsert('''
       INSERT INTO remind(
-        email, questionnaire, time, days
-      ) VALUES (?, ?, ?, ?)
-    ''', [email, questionnaire, time, days]);
+        email, questionnaire, time, days, active
+      ) VALUES (?, ?, ?, ?, ?)
+    ''', [email, questionnaire, time, days, active]);
 
     return res;
   }
@@ -238,6 +238,28 @@ class DBProvider {
     var changePassword = await db.rawUpdate('''
     UPDATE remind SET days = ? WHERE email = ? AND questionnaire = ? 
     ''', [days, email, questionnaire]);
+
+    return changePassword;
+  }
+
+  Future<String> getActive(String email, String questionnaire) async {
+    var db = await database;
+    var resultRemind = await db.rawQuery('''
+    SELECT active FROM remind WHERE email = ? AND questionnaire = ?
+    ''', [email, questionnaire]);
+    if (resultRemind.length == 0) {
+      Map map = {"active": "false"};
+      return jsonEncode(map);
+    }
+
+    return jsonEncode(resultRemind.first);
+  }
+
+  Future<int> changeActive(String active, String email, String questionnaire) async {
+    var db = await database;
+    var changePassword = await db.rawUpdate('''
+    UPDATE remind SET active = ? WHERE email = ? AND questionnaire = ? 
+    ''', [active, email, questionnaire]);
 
     return changePassword;
   }

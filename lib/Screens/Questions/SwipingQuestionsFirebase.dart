@@ -31,7 +31,7 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
   var sliderValue = 4.0;
   Map answers = Map<String, dynamic>();
 
-  bool state = false;
+  bool state;
   var dateTimePicker;
 
   final values = List.filled(7, true);
@@ -190,6 +190,25 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                               //TODO check Answer
                                               if (i == snapshot.data.documents.length - 1) {
                                                 Future<void> _showEndDialog() async {
+                                                  var reminderActiveData =
+                                                  await DBProvider.db
+                                                      .getActive(
+                                                      newuser.email,
+                                                      widget.quename
+                                                          .toUpperCase());
+                                                  var reminderActive = jsonDecode(
+                                                      reminderActiveData);
+                                                  print(reminderActive);
+                                                  if (reminderActive == 'false') {
+                                                      state = false;
+                                                  } else {
+                                                    String active = jsonDecode(reminderActive["active"]).toString();
+                                                    if (active == 'true') {
+                                                      state = true;
+                                                    } else {
+                                                      state = false;
+                                                    }
+                                                  }
                                                   return showDialog<void>(
                                                     context: context,
                                                     barrierDismissible:
@@ -243,12 +262,12 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                 ),
                                                                 Switch(
                                                                   activeColor: Colors.lightGreen,
-                                                                  value: state,
                                                                   onChanged: (bool s) {
                                                                     setState(() {
                                                                       state = s;
                                                                     });
                                                                   },
+                                                                  value: state,
                                                                 )
                                                               ],
                                                             ),
@@ -537,7 +556,6 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                 DBProvider.db
                                                                     .newQuestionnaire(data);
 
-                                                                if (state == true) {
                                                                   String str = DateFormat(
                                                                           "yyyy-MM-dd HH:mm:ss")
                                                                       .format(dateTimePicker);
@@ -554,10 +572,10 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                           "No Data available") {
                                                                     DBProvider.db.newRemind(
                                                                         newuser.email,
-                                                                        widget.quename
-                                                                            .toUpperCase(),
+                                                                        widget.quename.toUpperCase(),
                                                                         str,
-                                                                        jsonEncode(values));
+                                                                        jsonEncode(values),
+                                                                        jsonEncode(state));
                                                                   } else {
                                                                     DBProvider.db.changeRemind(
                                                                         str,
@@ -569,8 +587,12 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                         newuser.email,
                                                                         widget.quename
                                                                             .toUpperCase());
+                                                                    DBProvider.db.changeActive(
+                                                                        jsonEncode(state),
+                                                                        newuser.email,
+                                                                        widget.quename
+                                                                            .toUpperCase());
                                                                   }
-                                                                }
 
                                                                 //_showNotification(dateTimePicker);
 
