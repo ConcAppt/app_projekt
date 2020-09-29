@@ -10,6 +10,7 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'ExcelCreator.dart';
 import 'dart:io';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/services.dart' show ByteData, rootBundle;
 
@@ -199,11 +200,15 @@ class _BuildSwipingEvalState extends State<BuildSwipingEval> {
                                                 await createExportFile(context, user, docList,
                                                     values, widget.quename, datumExcl, array);
 
-                                                Future<void> _shareFiles() async {
+                                                Future<void> shareFiles() async {
                                                   try {
                                                     String path = await localPath;
                                                     var file = join(path, 'exportfile.xlsx');
-                                                    ByteData bytes1 = await rootBundle.load(file);
+                                                    print('file: shareFile: $file');
+                                                    final ByteData bytes1 = File(file)
+                                                        .readAsBytesSync()
+                                                        .buffer
+                                                        .asByteData();
 
                                                     await Share.files(
                                                         'File from our app',
@@ -215,13 +220,14 @@ class _BuildSwipingEvalState extends State<BuildSwipingEval> {
                                                         text:
                                                             'Hello, in the attachment are the reports I would like to share with you');
                                                   } catch (e) {
-                                                    print('error: $e');
+                                                    print('Share error: $e');
                                                   }
                                                 }
 
                                                 Future<void> openFile() async {
                                                   String path = await localPath;
                                                   var file = join(path, 'exportfile.xlsx');
+                                                  print('file: openFile: $file');
                                                   var bytes = File(file).readAsBytesSync();
                                                   var excel = Excel.decodeBytes(bytes);
 
@@ -235,8 +241,8 @@ class _BuildSwipingEvalState extends State<BuildSwipingEval> {
                                                   }
                                                 }
 
-                                                // openFile();
-                                                _shareFiles();
+                                                openFile();
+                                                shareFiles();
                                               } else {
                                                 Future<void> _showSelectDialog() async {
                                                   return showDialog<void>(
@@ -498,4 +504,10 @@ Widget _buildListTile(BuildContext context, DocumentSnapshot document, index, Ma
       isThreeLine: true,
     ),
   );
+}
+
+Future<String> get localPath async {
+  final directory = await getApplicationDocumentsDirectory();
+
+  return directory.path;
 }

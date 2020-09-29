@@ -190,19 +190,18 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                               //TODO check Answer
                                               if (i == snapshot.data.documents.length - 1) {
                                                 Future<void> _showEndDialog() async {
-                                                  var reminderActiveData =
-                                                  await DBProvider.db
-                                                      .getActive(
-                                                      newuser.email,
-                                                      widget.quename
-                                                          .toUpperCase());
-                                                  var reminderActive = jsonDecode(
-                                                      reminderActiveData);
+                                                  var reminderActiveData = await DBProvider.db
+                                                      .getActive(newuser.email,
+                                                          widget.quename.toUpperCase());
+                                                  var reminderActive =
+                                                      jsonDecode(reminderActiveData);
                                                   print(reminderActive);
                                                   if (reminderActive == 'false') {
-                                                      state = false;
+                                                    state = false;
                                                   } else {
-                                                    String active = jsonDecode(reminderActive["active"]).toString();
+                                                    String active =
+                                                        jsonDecode(reminderActive["active"])
+                                                            .toString();
                                                     if (active == 'true') {
                                                       state = true;
                                                     } else {
@@ -211,8 +210,8 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                   }
                                                   return showDialog<void>(
                                                     context: context,
-                                                    barrierDismissible:
-                                                        false, // user must tap button!
+                                                    barrierDismissible: false,
+                                                    // user must tap button!
                                                     builder: (BuildContext context) {
                                                       return StatefulBuilder(
                                                           builder: (context, setState) {
@@ -233,6 +232,7 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                               children: <Widget>[
                                                                 Text(
                                                                   'Questionnaire has been completely processed ',
+                                                                  textAlign: TextAlign.center,
                                                                   style: TextStyle(
                                                                     color: Colors.black,
                                                                     fontFamily: 'Montserrat',
@@ -386,15 +386,17 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                             'Data available') {
                                                                       days = values;
                                                                     } else {
-                                                                      List<bool> daysnew = List.filled(7, false);
+                                                                      List<bool> daysnew =
+                                                                          List.filled(7, false);
                                                                       var reminderList = jsonDecode(
                                                                           reminderDayData);
                                                                       List<dynamic> day =
                                                                           jsonDecode(
                                                                               reminderList["days"]);
                                                                       print(day);
-                                                                      for (int i = 0; i < day.length; i++) {
-                                                                        String str = day[i].toString();
+                                                                      for (int i = 0; i < 7; i++) {
+                                                                        String str =
+                                                                            day[i].toString();
                                                                         if (str == 'true') {
                                                                           daysnew[i] = true;
                                                                         } else {
@@ -555,47 +557,46 @@ class _BuildSwipingQuestionnaireState extends State<BuildSwipingQuestionnaire> {
                                                                     answers: jsonEncode(answers));
                                                                 DBProvider.db
                                                                     .newQuestionnaire(data);
+                                                                if (dateTimePicker == null) {
+                                                                  dateTimePicker = DateTime.now();
+                                                                }
+                                                                String str = DateFormat(
+                                                                        "yyyy-MM-dd HH:mm:ss")
+                                                                    .format(dateTimePicker);
 
-                                                                  String str = DateFormat(
-                                                                          "yyyy-MM-dd HH:mm:ss")
-                                                                      .format(dateTimePicker);
-
-                                                                  if (await DBProvider.db.getRemind(
-                                                                              newuser.email,
-                                                                              widget.quename
-                                                                                  .toUpperCase()) ==
-                                                                          "No Data available" &&
-                                                                      await DBProvider.db.getRemindDay(
-                                                                              newuser.email,
-                                                                              widget.quename
-                                                                                  .toUpperCase()) ==
-                                                                          "No Data available") {
-                                                                    DBProvider.db.newRemind(
-                                                                        newuser.email,
-                                                                        widget.quename.toUpperCase(),
-                                                                        str,
-                                                                        jsonEncode(values),
-                                                                        jsonEncode(state));
-                                                                  } else {
-                                                                    DBProvider.db.changeRemind(
-                                                                        str,
-                                                                        newuser.email,
-                                                                        widget.quename
-                                                                            .toUpperCase());
-                                                                    DBProvider.db.changeRemindDay(
-                                                                        jsonEncode(days),
-                                                                        newuser.email,
-                                                                        widget.quename
-                                                                            .toUpperCase());
-                                                                    DBProvider.db.changeActive(
-                                                                        jsonEncode(state),
-                                                                        newuser.email,
-                                                                        widget.quename
-                                                                            .toUpperCase());
-                                                                  }
-
-                                                                //_showNotification(dateTimePicker);
-
+                                                                if (await DBProvider.db.getRemind(
+                                                                            newuser.email,
+                                                                            widget.quename
+                                                                                .toUpperCase()) ==
+                                                                        "No Data available" &&
+                                                                    await DBProvider.db.getRemindDay(
+                                                                            newuser.email,
+                                                                            widget.quename
+                                                                                .toUpperCase()) ==
+                                                                        "No Data available") {
+                                                                  DBProvider.db.newRemind(
+                                                                      newuser.email,
+                                                                      widget.quename.toUpperCase(),
+                                                                      str,
+                                                                      jsonEncode(values),
+                                                                      jsonEncode(state));
+                                                                } else {
+                                                                  DBProvider.db.changeRemind(
+                                                                      str,
+                                                                      newuser.email,
+                                                                      widget.quename.toUpperCase());
+                                                                  DBProvider.db.changeRemindDay(
+                                                                      jsonEncode(days),
+                                                                      newuser.email,
+                                                                      widget.quename.toUpperCase());
+                                                                  DBProvider.db.changeActive(
+                                                                      jsonEncode(state),
+                                                                      newuser.email,
+                                                                      widget.quename.toUpperCase());
+                                                                }
+                                                                if (state = true) {
+                                                                  _showNotification(dateTimePicker);
+                                                                }
                                                                 Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(

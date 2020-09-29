@@ -23,6 +23,7 @@ class Start extends StatelessWidget {
             Center(
               child: Text(
                 'Good to see you.',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 40.0,
                   fontFamily: 'Montserrat',

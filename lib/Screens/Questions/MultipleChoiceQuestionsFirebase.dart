@@ -7,6 +7,10 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../Widgets/MyBottomNavigationBar.dart';
 import '../../Widgets/UserProvider_InWi.dart';
 import '../../models/user.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:weekday_selector/weekday_selector.dart';
+import 'package:intl/intl.dart';
 
 enum answerAlternatives { No, sometimes, often }
 
@@ -28,6 +32,14 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
   Map answers = Map<String, String>();
   String answerstr;
 
+  bool state;
+  var dateTimePicker;
+
+  final values = List.filled(7, true);
+  var days;
+
+  FlutterLocalNotificationsPlugin fltrNotification;
+
   @override
   void dispose() {
     super.dispose();
@@ -39,6 +51,68 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
       _currentPage = index;
     });
   }
+
+  void initState() {
+    super.initState();
+    var androidInitilize = new AndroidInitializationSettings('app_icon');
+    var iOSinitilize = new IOSInitializationSettings();
+    var initilizationsSettings = new InitializationSettings(androidInitilize, iOSinitilize);
+    fltrNotification = new FlutterLocalNotificationsPlugin();
+    fltrNotification.initialize(initilizationsSettings,
+        onSelectNotification: _notificationSelected);
+  }
+
+  Future _showNotification(DateTime dateTimePicker) async {
+    int hour = int.parse(DateFormat.H().format(dateTimePicker));
+    int minute = int.parse(DateFormat.m().format(dateTimePicker));
+    int second = int.parse(DateFormat.s().format(dateTimePicker));
+    Time notificationTime = Time(hour, minute, second);
+
+    String title = "Hey there!";
+    String body = "Your timer for ${widget.quename} has expired. Please "
+        "have a "
+        "look and answer the questionnaire again";
+    var androidDetails = new AndroidNotificationDetails(
+      "Channel ID",
+      title,
+      body,
+      importance: Importance.Max,
+    );
+
+    var iSODetails = new IOSNotificationDetails();
+    var generalNotificationDetails = new NotificationDetails(androidDetails, iSODetails);
+
+    if (days[0] == true) {
+      fltrNotification.showWeeklyAtDayAndTime(
+          0, title, body, Day.Monday, notificationTime, generalNotificationDetails);
+    }
+    if (days[1] == true) {
+      fltrNotification.showWeeklyAtDayAndTime(
+          1, title, body, Day.Tuesday, notificationTime, generalNotificationDetails);
+    }
+    if (days[2] == true) {
+      fltrNotification.showWeeklyAtDayAndTime(
+          2, title, body, Day.Wednesday, notificationTime, generalNotificationDetails);
+    }
+    if (days[3] == true) {
+      fltrNotification.showWeeklyAtDayAndTime(
+          3, title, body, Day.Thursday, notificationTime, generalNotificationDetails);
+    }
+    if (days[4] == true) {
+      fltrNotification.showWeeklyAtDayAndTime(
+          4, title, body, Day.Friday, notificationTime, generalNotificationDetails);
+    }
+    if (days[5] == true) {
+      fltrNotification.showWeeklyAtDayAndTime(
+          5, title, body, Day.Saturday, notificationTime, generalNotificationDetails);
+    }
+    if (days[6] == true) {
+      fltrNotification.showWeeklyAtDayAndTime(
+          6, title, body, Day.Sunday, notificationTime, generalNotificationDetails);
+    }
+  }
+
+  Future _notificationSelected(String payload) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -125,12 +199,29 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
                                                     builder: (BuildContext context) {
                                                       return AlertDialog(
                                                         shape: RoundedRectangleBorder(),
-                                                        title: Text('Attention'),
+                                                        title: Text(
+                                                          'Attention',
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontFamily: 'Montserrat',
+                                                            fontSize: 12.0,
+                                                            letterSpacing: 2,
+                                                          ),
+                                                        ),
                                                         content: SingleChildScrollView(
                                                           child: ListBody(
                                                             children: <Widget>[
                                                               Text(
-                                                                  'Please select an answer option'),
+                                                                'Please select an answer '
+                                                                'option',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                                                  color: Colors.black,
+                                                                  fontFamily: 'Montserrat',
+                                                                  fontSize: 12.0,
+                                                                  letterSpacing: 2,
+                                                                ),
+                                                              ),
                                                             ],
                                                           ),
                                                         ),
@@ -161,61 +252,442 @@ class _BuildMultipleChoiceQuestionnaireState extends State<BuildMultipleChoiceQu
                                                 } else {
                                                   if (i == snapshot.data.documents.length - 1) {
                                                     Future<void> _showEndDialog() async {
+                                                      var reminderActiveData = await DBProvider.db
+                                                          .getActive(newuser.email,
+                                                              widget.quename.toUpperCase());
+                                                      var reminderActive =
+                                                          jsonDecode(reminderActiveData);
+                                                      print(reminderActive);
+                                                      if (reminderActive == 'false') {
+                                                        state = false;
+                                                      } else {
+                                                        String active =
+                                                            jsonDecode(reminderActive["active"])
+                                                                .toString();
+                                                        if (active == 'true') {
+                                                          state = true;
+                                                        } else {
+                                                          state = false;
+                                                        }
+                                                      }
                                                       return showDialog<void>(
                                                         context: context,
                                                         barrierDismissible: false,
                                                         // user must tap button!
                                                         builder: (BuildContext context) {
-                                                          return AlertDialog(
-                                                            shape: RoundedRectangleBorder(),
-                                                            title: Text('Attention'),
-                                                            content: SingleChildScrollView(
-                                                              child: ListBody(
-                                                                children: <Widget>[
-                                                                  Text(
-                                                                      'Questionnaire has been '
-                                                                      'completely processed ',
-                                                                      textAlign: TextAlign.center),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            actions: <Widget>[
-                                                              FlatButton(
-                                                                child: Text(
-                                                                  'Okay',
-                                                                  style: TextStyle(
-                                                                    fontWeight: FontWeight.bold,
-                                                                    color: Colors.lightGreen,
-                                                                    fontFamily: 'Montserrat',
-                                                                    fontSize: 20.0,
-                                                                    letterSpacing: 2,
-                                                                  ),
+                                                          return StatefulBuilder(
+                                                              builder: (context, setState) {
+                                                            return AlertDialog(
+                                                              shape: RoundedRectangleBorder(),
+                                                              title: Text(
+                                                                'Attention',
+                                                                style: TextStyle(
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: Colors.black,
+                                                                  fontFamily: 'Montserrat',
+                                                                  fontSize: 20.0,
+                                                                  letterSpacing: 2,
                                                                 ),
-                                                                onPressed: () async {
-                                                                  Data data = Data(
-                                                                      id: null,
-                                                                      email: newuser.email,
-                                                                      date: null,
-                                                                      questionnaire: widget.quename
-                                                                          .toUpperCase(),
-                                                                      answers: jsonEncode(answers));
-                                                                  DBProvider.db
-                                                                      .newQuestionnaire(data);
-                                                                  Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder: (context) =>
-                                                                            UserProvider(
-                                                                                user: newuser,
-                                                                                child:
-                                                                                    MyBottomNavigationBar(
-                                                                                  currentIndex: 0,
-                                                                                ))),
-                                                                  );
-                                                                },
                                                               ),
-                                                            ],
-                                                          );
+                                                              content: SingleChildScrollView(
+                                                                child: ListBody(
+                                                                  children: <Widget>[
+                                                                    Text(
+                                                                      'Questionnaire has been completely processed ',
+                                                                      textAlign: TextAlign.center,
+                                                                      style: TextStyle(
+                                                                        color: Colors.black,
+                                                                        fontFamily: 'Montserrat',
+                                                                        fontSize: 12.0,
+                                                                        letterSpacing: 2,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              actions: <Widget>[
+                                                                Row(
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.only(
+                                                                              left: 4.0),
+                                                                      child: Text(
+                                                                        'Reminder',
+                                                                        style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          color: Colors.lightGreen,
+                                                                          fontFamily: 'Montserrat',
+                                                                          fontSize: 20.0,
+                                                                          letterSpacing: 2,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Switch(
+                                                                      activeColor:
+                                                                          Colors.lightGreen,
+                                                                      onChanged: (bool s) {
+                                                                        setState(() {
+                                                                          state = s;
+                                                                        });
+                                                                      },
+                                                                      value: state,
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    FlatButton(
+                                                                      child: Text(
+                                                                        'Set Time',
+                                                                        style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          color: Colors.black54,
+                                                                          fontFamily: 'Montserrat',
+                                                                          fontSize: 15.0,
+                                                                          letterSpacing: 2,
+                                                                        ),
+                                                                      ),
+                                                                      onPressed: () async {
+                                                                        var reminderData =
+                                                                            await DBProvider.db
+                                                                                .getRemind(
+                                                                                    newuser.email,
+                                                                                    widget.quename
+                                                                                        .toUpperCase());
+                                                                        if (reminderData ==
+                                                                            'No '
+                                                                                'Data available') {
+                                                                          dateTimePicker =
+                                                                              DateTime.now();
+                                                                        } else {
+                                                                          var reminderList =
+                                                                              jsonDecode(
+                                                                                  reminderData);
+                                                                          String date =
+                                                                              reminderList["time"];
+                                                                          print(date);
+                                                                          DateTime newdate = DateFormat(
+                                                                                  "yyyy-MM-dd HH:mm:ss")
+                                                                              .parse(date);
+
+                                                                          /*List days = jsonDecode(
+                                                                          reminderList[0]["days"]);*/
+
+                                                                          dateTimePicker = newdate;
+                                                                        }
+                                                                        DatePicker.showTimePicker(
+                                                                            context,
+                                                                            showSecondsColumn:
+                                                                                false,
+                                                                            theme: DatePickerTheme(
+                                                                              headerColor:
+                                                                                  Colors.lightGreen,
+                                                                              itemStyle: TextStyle(
+                                                                                color: Colors.black,
+                                                                                fontFamily:
+                                                                                    'Montserrat',
+                                                                                fontSize: 20.0,
+                                                                                letterSpacing: 2,
+                                                                              ),
+                                                                              doneStyle: TextStyle(
+                                                                                fontWeight:
+                                                                                    FontWeight.bold,
+                                                                                color: Colors.black,
+                                                                                fontFamily:
+                                                                                    'Montserrat',
+                                                                                fontSize: 20.0,
+                                                                                letterSpacing: 2,
+                                                                              ),
+                                                                              cancelStyle:
+                                                                                  TextStyle(
+                                                                                fontWeight:
+                                                                                    FontWeight.bold,
+                                                                                color: Colors.black,
+                                                                                fontFamily:
+                                                                                    'Montserrat',
+                                                                                fontSize: 20.0,
+                                                                                letterSpacing: 2,
+                                                                              ),
+                                                                            ),
+                                                                            showTitleActions: true,
+                                                                            onChanged:
+                                                                                (date) async {
+                                                                          setState(() {
+                                                                            dateTimePicker = date;
+                                                                          });
+
+                                                                          print('change $date');
+                                                                        }, onConfirm: (date) {
+                                                                          setState(() {
+                                                                            dateTimePicker = date;
+                                                                          });
+
+                                                                          print('confirm $date');
+                                                                        },
+                                                                            currentTime:
+                                                                                dateTimePicker,
+                                                                            locale: LocaleType.en);
+                                                                      },
+                                                                    ),
+                                                                    FlatButton(
+                                                                      child: Text(
+                                                                        'Set interval',
+                                                                        style: TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          color: Colors.black54,
+                                                                          fontFamily: 'Montserrat',
+                                                                          fontSize: 15.0,
+                                                                          letterSpacing: 2,
+                                                                        ),
+                                                                      ),
+                                                                      onPressed: () async {
+                                                                        var reminderDayData =
+                                                                            await DBProvider.db
+                                                                                .getRemindDay(
+                                                                                    newuser.email,
+                                                                                    widget.quename
+                                                                                        .toUpperCase());
+                                                                        if (reminderDayData ==
+                                                                            'No '
+                                                                                'Data available') {
+                                                                          days = values;
+                                                                        } else {
+                                                                          List<bool> daysnew =
+                                                                              List.filled(7, false);
+                                                                          var reminderList =
+                                                                              jsonDecode(
+                                                                                  reminderDayData);
+                                                                          List<dynamic> day =
+                                                                              jsonDecode(
+                                                                                  reminderList[
+                                                                                      "days"]);
+                                                                          print(day);
+                                                                          for (int i = 0;
+                                                                              i < 7;
+                                                                              i++) {
+                                                                            String str =
+                                                                                day[i].toString();
+                                                                            if (str == 'true') {
+                                                                              daysnew[i] = true;
+                                                                            } else {
+                                                                              daysnew[i] = false;
+                                                                            }
+                                                                          }
+                                                                          days = daysnew;
+                                                                          //print(days);
+
+                                                                          /*List days = jsonDecode(
+                                                                          reminderList[0]["days"]);*/
+
+                                                                          //dateTimePicker = newdate;
+                                                                        }
+                                                                        showModalBottomSheet<void>(
+                                                                          context: context,
+                                                                          builder: (BuildContext
+                                                                              context) {
+                                                                            return StatefulBuilder(
+                                                                                builder: (context,
+                                                                                    setState) {
+                                                                              return Container(
+                                                                                height: MediaQuery.of(
+                                                                                            context)
+                                                                                        .size
+                                                                                        .width *
+                                                                                    2 /
+                                                                                    3,
+                                                                                child: Column(
+                                                                                  children: [
+                                                                                    Container(
+                                                                                      color: Colors
+                                                                                          .lightGreen,
+                                                                                      height: 40,
+                                                                                      child: Row(
+                                                                                        mainAxisAlignment:
+                                                                                            MainAxisAlignment
+                                                                                                .spaceBetween,
+                                                                                        children: [
+                                                                                          Padding(
+                                                                                            padding:
+                                                                                                const EdgeInsets.all(5.0),
+                                                                                            child:
+                                                                                                FlatButton(
+                                                                                              onPressed:
+                                                                                                  () {
+                                                                                                Navigator.pop(context);
+                                                                                              },
+                                                                                              child:
+                                                                                                  Text(
+                                                                                                'Cancel',
+                                                                                                style:
+                                                                                                    TextStyle(
+                                                                                                  fontWeight: FontWeight.bold,
+                                                                                                  color: Colors.black,
+                                                                                                  fontFamily: 'Montserrat',
+                                                                                                  fontSize: 20.0,
+                                                                                                  letterSpacing: 2,
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                          ),
+                                                                                          Padding(
+                                                                                            padding:
+                                                                                                const EdgeInsets.all(5.0),
+                                                                                            child:
+                                                                                                FlatButton(
+                                                                                              onPressed:
+                                                                                                  () {
+                                                                                                Navigator.pop(context);
+                                                                                              },
+                                                                                              child:
+                                                                                                  Text(
+                                                                                                'Done',
+                                                                                                style:
+                                                                                                    TextStyle(
+                                                                                                  fontWeight: FontWeight.bold,
+                                                                                                  color: Colors.black,
+                                                                                                  fontFamily: 'Montserrat',
+                                                                                                  fontSize: 20.0,
+                                                                                                  letterSpacing: 2,
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                    Expanded(
+                                                                                      child:
+                                                                                          WeekdaySelector(
+                                                                                        selectedFillColor:
+                                                                                            Colors
+                                                                                                .lightGreen,
+                                                                                        onChanged:
+                                                                                            (int
+                                                                                                day) {
+                                                                                          setState(
+                                                                                              () {
+                                                                                            // Use module % 7 as Sunday's index in the array is 0 and
+                                                                                            // DateTime.sunday constant integer value is 7.
+                                                                                            final index =
+                                                                                                day %
+                                                                                                    7;
+                                                                                            // We "flip" the value in this example, but you may also
+                                                                                            // perform validation, a DB write, an HTTP call or anything
+                                                                                            // else before you actually flip the value,
+                                                                                            // it's up to your app's needs.
+
+                                                                                            days[index] =
+                                                                                                !days[index];
+                                                                                            //github
+                                                                                          });
+                                                                                        },
+                                                                                        values:
+                                                                                            days,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              );
+                                                                            });
+                                                                          },
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                FlatButton(
+                                                                  child: Text(
+                                                                    'Okay',
+                                                                    style: TextStyle(
+                                                                      fontWeight: FontWeight.bold,
+                                                                      color: Colors.lightGreen,
+                                                                      fontFamily: 'Montserrat',
+                                                                      fontSize: 20.0,
+                                                                      letterSpacing: 2,
+                                                                    ),
+                                                                  ),
+                                                                  onPressed: () async {
+                                                                    Data data = Data(
+                                                                        id: null,
+                                                                        email: newuser.email,
+                                                                        date: null,
+                                                                        questionnaire: widget
+                                                                            .quename
+                                                                            .toUpperCase(),
+                                                                        answers:
+                                                                            jsonEncode(answers));
+                                                                    DBProvider.db
+                                                                        .newQuestionnaire(data);
+                                                                    if (dateTimePicker == null) {
+                                                                      dateTimePicker =
+                                                                          DateTime.now();
+                                                                    }
+                                                                    String str = DateFormat(
+                                                                            "yyyy-MM-dd HH:mm:ss")
+                                                                        .format(dateTimePicker);
+
+                                                                    if (await DBProvider.db.getRemind(
+                                                                                newuser.email,
+                                                                                widget.quename
+                                                                                    .toUpperCase()) ==
+                                                                            "No Data available" &&
+                                                                        await DBProvider.db
+                                                                                .getRemindDay(
+                                                                                    newuser.email,
+                                                                                    widget.quename
+                                                                                        .toUpperCase()) ==
+                                                                            "No Data available") {
+                                                                      DBProvider.db.newRemind(
+                                                                          newuser.email,
+                                                                          widget.quename
+                                                                              .toUpperCase(),
+                                                                          str,
+                                                                          jsonEncode(values),
+                                                                          jsonEncode(state));
+                                                                    } else {
+                                                                      DBProvider.db.changeRemind(
+                                                                          str,
+                                                                          newuser.email,
+                                                                          widget.quename
+                                                                              .toUpperCase());
+                                                                      DBProvider.db.changeRemindDay(
+                                                                          jsonEncode(days),
+                                                                          newuser.email,
+                                                                          widget.quename
+                                                                              .toUpperCase());
+                                                                      DBProvider.db.changeActive(
+                                                                          jsonEncode(state),
+                                                                          newuser.email,
+                                                                          widget.quename
+                                                                              .toUpperCase());
+                                                                    }
+                                                                    if (state = true) {
+                                                                      _showNotification(
+                                                                          dateTimePicker);
+                                                                    }
+                                                                    Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              UserProvider(
+                                                                                  user: newuser,
+                                                                                  child:
+                                                                                      MyBottomNavigationBar(
+                                                                                    currentIndex: 0,
+                                                                                  ))),
+                                                                    );
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            );
+                                                          });
                                                         },
                                                       );
                                                     }

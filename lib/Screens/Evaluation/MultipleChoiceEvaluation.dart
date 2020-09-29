@@ -200,7 +200,10 @@ class _BuildMCEvalState extends State<BuildMCEval> {
                                                   try {
                                                     String path = await localPath;
                                                     var file = join(path, 'exportfile.xlsx');
-                                                    ByteData bytes1 = await rootBundle.load(file);
+                                                    final ByteData bytes1 = File(file)
+                                                        .readAsBytesSync()
+                                                        .buffer
+                                                        .asByteData();
 
                                                     await Share.files(
                                                         'File from our app',

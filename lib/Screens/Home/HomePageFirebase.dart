@@ -84,16 +84,14 @@ Widget _buildListTile(BuildContext context, DocumentSnapshot document) {
               fontFamily: 'Montserrat',
               fontSize: 15),
         ),
-        subtitle: Center(
-          child: Text(
-            (document['questionnaireDescription'] + "\n\n" + document['questionnaireScope']),
-            style: TextStyle(
-                color: Colors.black87,
-                fontFamily: 'Montserrat',
-                letterSpacing: 1.5,
-                fontWeight: FontWeight.w400,
-                fontSize: 13),
-          ),
+        subtitle: Text(
+          (document['questionnaireDescription'] + "\n\n" + document['questionnaireScope']),
+          style: TextStyle(
+              color: Colors.black87,
+              fontFamily: 'Montserrat',
+              letterSpacing: 1.5,
+              fontWeight: FontWeight.w400,
+              fontSize: 13),
         ),
         dense: true,
         isThreeLine: true,
